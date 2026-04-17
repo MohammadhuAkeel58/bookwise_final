@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --surface: #fff9e7;
+  --primary: #0040a8;
+  --on-surface: #1e1c10;
+  --background: #fff9e7;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-on-surface: var(--on-surface);
+  --font-headline: var(--font-placard);
+  --font-body: var(--font-placard);
+  --font-typewriter: var(--font-special-elite);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .clip-jagged {
+    clip-path: polygon(0% 5%, 5% 0%, 95% 2%, 100% 8%, 98% 95%, 92% 100%, 5% 98%, 0% 90%);
+  }
+
+  .clip-jagged-2 {
+    clip-path: polygon(2% 2%, 98% 0%, 100% 90%, 95% 100%, 5% 95%, 0% 10%);
+  }
+
+  .tape-effect {
+    @apply absolute bg-white/40 backdrop-blur-sm h-12 w-32 -rotate-12 z-50;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  }
+
+  .stamped {
+    filter: contrast(150%) brightness(90%);
+    mix-blend-mode: multiply;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.text-display-massive {
+  font-size: clamp(3.2rem, 9.4vw, 8.2rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+}
+
+.label-box {
+  padding: 0.45rem 1.45rem 0.35rem;
+  display: inline-block;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+  border: 2px solid black;
+}
+
+@keyframes service-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-service-card {
+  opacity: 0;
+  animation: service-card-in 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
