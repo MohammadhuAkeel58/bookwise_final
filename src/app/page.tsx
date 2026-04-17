@@ -101,14 +101,14 @@ export default function Home() {
       </nav>
 
       <main className="flex-grow pb-12 md:pb-16 overflow-x-hidden">
-        <section className="relative w-full min-h-[calc(100svh+2rem)] md:min-h-[calc(100svh+3rem)] py-3 md:py-6 lg:py-8 flex items-start">
-          <div className="absolute -right-8 lg:-right-16 top-1/2 -translate-y-1/2 w-1/2 lg:w-[650px] h-[850px] z-0 pointer-events-none opacity-40 lg:opacity-100">
+        <section className="relative w-full min-h-[calc(100svh+2rem)] md:min-h-[calc(100svh+3rem)] py-3 md:py-6 lg:py-8 flex items-start overflow-hidden">
+          <div className="absolute -right-2 sm:-right-4 lg:-right-16 top-1/2 -translate-y-1/2 w-[65%] sm:w-[55%] md:w-1/2 lg:w-[650px] h-[80%] sm:h-[82%] md:h-[85%] lg:h-[850px] max-h-[calc(100%-2rem)] lg:max-h-none z-0 pointer-events-none opacity-70 md:opacity-80 lg:opacity-100">
             <div className="relative w-full h-full rotate-1">
               <div className="tape-effect top-12 left-8 lg:left-12 opacity-60" />
               <div className="tape-effect bottom-40 right-24 rotate-[35deg] opacity-60" />
               <Image
                 alt="Professional accountant illustration"
-                className="w-full h-full object-cover object-right grayscale contrast-150 border-[12px] border-white shadow-2xl clip-jagged"
+                className="w-full h-full object-cover object-center lg:object-right grayscale contrast-125 lg:contrast-150 border-[6px] md:border-[10px] lg:border-[12px] border-white shadow-2xl clip-jagged"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMYZn-gBXWxh9_nxLUqlT5suBPJC2cb-9-77ABfLUHpkZBbup8zCzKcgSMubu4U9rvHUScy1ErhQfEevrMOC55h3p8HY_XOfzcjK625O4XiYNPZt97u_-2HI5HCcLS50G5LTxwG79TEuIkLbeMa7mDERQS2kR4yXEBbsayNSqcT-8LM5-zW_ttjvo3nDgcvwd8XHXU3H3_wO-meR3wcZ_J9wQ5KdUrjnw66Jp_TqbJ7t_8KajRAp_GW7JkFnvPefNerJxKOZ7FS3s"
                 width={900}
                 height={1200}
