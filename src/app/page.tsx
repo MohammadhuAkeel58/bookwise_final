@@ -169,7 +169,7 @@ export default function Home() {
             playsInline
             preload="metadata"
           >
-            <source src="/bookwise_r.mp4" type="video/mp4" />
+            <source src="/Bookwise_final1.mp4" type="video/mp4" />
           </video>
         </section>
 
