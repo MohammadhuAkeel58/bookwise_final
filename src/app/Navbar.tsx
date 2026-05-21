@@ -36,30 +36,12 @@ export default function Navbar() {
         <nav className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-4 md:grid md:grid-cols-3 md:px-8">
           {/* Logo */}
           <a
-            className="logo relative z-[60] inline-flex items-center gap-2 text-ink"
+            className="logo relative z-[60] inline-flex items-center text-ink"
             href="/"
             onClick={() => setOpen(false)}
             aria-label="Bookwise — home"
           >
-            <span className="logo-mark" aria-hidden="true">
-              <svg viewBox="0 0 32 32" fill="none">
-                <rect
-                  x="3"
-                  y="3"
-                  width="26"
-                  height="26"
-                  rx="6"
-                  fill="var(--ink)"
-                />
-                <path
-                  d="M11 9h7a4 4 0 0 1 0 8h-7zM11 17h8a4 4 0 0 1 0 8h-8z"
-                  stroke="var(--mint)"
-                  strokeWidth="1.8"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-            <span className="logo-text font-headline text-[1.55rem] font-bold uppercase leading-[0.86] tracking-[0.01em]">
+            <span className="logo-text font-headline text-[1.7rem] font-bold uppercase leading-[0.86] tracking-[0.01em]">
               Book
               <br />
               wise

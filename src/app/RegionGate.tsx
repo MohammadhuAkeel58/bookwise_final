@@ -40,6 +40,16 @@ export default function RegionGate() {
   const { region, setRegion } = useRegion();
   const [modalOpen, setModalOpen] = useState(false);
 
+  // Lock body scroll while the landing picker is open (no region yet)
+  useEffect(() => {
+    if (region) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [region]);
+
   const choose = (code: Region) => {
     setRegion(code as ProviderRegion);
     setModalOpen(false);
@@ -108,30 +118,17 @@ function LandingPicker({ onChoose }: { onChoose: (r: Region) => void }) {
 
   return (
     <div
-      className={`landing-root fixed inset-0 z-[100] overflow-hidden ${
+      className={`landing-root fixed inset-0 z-[999] overflow-hidden ${
         leaving ? "landing-leaving" : ""
       }`}
     >
       {/* Brand bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between px-5 py-5 md:px-10 md:py-8">
-        <div className="landing-logo flex items-center gap-2 text-ink mix-blend-difference">
-          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-[0.7rem]">
-            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <rect x="3" y="3" width="26" height="26" rx="6" fill="currentColor" />
-              <path
-                d="M11 9h7a4 4 0 0 1 0 8h-7zM11 17h8a4 4 0 0 1 0 8h-8z"
-                stroke="#dcfae8"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="font-headline text-[1.55rem] font-bold uppercase leading-[0.86] tracking-[0.01em]">
-            Book
-            <br />
-            wise
-          </span>
-        </div>
+        <p className="landing-logo font-headline text-[1.7rem] font-bold uppercase leading-[0.86] tracking-[0.01em] text-ink mix-blend-difference">
+          Book
+          <br />
+          wise
+        </p>
       </div>
 
       {/* Centered instruction */}
@@ -219,14 +216,10 @@ function LandingPicker({ onChoose }: { onChoose: (r: Region) => void }) {
       <style jsx>{`
         .landing-root {
           background: var(--background);
-          animation: landing-fade-in 600ms ease forwards;
+          opacity: 1;
         }
         .landing-root.landing-leaving {
-          animation: landing-fade-out 550ms ease forwards;
-        }
-        @keyframes landing-fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          animation: landing-fade-out 450ms ease forwards;
         }
         @keyframes landing-fade-out {
           from { opacity: 1; }
