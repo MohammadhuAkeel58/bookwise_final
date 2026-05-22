@@ -36,23 +36,52 @@ const regions: {
   },
 ];
 
-export default function RegionGate() {
-  const { region, setRegion } = useRegion();
-  const [modalOpen, setModalOpen] = useState(false);
+type TransitionState = {
+  region: Region;
+  cx: number;
+  cy: number;
+  phase: "grow" | "reveal";
+};
 
-  // Lock body scroll while the landing picker is open (no region yet)
+export default function RegionGate() {
+  const { region, setRegion, hydrated } = useRegion();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [transition, setTransition] = useState<TransitionState | null>(null);
+
+  // Lock body scroll while the landing picker / transition is active
   useEffect(() => {
-    if (region) return;
+    if (region && !transition) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
-  }, [region]);
+  }, [region, transition]);
 
-  const choose = (code: Region) => {
-    setRegion(code as ProviderRegion);
-    setModalOpen(false);
+  const choose = (code: Region, e?: React.MouseEvent) => {
+    // If invoked from the modal (no event) — just switch instantly
+    if (!e) {
+      setRegion(code as ProviderRegion);
+      setModalOpen(false);
+      return;
+    }
+
+    // Otherwise — cinematic transition from landing picker
+    const cx = e.clientX;
+    const cy = e.clientY;
+    setTransition({ region: code, cx, cy, phase: "grow" });
+
+    // Phase 1: Circle grows to cover screen (550ms)
+    setTimeout(() => {
+      setRegion(code as ProviderRegion);
+      setModalOpen(false);
+      setTransition((t) => (t ? { ...t, phase: "reveal" } : null));
+
+      // Phase 2: Curtain rises to reveal main page (700ms)
+      setTimeout(() => {
+        setTransition(null);
+      }, 750);
+    }, 550);
   };
 
   const current = regions.find((r) => r.code === region);
@@ -60,7 +89,17 @@ export default function RegionGate() {
   return (
     <>
       {/* ---------- Landing picker (first visit) ---------- */}
-      {!region && <LandingPicker onChoose={choose} />}
+      {hydrated && !region && <LandingPicker onChoose={choose} />}
+
+      {/* ---------- Cinematic page transition ---------- */}
+      {transition && (
+        <TransitionVeil
+          region={transition.region}
+          cx={transition.cx}
+          cy={transition.cy}
+          phase={transition.phase}
+        />
+      )}
 
       {/* ---------- Top banner (after choice) ---------- */}
       {region && current && (
@@ -106,14 +145,17 @@ export default function RegionGate() {
 /* =================================================================
  * Landing picker — fabulous split-screen visual gate
  * ================================================================= */
-function LandingPicker({ onChoose }: { onChoose: (r: Region) => void }) {
+function LandingPicker({
+  onChoose,
+}: {
+  onChoose: (r: Region, e?: React.MouseEvent) => void;
+}) {
   const [hover, setHover] = useState<Region | null>(null);
   const [leaving, setLeaving] = useState<Region | null>(null);
 
-  const handleChoose = (code: Region) => {
+  const handleChoose = (code: Region, e: React.MouseEvent) => {
     setLeaving(code);
-    // brief delay for exit animation
-    setTimeout(() => onChoose(code), 550);
+    onChoose(code, e);
   };
 
   return (
@@ -154,7 +196,7 @@ function LandingPicker({ onChoose }: { onChoose: (r: Region) => void }) {
               type="button"
               onMouseEnter={() => setHover(r.code)}
               onMouseLeave={() => setHover(null)}
-              onClick={() => handleChoose(r.code)}
+              onClick={(e) => handleChoose(r.code, e)}
               className={`landing-half group relative flex-1 overflow-hidden text-left transition-[flex-grow,flex-basis] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none ${
                 r.code === "uk" ? "landing-half--uk" : "landing-half--au"
               } ${isHover ? "md:flex-[1.35]" : ""} ${
@@ -478,6 +520,164 @@ function RegionModal({
           })}
         </div>
       </div>
+    </div>
+  );
+}
+
+/* =================================================================
+ * TransitionVeil — cinematic iris+curtain reveal
+ *
+ *  Phase "grow":
+ *   A coloured disk (region-appropriate) expands from the click
+ *   point until it fully covers the viewport. Picker is still
+ *   visible behind for the first few hundred ms, then the region
+ *   is committed and the picker unmounts.
+ *
+ *  Phase "reveal":
+ *   The veil splits horizontally and slides UP off the screen,
+ *   uncovering the main page like a stage curtain rising.
+ * ================================================================= */
+function TransitionVeil({
+  region,
+  cx,
+  cy,
+  phase,
+}: {
+  region: Region;
+  cx: number;
+  cy: number;
+  phase: "grow" | "reveal";
+}) {
+  // Region-tinted palette
+  const palette =
+    region === "uk"
+      ? { bg: "#f4efe7", accent: "#08241e", text: "#08241e", flag: "🇬🇧" }
+      : { bg: "#08241e", accent: "#dcfae8", text: "#dcfae8", flag: "🇦🇺" };
+
+  // viewport diagonal as max radius — guarantees full coverage
+  const maxRadius =
+    typeof window !== "undefined"
+      ? Math.hypot(window.innerWidth, window.innerHeight) * 1.05
+      : 2000;
+
+  return (
+    <div
+      aria-hidden="true"
+      className={`veil veil--${phase} pointer-events-none fixed inset-0 z-[1000]`}
+      style={
+        {
+          "--cx": `${cx}px`,
+          "--cy": `${cy}px`,
+          "--r": `${maxRadius}px`,
+          background: palette.bg,
+        } as React.CSSProperties
+      }
+    >
+      {/* Region badge — centred */}
+      <div
+        className={`veil-badge veil-badge--${phase}`}
+        style={{ color: palette.text }}
+      >
+        <span className="veil-flag">{palette.flag}</span>
+        <span className="veil-label">
+          {region === "uk" ? "United Kingdom" : "Australia"}
+        </span>
+      </div>
+
+      <style jsx>{`
+        /* ============ BASE VEIL ============
+         *  Single full-cover element that morphs through both phases
+         *  - Grow: clip-path circle expanding from click point
+         *  - Reveal: container slides upward like a stage curtain
+         * ============================================================ */
+        .veil {
+          will-change: clip-path, transform;
+        }
+
+        /* Phase: GROW — iris opens from click */
+        .veil--grow {
+          clip-path: circle(0px at var(--cx) var(--cy));
+          animation: veil-iris 550ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+        @keyframes veil-iris {
+          0% {
+            clip-path: circle(0px at var(--cx) var(--cy));
+          }
+          100% {
+            clip-path: circle(var(--r) at var(--cx) var(--cy));
+          }
+        }
+
+        /* Phase: REVEAL — curtain rises
+         *  clip-path is fixed at full-coverage so there is NO snap
+         *  when transitioning from grow → reveal. Only transform moves.
+         */
+        .veil--reveal {
+          clip-path: circle(var(--r) at var(--cx) var(--cy));
+          animation: veil-rise 750ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
+        }
+        @keyframes veil-rise {
+          0% {
+            transform: translateY(0);
+          }
+          100% {
+            transform: translateY(-105%);
+          }
+        }
+
+        /* ============ Region badge ============ */
+        .veil-badge {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.6rem;
+          font-family: var(--font-placard);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.02em;
+          opacity: 0;
+        }
+        .veil-badge--grow {
+          animation: badge-in 550ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .veil-badge--reveal {
+          animation: badge-out 280ms ease forwards;
+          opacity: 1;
+        }
+        @keyframes badge-in {
+          0%, 35% {
+            opacity: 0;
+            transform: scale(0.85);
+            filter: blur(8px);
+          }
+          70%, 100% {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+          }
+        }
+        @keyframes badge-out {
+          0% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(1.05);
+          }
+        }
+        .veil-flag {
+          font-size: clamp(3rem, 8vw, 5.5rem);
+          line-height: 1;
+        }
+        .veil-label {
+          font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+          letter-spacing: 0.12em;
+        }
+      `}</style>
     </div>
   );
 }
