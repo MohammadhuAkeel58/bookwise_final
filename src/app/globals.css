@@ -39,6 +39,62 @@ a {
 }
 
 @layer components {
+  /* =================================================
+   *  Mobile section header pattern
+   *   eyebrow → big heading → smaller subtitle
+   * ================================================= */
+  .section-header-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .section-heading-mobile {
+    margin-top: 1.4rem;
+    font-family: var(--font-placard);
+    font-size: clamp(2.4rem, 11vw, 4.2rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+    max-width: 18ch;
+  }
+
+  .section-subtitle-mobile {
+    margin-top: 1.4rem;
+    font-family: var(--font-placard);
+    font-size: clamp(0.95rem, 3.6vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.85;
+    max-width: 26ch;
+  }
+
+  /* Dark variant (for ink-background sections) */
+  .section-header-mobile--dark .section-heading-mobile {
+    color: white;
+  }
+  .section-header-mobile--dark .section-subtitle-mobile {
+    color: var(--mint);
+    opacity: 1;
+  }
+
+  /* Sticky variant — pin to top under the navbar while the
+     stacking cards scroll past below it. */
+  .section-header-mobile--sticky {
+    position: sticky;
+    top: 4.5rem;
+    z-index: 5;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    background: var(--background);
+  }
+
   .logo {
     transition: transform 200ms ease;
   }

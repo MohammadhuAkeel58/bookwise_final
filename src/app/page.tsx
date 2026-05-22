@@ -1,6 +1,7 @@
 import Navbar from "./Navbar";
 import RegionGate from "./RegionGate";
 import RegionalHero from "./RegionalHero";
+import ServicesStack from "./ServicesStack";
 
 const audiences = [
   {
@@ -163,7 +164,20 @@ export default function Home() {
 
         <section id="services" className="section-pad bg-background">
           <div className="mx-auto max-w-[1500px]">
-            <div className="grid gap-8 lg:grid-cols-[1fr_0.45fr] lg:items-end">
+            {/* ---------- Section header ---------- */}
+            {/* Mobile: sticky eyebrow → big heading → subtitle */}
+            <div className="section-header-mobile section-header-mobile--sticky lg:hidden">
+              <p className="eyebrow bg-mint text-ink">Our services</p>
+              <h2 className="section-heading-mobile">
+                Built for resilience
+              </h2>
+              <p className="section-subtitle-mobile">
+                Three pillars, one focus
+              </p>
+            </div>
+
+            {/* Tablet + desktop: original side-by-side header */}
+            <div className="hidden gap-8 lg:grid lg:grid-cols-[1fr_0.45fr] lg:items-end">
               <div>
                 <p className="eyebrow bg-mint text-ink">Our services</p>
                 <h2 className="mt-5 max-w-5xl font-headline text-section font-bold uppercase leading-[0.86] text-ink">
@@ -175,7 +189,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {/* Tablet + desktop — original grid */}
+            <div className="mt-12 hidden gap-4 md:grid md:grid-cols-3">
               {services.map((service, index) => (
                 <article className="service-card" key={service.title}>
                   <div className="flex items-start justify-between">
@@ -205,18 +220,37 @@ export default function Home() {
                 </article>
               ))}
             </div>
+
+            {/* Mobile — scroll-stacking cards */}
+            <div className="mt-10 md:hidden">
+              <ServicesStack services={services} />
+            </div>
           </div>
         </section>
 
         <section className="section-pad bg-ink text-white">
           <div className="mx-auto max-w-[1500px] text-center">
-            <p className="eyebrow mx-auto bg-mint text-ink">Why choose us</p>
-            <h2 className="mx-auto mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.9] text-white">
-              Numbers are not for you
-            </h2>
-            <p className="mt-4 font-headline text-3xl font-bold uppercase text-mint">
-              Bespoke accounting for modern entrepreneurs
-            </p>
+            {/* Mobile header */}
+            <div className="section-header-mobile section-header-mobile--dark lg:hidden">
+              <p className="eyebrow bg-mint text-ink">Why choose us</p>
+              <h2 className="section-heading-mobile">
+                Numbers are not for you
+              </h2>
+              <p className="section-subtitle-mobile">
+                Bespoke for modern teams
+              </p>
+            </div>
+
+            {/* Desktop header */}
+            <div className="hidden lg:block">
+              <p className="eyebrow mx-auto bg-mint text-ink">Why choose us</p>
+              <h2 className="mx-auto mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.9] text-white">
+                Numbers are not for you
+              </h2>
+              <p className="mt-4 font-headline text-3xl font-bold uppercase text-mint">
+                Bespoke accounting for modern entrepreneurs
+              </p>
+            </div>
 
             <div className="mt-12 grid gap-0 md:grid-cols-2 xl:grid-cols-4">
               {reasons.map((reason) => (
@@ -235,7 +269,25 @@ export default function Home() {
 
         <section id="process" className="section-pad bg-background">
           <div className="mx-auto max-w-[1500px]">
-            <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            {/* Mobile header */}
+            <div className="section-header-mobile mb-10 lg:hidden">
+              <p className="eyebrow bg-mint text-ink">Process</p>
+              <h2 className="section-heading-mobile">
+                Do not run from the tax man
+              </h2>
+              <p className="section-subtitle-mobile">
+                Four steps to calm books
+              </p>
+              <a
+                className="btn btn-solid mt-7 px-6"
+                href="#contact"
+              >
+                Talk to us <span aria-hidden="true">›</span>
+              </a>
+            </div>
+
+            {/* Desktop header */}
+            <div className="mb-10 hidden gap-5 lg:flex lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <p className="eyebrow bg-mint text-ink">Process</p>
                 <h2 className="mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.88] text-ink">
@@ -269,18 +321,35 @@ export default function Home() {
         </section>
 
         <section id="contact" className="bg-mint px-5 py-16 md:px-8 md:py-24">
-          <div className="mx-auto flex max-w-[1500px] flex-col gap-8 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="font-headline text-2xl font-bold uppercase text-ink/70">
-                Accounting for the modern entrepreneur
-              </p>
-              <h2 className="mt-4 max-w-4xl font-headline text-section font-bold uppercase leading-[0.85] text-ink">
-                Build your empire. We will watch the numbers.
+          <div className="mx-auto max-w-[1500px]">
+            {/* Mobile */}
+            <div className="section-header-mobile lg:hidden">
+              <p className="eyebrow bg-ink text-mint">Let's talk</p>
+              <h2 className="section-heading-mobile">
+                Build your empire
               </h2>
+              <p className="section-subtitle-mobile">
+                We'll watch the numbers
+              </p>
+              <a className="btn btn-solid mt-7 px-7 py-4 text-base" href="#">
+                Talk to us <span aria-hidden="true">›</span>
+              </a>
             </div>
-            <a className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg" href="#">
-              Talk to us <span aria-hidden="true">›</span>
-            </a>
+
+            {/* Desktop */}
+            <div className="hidden gap-8 lg:flex lg:items-center lg:justify-between">
+              <div>
+                <p className="font-headline text-2xl font-bold uppercase text-ink/70">
+                  Accounting for the modern entrepreneur
+                </p>
+                <h2 className="mt-4 max-w-4xl font-headline text-section font-bold uppercase leading-[0.85] text-ink">
+                  Build your empire. We will watch the numbers.
+                </h2>
+              </div>
+              <a className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg" href="#">
+                Talk to us <span aria-hidden="true">›</span>
+              </a>
+            </div>
           </div>
         </section>
       </main>
