@@ -317,6 +317,208 @@ a {
     font-weight: 800;
   }
 
+  /* =================================================
+   *  Region-aware service cards — landmark cards.
+   *  AU → dark theme · UK → light theme. A curved theme-colour
+   *  top (badge, country, title) over a bottom scene that
+   *  reveals the country's landmark + a Learn-more link.
+   *  Themed entirely through custom properties.
+   * ================================================= */
+  .svc2-card {
+    --top-solid: #0a2c22;
+    --bottom-solid: #f4efe7;
+    --top-fg: #ffffff;
+    --top-accent: var(--mint);
+    --bottom-fg: var(--ink);
+    --bottom-accent: var(--ink);
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 34rem;
+    border-radius: 1.5rem;
+    background: var(--bottom-solid);
+    border: 1px solid rgb(8 36 30 / 12%);
+    box-shadow: 0 28px 56px -34px rgb(8 36 30 / 45%);
+    opacity: 0;
+    translate: 0 26px;
+    transition:
+      opacity 0.7s ease,
+      translate 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 320ms ease,
+      transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .svc2-card[data-inview="true"] {
+    opacity: 1;
+    translate: 0 0;
+    transition-delay: calc(var(--i) * 120ms), calc(var(--i) * 120ms), 0s, 0s;
+  }
+  @media (hover: hover) {
+    .svc2-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 42px 72px -34px rgb(8 36 30 / 55%);
+    }
+  }
+
+  /* ---- Themes ---- */
+  .svc2-card[data-theme="dark"] {
+    --top-solid: #0a2c22;
+    --bottom-solid: #f4efe7;
+    --top-fg: #ffffff;
+    --top-accent: var(--mint);
+    --bottom-fg: var(--ink);
+    --bottom-accent: var(--ink);
+    border-color: rgb(220 250 232 / 14%);
+  }
+  .svc2-card[data-theme="light"] {
+    --top-solid: #ffffff;
+    --bottom-solid: #0c3328;
+    --top-fg: var(--ink);
+    --top-accent: var(--ink);
+    --bottom-fg: #ffffff;
+    --bottom-accent: var(--mint);
+    border-color: rgb(8 36 30 / 12%);
+  }
+
+  /* ---- Curved theme-colour top ---- */
+  .svc2-curve {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    color: var(--top-solid);
+    pointer-events: none;
+    filter: drop-shadow(0 8px 18px rgb(8 36 30 / 14%));
+  }
+
+  /* ---- Bottom scene: photo ---- */
+  .svc2-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+  }
+  .svc2-card[data-theme="dark"] .svc2-photo {
+    filter: grayscale(0.2) brightness(1.02);
+  }
+  .svc2-card[data-theme="light"] .svc2-photo {
+    filter: grayscale(0.35) brightness(0.95) contrast(1.02);
+  }
+  .svc2-photo-fade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, var(--bottom-solid) 4%, rgb(0 0 0 / 0%) 46%),
+      linear-gradient(0deg, var(--bottom-solid) 2%, rgb(0 0 0 / 0%) 28%);
+  }
+
+  /* ---- Bottom scene: landmark line-art ---- */
+  .svc2-monument {
+    position: absolute;
+    right: 5%;
+    bottom: 6%;
+    z-index: 1;
+    width: 56%;
+    height: auto;
+    color: var(--bottom-fg);
+    opacity: 0.24;
+    pointer-events: none;
+  }
+
+  /* ---- Header + title ---- */
+  .svc2-top {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.9rem;
+  }
+  .svc2-badge {
+    display: inline-flex;
+    height: 3.7rem;
+    width: 3.7rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1.5px solid var(--top-accent);
+    color: var(--top-accent);
+  }
+  .svc2-badge svg {
+    width: 2rem;
+    height: 2rem;
+  }
+  .svc2-country-name {
+    margin-top: 1.4rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--top-fg);
+  }
+  .svc2-underline {
+    margin-top: 0.7rem;
+    height: 2px;
+    width: 2.4rem;
+    border-radius: 2px;
+    background: var(--top-accent);
+  }
+  .svc2-title {
+    margin-top: 1.3rem;
+    font-family: var(--font-placard);
+    font-size: clamp(2.3rem, 5.4vw, 3rem);
+    font-weight: 700;
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--top-fg);
+  }
+
+  /* ---- Learn more ---- */
+  .svc2-learn {
+    position: absolute;
+    left: 1.9rem;
+    bottom: 1.7rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.1rem;
+    color: var(--bottom-fg);
+  }
+  .svc2-learn-label {
+    font-family: var(--font-placard);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .svc2-learn-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bottom-accent);
+    transition: transform 200ms ease;
+  }
+  .svc2-learn-arrow svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .svc2-learn:hover .svc2-learn-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc2-card {
+      transform: none !important;
+      translate: 0 0;
+      transition: opacity 0.4s ease;
+    }
+  }
+
   .reason-card {
     min-height: 9.5rem;
     border: 1px solid rgb(220 250 232 / 80%);

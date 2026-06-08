@@ -73,9 +73,9 @@ export default function TaxationPage() {
           <div className="rise">
             <p className="eyebrow bg-mint text-ink">Service 02 · Taxation</p>
             <h1 className="mt-6 font-headline font-bold uppercase leading-[0.84] text-mega text-mint">
-              The tax man
+              Deadlines
               <br />
-              waits for
+              wait for
               <br />
               <span className="text-white">nobody.</span>
             </h1>

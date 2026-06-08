@@ -1,7 +1,7 @@
 import Navbar from "./Navbar";
 import RegionGate from "./RegionGate";
 import RegionalHero from "./RegionalHero";
-import ServicesStack from "./ServicesStack";
+import ServiceCards from "./ServiceCards";
 
 const audiences = [
   {
@@ -105,20 +105,20 @@ const services = [
 
 const reasons = [
   {
-    title: "We speak business",
-    description: "Plain-English advice that connects the numbers to the choices in front of you.",
+    title: "Books that stay clean",
+    description: "Bookkeeping, reconciliations, and payables handled monthly so your numbers are always decision-ready.",
   },
   {
-    title: "You do not panic",
-    description: "You always know what is due, what is changing, and what needs attention.",
+    title: "Tax planned ahead",
+    description: "Self Assessment, Corporation Tax, and VAT mapped out before deadlines — no scrambles, no surprise bills.",
   },
   {
-    title: "We plan ahead",
-    description: "Tax, profit, and cash flow are reviewed before surprises become expensive.",
+    title: "Live in the cloud",
+    description: "Online accounting gives you real-time visibility into cash, profit, and obligations from any device.",
   },
   {
     title: "People first",
-    description: "Support that feels direct, human, and useful when decisions get messy.",
+    description: "Plain-English support from a team that picks up the phone when decisions get messy.",
   },
 ];
 
@@ -128,28 +128,28 @@ const process = [
     label: "Talk to us",
     title: "Where are you at and what is keeping you up?",
     description:
-      "We figure out what needs fixing, what can wait, and what should change first.",
+      "We figure out what needs fixing, what can wait, and which of the three pillars — books, tax, or cloud — to start with.",
   },
   {
     step: "Step 2",
-    label: "Build defences",
-    title: "Systems, habits, and records that protect your time",
+    label: "Clean the books",
+    title: "Bookkeeping and reconciliations done right",
     description:
-      "We tighten bookkeeping, tax habits, expenses, and reporting so your position is clear.",
+      "We tidy your ledger, payables, and receivables so every figure ties back to a source and decisions stay sharp.",
   },
   {
     step: "Step 3",
-    label: "Review often",
-    title: "Quarterly reporting that gives you control",
+    label: "Go live online",
+    title: "Cloud accounting you can actually read",
     description:
-      "We flag issues, increase savings, and summarise your financial position before decisions stack up.",
+      "We move you onto online accounting so cash, profit, and VAT positions are visible from any device, in real time.",
   },
   {
     step: "Step 4",
     label: "Taxes sorted",
-    title: "No unnecessary taxes, no surprises, no scramble",
+    title: "Self Assessment, Corporation Tax, and VAT, calmly filed",
     description:
-      "Returns are filed accurately, tax is minimised legally, and deadlines stay calm.",
+      "Returns are prepared accurately, tax is minimised legally, and every deadline is mapped well ahead of time.",
   },
 ];
 
@@ -166,7 +166,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1500px]">
             {/* ---------- Section header ---------- */}
             {/* Mobile: sticky eyebrow → big heading → subtitle */}
-            <div className="section-header-mobile section-header-mobile--sticky lg:hidden">
+            <div className="section-header-mobile lg:hidden">
               <p className="eyebrow bg-mint text-ink">Our services</p>
               <h2 className="section-heading-mobile">
                 Built for resilience
@@ -189,66 +189,36 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Tablet + desktop — original grid */}
-            <div className="mt-12 hidden gap-4 md:grid md:grid-cols-3">
-              {services.map((service, index) => (
-                <article className="service-card" key={service.title}>
-                  <div className="flex items-start justify-between">
-                    <span className="service-number">0{index + 1}</span>
-                    <span className="service-icon flex h-12 w-12 items-center justify-center rounded-full border border-mint/40 text-mint transition-all duration-300">
-                      <span className="block h-6 w-6">{service.icon}</span>
-                    </span>
-                  </div>
-                  <h3 className="mt-10 font-headline text-4xl font-bold uppercase leading-[0.9] text-mint">
-                    {service.title}
-                  </h3>
-                  <p className="mt-6 text-base leading-relaxed text-white/86">
-                    {service.description}
-                  </p>
-                  <a
-                    href={service.href}
-                    className="service-card-link group/btn inline-flex w-fit items-center gap-2 border-b border-mint/40 pt-8 pb-1 font-headline text-sm font-bold uppercase tracking-wider text-mint transition-all duration-200 hover:border-mint"
-                  >
-                    Learn more
-                    <span
-                      aria-hidden="true"
-                      className="transition-transform duration-200 group-hover/btn:translate-x-1"
-                    >
-                      ›
-                    </span>
-                  </a>
-                </article>
-              ))}
-            </div>
-
-            {/* Mobile — scroll-stacking cards */}
-            <div className="mt-10 md:hidden">
-              <ServicesStack services={services} />
+            {/* Region-aware cards — UK "Ledger House" / AU "Open Sky" */}
+            <div className="mt-12">
+              <ServiceCards services={services} />
             </div>
           </div>
         </section>
 
         <section className="section-pad bg-ink text-white">
-          <div className="mx-auto max-w-[1500px] text-center">
-            {/* Mobile header */}
+          <div className="mx-auto max-w-[1500px]">
+            {/* Mobile header — centered stack matching other sections */}
             <div className="section-header-mobile section-header-mobile--dark lg:hidden">
               <p className="eyebrow bg-mint text-ink">Why choose us</p>
               <h2 className="section-heading-mobile">
-                Numbers are not for you
+                We handle
+                <br />
+                the numbers
               </h2>
               <p className="section-subtitle-mobile">
-                Bespoke for modern teams
+                Books, tax, and cloud — covered
               </p>
             </div>
 
             {/* Desktop header */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block lg:text-center">
               <p className="eyebrow mx-auto bg-mint text-ink">Why choose us</p>
               <h2 className="mx-auto mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.9] text-white">
-                Numbers are not for you
+                We handle the numbers
               </h2>
               <p className="mt-4 font-headline text-3xl font-bold uppercase text-mint">
-                Bespoke accounting for modern entrepreneurs
+                Bookkeeping, taxation, and online accounting — under one roof
               </p>
             </div>
 
@@ -273,10 +243,10 @@ export default function Home() {
             <div className="section-header-mobile mb-10 lg:hidden">
               <p className="eyebrow bg-mint text-ink">Process</p>
               <h2 className="section-heading-mobile">
-                Do not run from the tax man
+                How Bookwise gets to work
               </h2>
               <p className="section-subtitle-mobile">
-                Four steps to calm books
+                From first call to filed return
               </p>
               <a
                 className="btn btn-solid mt-7 px-6"
@@ -291,7 +261,7 @@ export default function Home() {
               <div>
                 <p className="eyebrow bg-mint text-ink">Process</p>
                 <h2 className="mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.88] text-ink">
-                  Do not run from the tax man
+                  How Bookwise gets to work
                 </h2>
               </div>
               <a className="btn btn-solid self-start md:self-end" href="#contact">
@@ -367,12 +337,12 @@ export default function Home() {
             </p>
           </div>
           <nav className="grid gap-3 text-white/80 sm:grid-cols-2">
-            <a href="#services">Quarterly Reports</a>
-            <a href="#services">Annual Accounts</a>
-            <a href="#services">VAT</a>
-            <a href="#services">Self Assessment</a>
-            <a href="#who">Who we help</a>
+            <a href="/services/business">Business Services</a>
+            <a href="/services/taxation">Taxation Services</a>
+            <a href="/services/online-accounting">Online Accounting</a>
+            <a href="#services">Our services</a>
             <a href="#process">Process</a>
+            <a href="#contact">Contact</a>
           </nav>
           <div className="text-sm text-white/60 md:text-right">
             <p>© 2026 Bookwise. All rights reserved.</p>

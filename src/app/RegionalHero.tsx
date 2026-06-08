@@ -20,7 +20,7 @@ export default function RegionalHero() {
 
   const baseHeadline = ["Better books.", "Less tax panic."];
   const baseIntro =
-    "Bookwise handles your accounts, tax, and compliance so you can focus on building. Proactive advice, no surprises, and a team that actually speaks your language.";
+    "Bookwise handles your bookkeeping, taxation, and online accounting so you can focus on building. Proactive advice, no surprises, and a team that actually speaks your language.";
 
   const theme =
     region === "uk"
