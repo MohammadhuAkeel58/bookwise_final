@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { RegionProvider } from "./RegionProvider";
 import Preloader from "./Preloader";
+import SiteAnimations from "./SiteAnimations";
 
 const placard = localFont({
   src: [
@@ -38,6 +39,7 @@ export default function RootLayout({
     >
       <body className="min-h-full">
         <Preloader />
+        <SiteAnimations />
         <RegionProvider>{children}</RegionProvider>
       </body>
     </html>

@@ -21,6 +21,7 @@ export default function Preloader() {
     const total = ENTER_MS + SHIMMER_MS + HOLD_MS;
     const t1 = window.setTimeout(() => setRevealing(true), total);
     const t2 = window.setTimeout(() => {
+      window.dispatchEvent(new CustomEvent("bookwise:preloader-done"));
       setMounted(false);
       document.body.style.overflow = "";
     }, total + REVEAL_MS);
@@ -55,21 +56,13 @@ export default function Preloader() {
 
   return (
     <div className={`pre ${revealing ? "pre--out" : ""}`} aria-hidden="true">
-      {/* Two stacked curtain panels — split apart on reveal */}
       <span className="pre-curtain pre-curtain--top" />
       <span className="pre-curtain pre-curtain--bot" />
 
-      {/* Soft radial vignette for depth */}
       <span className="pre-vignette" />
-
-      {/* Subtle film grain */}
       <span className="pre-grain" />
-
-      {/* Hairline that draws across the centre, then retracts */}
       <span className="pre-hair" />
 
-      {/* Wordmark — rendered twice, clipped to top/bottom halves
-          so the whole word can tear apart on exit */}
       <div className="pre-stage">
         <h1 className="pre-word pre-word--top" aria-label="Bookwise">
           {word}
@@ -88,19 +81,17 @@ export default function Preloader() {
           background: #061a16;
         }
 
-        /* ============ Curtains ============ */
         .pre-curtain {
           position: absolute;
           left: 0;
           right: 0;
           height: 50.3%;
-          background:
-            radial-gradient(
-              140% 90% at 50% 50%,
-              #0d2e26 0%,
-              #08241e 55%,
-              #051712 100%
-            );
+          background: radial-gradient(
+            140% 90% at 50% 50%,
+            #0d2e26 0%,
+            #08241e 55%,
+            #051712 100%
+          );
           will-change: transform;
           transition: transform ${REVEAL_MS}ms cubic-bezier(0.83, 0, 0.17, 1);
         }
@@ -117,7 +108,6 @@ export default function Preloader() {
           transform: translateY(100%);
         }
 
-        /* ============ Vignette ============ */
         .pre-vignette {
           position: absolute;
           inset: 0;
@@ -129,7 +119,6 @@ export default function Preloader() {
           pointer-events: none;
         }
 
-        /* ============ Grain ============ */
         .pre-grain {
           position: absolute;
           inset: 0;
@@ -140,7 +129,6 @@ export default function Preloader() {
           pointer-events: none;
         }
 
-        /* ============ Hairline ============ */
         .pre-hair {
           position: absolute;
           left: 50%;
@@ -171,7 +159,6 @@ export default function Preloader() {
           }
         }
 
-        /* ============ Wordmark stage ============ */
         .pre-stage {
           position: absolute;
           inset: 0;
@@ -200,7 +187,6 @@ export default function Preloader() {
             transform ${REVEAL_MS}ms cubic-bezier(0.83, 0, 0.17, 1),
             opacity ${REVEAL_MS}ms ease;
 
-          /* Metallic sheen sweep — runs once after letters arrive */
           background: linear-gradient(
             100deg,
             #ffffff 0%,
@@ -224,8 +210,6 @@ export default function Preloader() {
             background-position: -50% 0;
           }
         }
-
-        /* Top & bottom copies — clipped to halves, perfectly aligned */
         .pre-word--top {
           transform: translate(-50%, -50%);
           clip-path: inset(0 0 50% 0);
@@ -241,7 +225,6 @@ export default function Preloader() {
           transform: translate(-50%, calc(-50% + 60vh)) scale(1.08);
         }
 
-        /* ============ Letter mask-rise ============ */
         .pre-row {
           display: flex;
           line-height: 0.84;
