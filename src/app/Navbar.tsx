@@ -1,7 +1,12 @@
 "use client";
 
+/* eslint-disable @next/next/no-html-link-for-pages */
+// Plain <a> is required for the elements styled inside <style jsx> below.
+// next/link does not forward styled-jsx's auto-generated jsx-XXX class to
+// the rendered <a>, so any styled-jsx CSS rule (.navbar-cta { ... } etc.)
+// targeting those classes would silently miss in production.
+
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { useRegion } from "./RegionProvider";
 
@@ -129,8 +134,11 @@ export default function Navbar() {
             scrolled ? "py-2.5 md:py-3" : "py-4 md:py-5"
           }`}
         >
-          {/* MOBILE — original stacked logo + round hamburger (untouched) */}
-          <Link
+          {/* MOBILE — original stacked logo + round hamburger (untouched).
+              Plain <a> required: <Link> from next/link doesn't receive
+              styled-jsx's auto-generated jsx-XXX class, so any styled-jsx
+              CSS rule targeting these classes would silently miss. */}
+          <a
             className="logo relative z-[60] inline-flex items-center text-ink md:hidden"
             href="/"
             onClick={close}
@@ -141,7 +149,7 @@ export default function Navbar() {
               <br />
               wise
             </span>
-          </Link>
+          </a>
 
           <button
             type="button"
@@ -154,7 +162,7 @@ export default function Navbar() {
           </button>
 
           {/* DESKTOP only — big wordmark + pill CTA + MENU text */}
-          <Link
+          <a
             className="navbar-logo hidden md:inline-flex"
             href="/"
             onClick={close}
@@ -163,15 +171,15 @@ export default function Navbar() {
             <span className="logo-text">
               Bookwise<sup className="navbar-logo-r" aria-hidden="true">®</sup>
             </span>
-          </Link>
+          </a>
 
           <div className="navbar-right hidden md:inline-flex">
-            <Link className="navbar-cta" href="/#contact" onClick={close}>
+            <a className="navbar-cta" href="/#contact" onClick={close}>
               <span>Talk to us</span>
               <span className="navbar-cta-arrow" aria-hidden="true">
                 →
               </span>
-            </Link>
+            </a>
 
             <button
               type="button"
@@ -445,10 +453,10 @@ export default function Navbar() {
 
             {/* Bottom CTA + tagline */}
             <div className="mob-menu-bottom">
-              <Link href="/#contact" onClick={close} className="mob-menu-cta">
+              <a href="/#contact" onClick={close} className="mob-menu-cta">
                 <span>Talk to us</span>
                 <span aria-hidden="true">›</span>
-              </Link>
+              </a>
               <a
                 href="mailto:hello@bookwise.com"
                 className="mob-menu-mail"
