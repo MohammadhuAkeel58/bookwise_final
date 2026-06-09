@@ -16,20 +16,17 @@ export default function Preloader() {
 
   useEffect(() => {
     setMounted(true);
-    document.body.style.overflow = "hidden";
 
     const total = ENTER_MS + SHIMMER_MS + HOLD_MS;
     const t1 = window.setTimeout(() => setRevealing(true), total);
     const t2 = window.setTimeout(() => {
       window.dispatchEvent(new CustomEvent("bookwise:preloader-done"));
       setMounted(false);
-      document.body.style.overflow = "";
     }, total + REVEAL_MS);
 
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
-      document.body.style.overflow = "";
     };
   }, []);
 

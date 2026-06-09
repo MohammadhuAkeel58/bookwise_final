@@ -48,13 +48,14 @@ export default function RegionGate() {
   const [modalOpen, setModalOpen] = useState(false);
   const [transition, setTransition] = useState<TransitionState | null>(null);
 
-  // Lock body scroll while the landing picker / transition is active
+  // Lock body scroll while the landing picker / transition is active.
+  // Restore to "" rather than the captured prev so a sibling layer that
+  // also set overflow:hidden (e.g. Preloader) doesn't leave us locked.
   useEffect(() => {
     if (region && !transition) return;
-    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = "";
     };
   }, [region, transition]);
 
@@ -451,12 +452,11 @@ function RegionModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Lock scroll
+  // Lock scroll. Restore to "" so siblings that locked don't leave us stuck.
   useEffect(() => {
-    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = "";
     };
   }, []);
 
