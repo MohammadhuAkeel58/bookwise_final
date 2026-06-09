@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { useRegion } from "./RegionProvider";
 
@@ -10,13 +11,58 @@ const primaryLinks = [
   { label: "Contact", href: "/#contact", number: "03" },
 ];
 
+/** Split a string into <span class="mob-menu-char"> wrappers so each
+ *  character can mask-rise independently when the menu opens. */
+function splitChars(text: string, animate: boolean) {
+  return text.split("").map((ch, ci) => (
+    <span
+      key={ci}
+      className="mob-menu-char"
+      style={animate ? ({ "--ci": ci } as React.CSSProperties) : undefined}
+    >
+      <span className="mob-menu-char-inner">
+        {ch === " " ? " " : ch}
+      </span>
+    </span>
+  ));
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafId = useRef<number | null>(null);
+  const progressRef = useRef<HTMLSpanElement | null>(null);
   const { region, setRegion } = useRegion();
+
+  // Scroll-aware: drive the bottom progress bar via direct DOM writes
+  // (no per-frame React re-render) and flip the `scrolled` class at 80px.
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const max =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pct = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+        if (progressRef.current) {
+          progressRef.current.style.transform = `scaleX(${pct})`;
+        }
+        setScrolled((prev) => {
+          const next = y > 80;
+          return prev === next ? prev : next;
+        });
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const toggleRegion = () => setRegion(region === "uk" ? "au" : "uk");
 
@@ -27,6 +73,7 @@ export default function Navbar() {
         clearTimeout(closeTimer.current);
         closeTimer.current = null;
       }
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMounted(true);
       rafId.current = requestAnimationFrame(() => {
         rafId.current = requestAnimationFrame(() => setVisible(true));
@@ -70,11 +117,21 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-ink/10 bg-background/90 backdrop-blur">
-        <nav className="mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-4 md:grid md:grid-cols-3 md:px-8">
-          {/* Logo */}
-          <a
-            className="logo relative z-[60] inline-flex items-center text-ink"
+      <header
+        className={`sticky top-0 z-50 border-b backdrop-blur transition-[background,box-shadow,border-color] duration-300 ${
+          scrolled
+            ? "border-ink/15 bg-background/95 shadow-[0_10px_28px_-22px_rgba(8,36,30,0.45)]"
+            : "border-ink/10 bg-background/90"
+        }`}
+      >
+        <nav
+          className={`mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 md:px-8 transition-[padding] duration-300 ${
+            scrolled ? "py-2.5 md:py-3" : "py-4 md:py-5"
+          }`}
+        >
+          {/* MOBILE — original stacked logo + round hamburger (untouched) */}
+          <Link
+            className="logo relative z-[60] inline-flex items-center text-ink md:hidden"
             href="/"
             onClick={close}
             aria-label="Bookwise — home"
@@ -84,32 +141,206 @@ export default function Navbar() {
               <br />
               wise
             </span>
-          </a>
+          </Link>
 
-          {/* Desktop links */}
-          <div className="hidden items-center justify-center gap-10 text-[0.95rem] font-medium md:flex">
-            <a className="nav-link" href="/#services">Services</a>
-            <a className="nav-link" href="/#process">Process</a>
-            <a className="nav-link" href="/#contact">Contact</a>
-          </div>
+          <button
+            type="button"
+            className="hamburger-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-ink text-mint shadow-[0_8px_24px_-12px_rgba(8,36,30,0.6)] transition-transform duration-200 hover:scale-105 active:scale-95 md:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <MenuToggleIcon open={open} className="size-6" duration={450} />
+          </button>
 
-          {/* Right side */}
-          <div className="flex items-center justify-end gap-3">
-            <a className="btn btn-solid hidden md:inline-flex" href="/#contact">
-              Talk to us <span aria-hidden="true">›</span>
-            </a>
+          {/* DESKTOP only — big wordmark + pill CTA + MENU text */}
+          <Link
+            className="navbar-logo hidden md:inline-flex"
+            href="/"
+            onClick={close}
+            aria-label="Bookwise — home"
+          >
+            <span className="logo-text">
+              Bookwise<sup className="navbar-logo-r" aria-hidden="true">®</sup>
+            </span>
+          </Link>
 
-            {/* Hamburger */}
+          <div className="navbar-right hidden md:inline-flex">
+            <Link className="navbar-cta" href="/#contact" onClick={close}>
+              <span>Talk to us</span>
+              <span className="navbar-cta-arrow" aria-hidden="true">
+                →
+              </span>
+            </Link>
+
             <button
-              className="hamburger-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-ink text-mint shadow-[0_8px_24px_-12px_rgba(8,36,30,0.6)] transition-transform duration-200 hover:scale-105 active:scale-95 md:hidden"
+              type="button"
+              className="navbar-menu"
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               onClick={() => setOpen((v) => !v)}
             >
-              <MenuToggleIcon open={open} className="size-6" duration={450} />
+              <span className="navbar-menu-text">
+                {open ? "Close" : "Menu"}
+              </span>
+              <span className="navbar-menu-icon" aria-hidden="true">
+                <MenuToggleIcon open={open} className="size-5" duration={450} />
+              </span>
             </button>
           </div>
         </nav>
+
+        {/* Scroll progress — thin mint bar pinned to bottom of header */}
+        <span
+          ref={progressRef}
+          className="navbar-progress"
+          aria-hidden="true"
+        />
+
+        <style jsx>{`
+          /* ============ Scroll progress bar ============ */
+          .navbar-progress {
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 100%;
+            height: 1.5px;
+            background: var(--mint);
+            transform: scaleX(0);
+            transform-origin: left center;
+            pointer-events: none;
+          }
+
+          /* ============ Logo ============
+             NB: do NOT set display here. Tailwind owns it via the
+             hidden / md:inline-flex utilities on the element.
+             Overriding display here defeats the responsive hide. */
+          .navbar-logo {
+            position: relative;
+            z-index: 60;
+            align-items: center;
+            text-decoration: none;
+            color: var(--ink);
+          }
+          :global(.navbar-logo .logo-text) {
+            font-family: var(--font-placard);
+            font-weight: 700;
+            font-size: clamp(1.7rem, 4vw, 2.6rem);
+            line-height: 1;
+            letter-spacing: -0.005em;
+            text-transform: uppercase;
+            color: var(--ink);
+            display: inline-flex;
+            align-items: flex-start;
+          }
+          .navbar-logo-r {
+            font-size: 0.32em;
+            font-weight: 700;
+            line-height: 1;
+            margin-top: 0.1em;
+            margin-left: 0.06em;
+            color: rgba(8, 36, 30, 0.55);
+          }
+
+          /* ============ Right cluster ============
+             Same note: Tailwind owns display via hidden / md:inline-flex. */
+          .navbar-right {
+            position: relative;
+            z-index: 60;
+            align-items: center;
+            gap: 0.8rem;
+          }
+          @media (min-width: 640px) {
+            .navbar-right {
+              gap: 1.4rem;
+            }
+          }
+
+          /* ============ Pill CTA ============ */
+          .navbar-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.78rem 1.2rem;
+            border-radius: 999px;
+            background: var(--mint);
+            color: var(--ink);
+            font-family: var(--font-placard);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-shadow: 0 12px 30px -18px rgba(8, 36, 30, 0.35);
+            transition:
+              transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              background 220ms ease,
+              box-shadow 220ms ease;
+          }
+          @media (min-width: 768px) {
+            .navbar-cta {
+              padding: 0.9rem 1.5rem;
+              font-size: 1.02rem;
+            }
+          }
+          .navbar-cta:hover {
+            transform: translateY(-1px);
+            background: #6ce5b3;
+            box-shadow: 0 18px 36px -16px rgba(8, 36, 30, 0.4);
+          }
+          .navbar-cta:active {
+            transform: translateY(0);
+          }
+          .navbar-cta-arrow {
+            display: inline-block;
+            transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+          }
+          .navbar-cta:hover .navbar-cta-arrow {
+            transform: translateX(4px);
+          }
+
+          /* ============ MENU trigger ============ */
+          .navbar-menu {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.55rem 0.55rem 0.55rem 0.9rem;
+            background: none;
+            border: 0;
+            cursor: pointer;
+            color: var(--ink);
+            font-family: var(--font-placard);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: color 220ms ease;
+          }
+          @media (min-width: 768px) {
+            .navbar-menu {
+              font-size: 1.25rem;
+            }
+          }
+          .navbar-menu-text {
+            display: inline-block;
+          }
+          .navbar-menu-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 999px;
+            background: var(--ink);
+            color: var(--mint);
+            transition:
+              transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+              background 220ms ease;
+          }
+          .navbar-menu:hover .navbar-menu-icon {
+            transform: rotate(90deg);
+          }
+        `}</style>
       </header>
 
       {/* ============ MOBILE MENU ============ */}
@@ -183,6 +414,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={close}
+                  aria-label={link.label}
                   className="mob-menu-link"
                   style={
                     {
@@ -191,8 +423,19 @@ export default function Navbar() {
                     } as React.CSSProperties
                   }
                 >
-                  <span className="mob-menu-link-num">{link.number}</span>
-                  <span className="mob-menu-link-label">{link.label}</span>
+                  <span className="mob-menu-link-num" aria-hidden="true">
+                    {link.number}
+                  </span>
+                  <span className="mob-menu-link-label" aria-hidden="true">
+                    <span className="mob-menu-link-mask">
+                      <span className="mob-menu-link-base">
+                        {splitChars(link.label, true)}
+                      </span>
+                      <span className="mob-menu-link-hover">
+                        {splitChars(link.label, false)}
+                      </span>
+                    </span>
+                  </span>
                   <span aria-hidden="true" className="mob-menu-link-arrow">
                     →
                   </span>
@@ -202,10 +445,10 @@ export default function Navbar() {
 
             {/* Bottom CTA + tagline */}
             <div className="mob-menu-bottom">
-              <a href="/#contact" onClick={close} className="mob-menu-cta">
+              <Link href="/#contact" onClick={close} className="mob-menu-cta">
                 <span>Talk to us</span>
                 <span aria-hidden="true">›</span>
-              </a>
+              </Link>
               <a
                 href="mailto:hello@bookwise.com"
                 className="mob-menu-mail"
@@ -546,6 +789,189 @@ export default function Navbar() {
               text-transform: uppercase;
               letter-spacing: 0.25em;
               color: rgba(220, 250, 232, 0.45);
+            }
+
+            /* ============ Dual-label mask (Ignite-style label-roll)
+               On mobile the hover copy is hidden so the label looks
+               exactly as before. At md+ the mask becomes active. */
+            .mob-menu-link-mask {
+              display: inline-block;
+              line-height: 0.9;
+            }
+            .mob-menu-link-base {
+              display: inline-block;
+              line-height: 0.9;
+            }
+            .mob-menu-link-hover {
+              display: none;
+            }
+
+            /* ============ Per-character mask-rise on link labels
+               Each char gets its own overflow:hidden wrapper. The inner
+               span starts translated 110% down and slides into place with
+               a per-link + per-char stagger when the menu opens. The
+               hover copy uses the same chars (no stagger) so the
+               label-roll on hover still works one solid unit. */
+            .mob-menu-char {
+              display: inline-block;
+              overflow: hidden;
+              line-height: 0.9;
+              vertical-align: bottom;
+            }
+            .mob-menu-char-inner {
+              display: inline-block;
+              line-height: 0.9;
+              transform: translateY(110%);
+              transition: transform 820ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            /* On menu open — chars rise into place. Compound stagger:
+               base link delay (i * 60ms) + per-char delay (ci * 28ms). */
+            .mob-menu--open
+              .mob-menu-link-base
+              .mob-menu-char-inner {
+              transform: translateY(0);
+              transition-delay: calc(280ms + var(--i) * 60ms + var(--ci) * 28ms);
+            }
+            /* Hover-copy chars sit ready in place — no animation needed. */
+            .mob-menu-link-hover .mob-menu-char-inner {
+              transform: translateY(0);
+              transition: none;
+            }
+            /* On close — base chars exit upward with reverse stagger. */
+            .mob-menu--closing
+              .mob-menu-link-base
+              .mob-menu-char-inner {
+              transform: translateY(-110%);
+              transition: transform 420ms cubic-bezier(0.76, 0, 0.24, 1);
+              transition-delay: calc(var(--ri) * 40ms + var(--ci) * 14ms);
+            }
+
+            /* The previous whole-link translate would compound with the
+               per-char rise — disable it so chars do the work. The link
+               itself just fades to coordinate the entrance. */
+            .mob-menu-link {
+              transform: none;
+            }
+            .mob-menu--open .mob-menu-link {
+              transform: none;
+            }
+            .mob-menu--closing .mob-menu-link {
+              transform: none;
+            }
+
+            /* ============ Desktop polish ============
+               Everything below only kicks in at md+. Mobile is untouched. */
+            @media (min-width: 768px) {
+              .mob-menu-content {
+                padding: 2.4rem 4rem 2.4rem;
+              }
+
+              .mob-menu-top {
+                padding-top: 0;
+              }
+              .mob-menu-logo {
+                font-size: 2.2rem;
+              }
+              .mob-menu-close {
+                width: 3.4rem;
+                height: 3.4rem;
+              }
+              .mob-menu-close svg {
+                width: 1.4rem;
+                height: 1.4rem;
+              }
+
+              /* Center nav block, give it room */
+              .mob-menu-nav {
+                max-width: 1280px;
+                width: 100%;
+                margin: 0 auto;
+                gap: 0.25rem;
+              }
+              .mob-menu-link {
+                position: relative;
+                padding: 1rem 0;
+                gap: 1.6rem;
+                align-items: center;
+              }
+              .mob-menu-link-num {
+                font-size: 0.9rem;
+                letter-spacing: 0.25em;
+                min-width: 2.4rem;
+                opacity: 0.55;
+              }
+              .mob-menu-link-arrow {
+                font-size: 2.4rem;
+                opacity: 0.4;
+                transition:
+                  opacity 250ms ease,
+                  transform 350ms cubic-bezier(0.76, 0, 0.24, 1),
+                  color 200ms ease;
+              }
+
+              /* Bigger display type */
+              .mob-menu-link-label {
+                font-size: clamp(4.5rem, 9.5vw, 9rem);
+                line-height: 0.9;
+                letter-spacing: -0.005em;
+              }
+
+              /* Activate dual-label mask — vertical roll on hover */
+              .mob-menu-link-mask {
+                position: relative;
+                display: inline-flex;
+                flex-direction: column;
+                overflow: hidden;
+                vertical-align: bottom;
+                line-height: 0.9;
+                height: 1em;
+              }
+              .mob-menu-link-base,
+              .mob-menu-link-hover {
+                display: block;
+                line-height: 0.9;
+                transition: transform 540ms cubic-bezier(0.76, 0, 0.24, 1);
+              }
+              .mob-menu-link-hover {
+                color: var(--mint);
+              }
+
+              /* Hover state: rolls the label upward, mint slides in below */
+              .mob-menu-link:hover .mob-menu-link-base,
+              .mob-menu-link:hover .mob-menu-link-hover {
+                transform: translateY(-100%);
+              }
+              .mob-menu-link:hover .mob-menu-link-arrow {
+                opacity: 1;
+                color: var(--mint);
+                transform: translateX(14px);
+              }
+              .mob-menu-link:hover .mob-menu-link-num {
+                opacity: 1;
+                color: var(--mint);
+              }
+
+              /* Bottom CTA wider with email + tag side-by-side */
+              .mob-menu-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1280px;
+                width: 100%;
+                margin: 2rem auto 0;
+                gap: 2rem;
+              }
+              .mob-menu-cta {
+                padding: 1.1rem 2rem;
+                font-size: 1.05rem;
+              }
+              .mob-menu-mail {
+                font-size: 0.95rem;
+              }
+              .mob-menu-tag {
+                margin: 0;
+                text-align: right;
+              }
             }
           `}</style>
         </div>

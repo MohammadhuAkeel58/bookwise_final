@@ -3,33 +3,6 @@ import RegionGate from "./RegionGate";
 import RegionalHero from "./RegionalHero";
 import ServiceCards from "./ServiceCards";
 
-const audiences = [
-  {
-    title: "Founders",
-    description: "Support for entrepreneurs juggling sales, delivery, hiring, and cash flow.",
-  },
-  {
-    title: "Studios",
-    description: "Clean reporting for teams that need sharper numbers before each decision.",
-  },
-  {
-    title: "Consultants",
-    description: "Practical tax planning for independent experts building durable income.",
-  },
-  {
-    title: "Agencies",
-    description: "Month-by-month visibility across projects, payroll, VAT, and profit.",
-  },
-  {
-    title: "Creators",
-    description: "Accounting that keeps pace with modern income streams and expenses.",
-  },
-  {
-    title: "Small Teams",
-    description: "A dependable finance rhythm without the overhead of an in-house department.",
-  },
-];
-
 const services = [
   {
     title: "Business Services",
@@ -294,12 +267,12 @@ export default function Home() {
           <div className="mx-auto max-w-[1500px]">
             {/* Mobile */}
             <div className="section-header-mobile lg:hidden">
-              <p className="eyebrow bg-ink text-mint">Let's talk</p>
+              <p className="eyebrow bg-ink text-mint">Let&apos;s talk</p>
               <h2 className="section-heading-mobile">
                 Build your empire
               </h2>
               <p className="section-subtitle-mobile">
-                We'll watch the numbers
+                We&apos;ll watch the numbers
               </p>
               <a className="btn btn-solid mt-7 px-7 py-4 text-base" href="#">
                 Talk to us <span aria-hidden="true">›</span>

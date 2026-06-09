@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "../../Navbar";
 
 const capabilities = [
@@ -63,9 +64,9 @@ export default function BusinessServicesPage() {
               The day-to-day work of finance — done cleanly, on time, with numbers you can actually trust when the stakes get real.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a className="btn btn-solid px-7 py-4 text-base" href="/#contact">
+              <Link className="btn btn-solid px-7 py-4 text-base" href="/#contact">
                 Talk to us <span aria-hidden="true">›</span>
-              </a>
+              </Link>
               <a
                 className="btn btn-outline px-7 py-4 text-base"
                 href="#capabilities"
@@ -230,12 +231,12 @@ export default function BusinessServicesPage() {
               Hand us the books. Get your evenings back.
             </h2>
           </div>
-          <a
+          <Link
             className="btn btn-solid shrink-0 justify-center px-8 py-5 text-lg"
             href="/#contact"
           >
             Talk to us <span aria-hidden="true">›</span>
-          </a>
+          </Link>
         </div>
       </section>
     </div>

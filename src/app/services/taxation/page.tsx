@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "../../Navbar";
 
 const filings = [
@@ -83,7 +84,7 @@ export default function TaxationPage() {
               Every filing, every deadline, every allowance — engineered so HMRC has nothing to flag and you have nothing to chase.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a
+              <Link
                 className="btn px-7 py-4 text-base"
                 style={{
                   background: "var(--mint)",
@@ -93,7 +94,7 @@ export default function TaxationPage() {
                 href="/#contact"
               >
                 Talk to us <span aria-hidden="true">›</span>
-              </a>
+              </Link>
               <a
                 className="btn px-7 py-4 text-base"
                 style={{
@@ -255,12 +256,12 @@ export default function TaxationPage() {
               Hand us the deadlines. Sleep through them.
             </h2>
           </div>
-          <a
+          <Link
             className="btn btn-solid shrink-0 justify-center px-8 py-5 text-lg"
             href="/#contact"
           >
             Talk to us <span aria-hidden="true">›</span>
-          </a>
+          </Link>
         </div>
       </section>
     </div>

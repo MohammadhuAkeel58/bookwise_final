@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Navbar from "../../Navbar";
 
 const features = [
@@ -74,9 +75,9 @@ export default function OnlineAccountingPage() {
               Live dashboards, automated feeds, and real-time numbers. The future of accounting is open in your browser — and ours.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-3">
-              <a className="btn btn-solid px-7 py-4 text-base" href="/#contact">
+              <Link className="btn btn-solid px-7 py-4 text-base" href="/#contact">
                 Get a demo <span aria-hidden="true">›</span>
-              </a>
+              </Link>
               <a
                 className="btn btn-outline px-7 py-4 text-base"
                 href="#features"
@@ -312,12 +313,12 @@ export default function OnlineAccountingPage() {
           <p className="mt-6 max-w-xl text-base leading-relaxed text-ink/70 md:text-lg">
             Book a 20-minute walkthrough. We&apos;ll plug into your bank feeds and show you your numbers in real time.
           </p>
-          <a
+          <Link
             className="btn btn-solid mt-8 justify-center px-10 py-5 text-lg"
             href="/#contact"
           >
             Book a demo <span aria-hidden="true">›</span>
-          </a>
+          </Link>
         </div>
       </section>
     </div>

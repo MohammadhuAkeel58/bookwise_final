@@ -23,8 +23,36 @@ const placard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Bookwise - Radical Zine Edition",
-  description: "Accounting for the modern entrepreneur.",
+  metadataBase: new URL("https://bookwise.com"),
+  title: {
+    default: "Bookwise — Accounting for modern entrepreneurs",
+    template: "%s · Bookwise",
+  },
+  description:
+    "Bookkeeping, taxation and online accounting for founders, studios and creators across the UK and Australia. Calmly handled, plainly explained.",
+  openGraph: {
+    title: "Bookwise — Accounting for modern entrepreneurs",
+    description:
+      "Bookkeeping, taxation and online accounting for founders, studios and creators across the UK and Australia.",
+    type: "website",
+    siteName: "Bookwise",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bookwise — Accounting for modern entrepreneurs",
+    description:
+      "Bookkeeping, taxation and online accounting for founders, studios and creators across the UK and Australia.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export const viewport = {
+  themeColor: "#08241e",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

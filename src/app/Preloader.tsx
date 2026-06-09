@@ -11,12 +11,14 @@ const LETTERS_TOP = ["B", "O", "O", "K"];
 const LETTERS_BOT = ["W", "I", "S", "E"];
 
 export default function Preloader() {
-  const [mounted, setMounted] = useState(false);
+  // Initial state = true so the preloader renders on first paint (SSR + first
+  // hydration), preventing a flash of unstyled hero content before the cover
+  // appears.
+  const [mounted, setMounted] = useState(true);
   const [revealing, setRevealing] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-
+    // mounted is already true from initial state — just start the timers.
     const total = ENTER_MS + SHIMMER_MS + HOLD_MS;
     const t1 = window.setTimeout(() => setRevealing(true), total);
     const t2 = window.setTimeout(() => {
@@ -73,7 +75,9 @@ export default function Preloader() {
         .pre {
           position: fixed;
           inset: 0;
-          z-index: 100;
+          /* Must sit above RegionGate (z-999) so the gate stays hidden
+             until the preloader has finished revealing. */
+          z-index: 1100;
           pointer-events: none;
           background: #061a16;
         }

@@ -24,11 +24,14 @@ export function RegionProvider({ children }: { children: ReactNode }) {
   const [region, setRegionState] = useState<Region>(null);
   const [hydrated, setHydrated] = useState(false);
 
-  // Hydrate from sessionStorage on first mount (only persists for the current tab)
+  // Hydrate from sessionStorage on first mount (only persists for the current tab).
+  // setState here is intentional and unavoidable: sessionStorage isn't available
+  // during SSR, so we have to read it after mount and propagate via state.
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved === "uk" || saved === "au") {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setRegionState(saved);
       }
     } catch {
