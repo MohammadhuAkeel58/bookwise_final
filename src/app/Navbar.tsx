@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { useRegion } from "./RegionProvider";
 
-const navLinks = [
+const primaryLinks = [
   { label: "Services", href: "/#services", number: "01" },
   { label: "Process", href: "/#process", number: "02" },
   { label: "Contact", href: "/#contact", number: "03" },
@@ -16,7 +16,9 @@ export default function Navbar() {
   const [visible, setVisible] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafId = useRef<number | null>(null);
-  const { region } = useRegion();
+  const { region, setRegion } = useRegion();
+
+  const toggleRegion = () => setRegion(region === "uk" ? "au" : "uk");
 
   // Mount → next 2 frames → flip visible → CSS transitions fire
   useEffect(() => {
@@ -137,12 +139,20 @@ export default function Navbar() {
 
               <div className="mob-menu-top-right">
                 {region && (
-                  <span className="mob-menu-region">
+                  <button
+                    type="button"
+                    onClick={toggleRegion}
+                    className="mob-menu-region"
+                    aria-label={`Switch region — currently ${region === "uk" ? "United Kingdom" : "Australia"}`}
+                  >
                     <span className="mob-menu-region-flag">
                       {region === "uk" ? "🇬🇧" : "🇦🇺"}
                     </span>
                     <span>{region === "uk" ? "UK" : "AU"}</span>
-                  </span>
+                    <span className="mob-menu-region-swap" aria-hidden="true">
+                      ⇄
+                    </span>
+                  </button>
                 )}
 
                 <button
@@ -168,7 +178,7 @@ export default function Navbar() {
 
             {/* Main nav links */}
             <nav className="mob-menu-nav">
-              {navLinks.map((link, i) => (
+              {primaryLinks.map((link, i) => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -177,7 +187,7 @@ export default function Navbar() {
                   style={
                     {
                       "--i": i,
-                      "--ri": navLinks.length - 1 - i,
+                      "--ri": primaryLinks.length - 1 - i,
                     } as React.CSSProperties
                   }
                 >
@@ -195,6 +205,13 @@ export default function Navbar() {
               <a href="/#contact" onClick={close} className="mob-menu-cta">
                 <span>Talk to us</span>
                 <span aria-hidden="true">›</span>
+              </a>
+              <a
+                href="mailto:hello@bookwise.com"
+                className="mob-menu-mail"
+                onClick={close}
+              >
+                hello@bookwise.com
               </a>
               <p className="mob-menu-tag">
                 Accounting for the modern entrepreneur
@@ -277,7 +294,9 @@ export default function Navbar() {
               display: flex;
               height: 100%;
               flex-direction: column;
-              padding: 1.4rem 1.6rem 1.8rem;
+              padding: 1.4rem 1.6rem 1.6rem;
+              overflow-y: auto;
+              -webkit-overflow-scrolling: touch;
             }
 
             /* ============ Top row ============ */
@@ -310,19 +329,43 @@ export default function Navbar() {
               display: inline-flex;
               align-items: center;
               gap: 0.5rem;
-              padding: 0.4rem 0.7rem;
+              padding: 0.45rem 0.55rem 0.45rem 0.75rem;
               border: 1px solid rgba(220, 250, 232, 0.25);
               border-radius: 999px;
+              background: rgba(220, 250, 232, 0.04);
               font-family: var(--font-placard);
               font-size: 0.75rem;
               font-weight: 700;
               text-transform: uppercase;
               letter-spacing: 0.15em;
               color: var(--mint);
+              cursor: pointer;
+              transition:
+                background 220ms ease,
+                border-color 220ms ease,
+                transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .mob-menu-region:hover {
+              background: rgba(220, 250, 232, 0.1);
+              border-color: var(--mint);
+            }
+            .mob-menu-region:active {
+              transform: scale(0.95);
             }
             .mob-menu-region-flag {
               font-size: 1rem;
               line-height: 1;
+            }
+            .mob-menu-region-swap {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 1.2rem;
+              height: 1.2rem;
+              border-radius: 999px;
+              background: rgba(220, 250, 232, 0.12);
+              font-size: 0.7rem;
+              letter-spacing: 0;
             }
 
             .mob-menu-top-right {
@@ -423,9 +466,9 @@ export default function Navbar() {
             .mob-menu-link-label {
               flex: 1;
               font-family: var(--font-placard);
-              font-size: clamp(2.2rem, 11vw, 3.6rem);
+              font-size: clamp(2rem, 9.5vw, 3.2rem);
               font-weight: 700;
-              line-height: 0.9;
+              line-height: 0.92;
               letter-spacing: 0.005em;
               text-transform: uppercase;
               color: white;
@@ -449,8 +492,10 @@ export default function Navbar() {
             .mob-menu-bottom {
               display: flex;
               flex-direction: column;
-              gap: 0.9rem;
-              margin-top: 1.5rem;
+              align-items: stretch;
+              gap: 0.7rem;
+              margin-top: auto;
+              padding-top: 1.6rem;
               opacity: 0;
               transform: translateY(20px);
               transition:
@@ -461,6 +506,19 @@ export default function Navbar() {
               opacity: 1;
               transform: translateY(0);
               transition-delay: 560ms;
+            }
+            .mob-menu-mail {
+              text-align: center;
+              font-family: ui-monospace, monospace;
+              font-size: 0.8rem;
+              letter-spacing: 0.04em;
+              color: rgba(220, 250, 232, 0.7);
+              text-decoration: none;
+              padding: 0.3rem 0;
+              transition: color 200ms ease;
+            }
+            .mob-menu-mail:active {
+              color: var(--mint);
             }
             .mob-menu-cta {
               display: inline-flex;

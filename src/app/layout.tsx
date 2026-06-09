@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { RegionProvider } from "./RegionProvider";
+import Preloader from "./Preloader";
 
 const placard = localFont({
   src: [
@@ -36,6 +37,7 @@ export default function RootLayout({
       className={`${placard.variable} light h-full`}
     >
       <body className="min-h-full">
+        <Preloader />
         <RegionProvider>{children}</RegionProvider>
       </body>
     </html>
