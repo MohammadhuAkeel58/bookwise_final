@@ -95,8 +95,20 @@ export default function RegionalHero() {
 
   return (
     <section className="hero-section relative bg-background">
-      {/* Floating brand logos — ambient layer behind the headline */}
-      <div className="hero-bg" aria-hidden="true">
+      {/* Floating brand logos — ambient layer behind the headline.
+          Inline layout below mirrors what styled-jsx applies, so the layer
+          is correctly clipped to the hero even if CSS injects late. */}
+      <div
+        className="hero-bg"
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      >
         {LOGOS.map((logo) => (
           <span
             key={logo.icon.title}
@@ -104,9 +116,18 @@ export default function RegionalHero() {
               logo.mobileHide ? "is-md-only" : ""
             }`}
             style={{
+              // Inline layout so the logo is bounded even before
+              // styled-jsx CSS injects (prevents FOUC giant logos).
+              position: "absolute",
+              display: "block",
               top: `${logo.y}%`,
               left: `${logo.x}%`,
               width: `${logo.size}px`,
+              height: `${logo.size}px`,
+              // Hidden by default — SiteAnimations fades them in
+              // after the preloader finishes. Without this they
+              // briefly peek through during the preloader reveal.
+              opacity: 0,
               animationDuration: `${logo.dur}s`,
               animationDelay: `${logo.delay}s`,
             }}
@@ -117,6 +138,9 @@ export default function RegionalHero() {
               role="img"
               aria-label={logo.icon.title}
               fill={`#${logo.icon.hex}`}
+              width={logo.size}
+              height={logo.size}
+              style={{ display: "block", width: "100%", height: "100%" }}
             >
               <path d={logo.icon.path} />
             </svg>

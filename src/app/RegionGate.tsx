@@ -261,12 +261,13 @@ function LandingPicker({
           background: var(--background);
           opacity: 1;
         }
+        /* NOTE: previously this faded the landing-root to opacity 0 over
+           450ms while the Veil's circle was still growing from a pin-prick.
+           During the overlap the half-faded picker let the hero behind
+           flash through. We now keep it fully opaque until the Veil has
+           covered the screen — React then unmounts it on setRegion. */
         .landing-root.landing-leaving {
-          animation: landing-fade-out 450ms ease forwards;
-        }
-        @keyframes landing-fade-out {
-          from { opacity: 1; }
-          to { opacity: 0; }
+          opacity: 1;
         }
 
         .landing-half {
