@@ -10,19 +10,44 @@ const REVEAL_MS = 1200; // tear + curtain split
 const LETTERS_TOP = ["B", "O", "O", "K"];
 const LETTERS_BOT = ["W", "I", "S", "E"];
 
+// Session-scoped flag. Setting it after the preloader plays the first
+// time means it won't play again on reloads or service-page navigation
+// in the same browser tab. Closing the tab clears it, so a brand-new
+// visit still gets the full cinematic intro.
+const STORAGE_KEY = "bw-preloader-played";
+
 export default function Preloader() {
   // Initial state = true so the preloader renders on first paint (SSR + first
   // hydration), preventing a flash of unstyled hero content before the cover
-  // appears.
+  // appears. On subsequent visits in the same session the useEffect below
+  // immediately flips it to false (and dispatches the done event so the rest
+  // of the site's entrance animations still fire).
   const [mounted, setMounted] = useState(true);
   const [revealing, setRevealing] = useState(false);
 
   useEffect(() => {
-    // mounted is already true from initial state — just start the timers.
+    // Already played in this tab → skip the cinematic, hand off to the
+    // hero entrance immediately.
+    try {
+      if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+        window.dispatchEvent(new CustomEvent("bookwise:preloader-done"));
+        setMounted(false);
+        return;
+      }
+    } catch {
+      // sessionStorage unavailable (privacy mode / SSR) — fall through and
+      // play normally; it'll just play again next reload, which is fine.
+    }
+
     const total = ENTER_MS + SHIMMER_MS + HOLD_MS;
     const t1 = window.setTimeout(() => setRevealing(true), total);
     const t2 = window.setTimeout(() => {
       window.dispatchEvent(new CustomEvent("bookwise:preloader-done"));
+      try {
+        sessionStorage.setItem(STORAGE_KEY, "1");
+      } catch {
+        // ignore — see above
+      }
       setMounted(false);
     }, total + REVEAL_MS);
 
