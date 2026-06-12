@@ -519,6 +519,25 @@ a {
     }
   }
 
+  /* Sticky stack — hero pins, the services section scrolls up over it.
+     Pure CSS: hero sticks at top, services (opaque, higher z-index) rises
+     and covers it as you scroll. min-height pins a full screen without
+     altering the hero's internal layout. */
+  .stack {
+    position: relative;
+  }
+  .stack-pin {
+    position: sticky;
+    top: 0;
+  }
+  .stack-pin .hero-section {
+    min-height: 100svh;
+  }
+  .stack-over {
+    position: relative;
+    z-index: 2;
+  }
+
   .reason-card {
     min-height: 9.5rem;
     border: 1px solid rgb(220 250 232 / 80%);

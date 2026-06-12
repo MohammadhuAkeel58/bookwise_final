@@ -1,6 +1,8 @@
 import Navbar from "./Navbar";
 import RegionGate from "./RegionGate";
 import RegionalHero from "./RegionalHero";
+import BondSection from "./BondSection";
+import ReasonsHorizontal from "./ReasonsHorizontal";
 import ServiceCards from "./ServiceCards";
 
 const services = [
@@ -76,56 +78,6 @@ const services = [
   },
 ];
 
-const reasons = [
-  {
-    title: "Books that stay clean",
-    description: "Bookkeeping, reconciliations, and payables handled monthly so your numbers are always decision-ready.",
-  },
-  {
-    title: "Tax planned ahead",
-    description: "Self Assessment, Corporation Tax, and VAT mapped out before deadlines — no scrambles, no surprise bills.",
-  },
-  {
-    title: "Live in the cloud",
-    description: "Online accounting gives you real-time visibility into cash, profit, and obligations from any device.",
-  },
-  {
-    title: "People first",
-    description: "Plain-English support from a team that picks up the phone when decisions get messy.",
-  },
-];
-
-const process = [
-  {
-    step: "Step 1",
-    label: "Talk to us",
-    title: "Where are you at and what is keeping you up?",
-    description:
-      "We figure out what needs fixing, what can wait, and which of the three pillars — books, tax, or cloud — to start with.",
-  },
-  {
-    step: "Step 2",
-    label: "Clean the books",
-    title: "Bookkeeping and reconciliations done right",
-    description:
-      "We tidy your ledger, payables, and receivables so every figure ties back to a source and decisions stay sharp.",
-  },
-  {
-    step: "Step 3",
-    label: "Go live online",
-    title: "Cloud accounting you can actually read",
-    description:
-      "We move you onto online accounting so cash, profit, and VAT positions are visible from any device, in real time.",
-  },
-  {
-    step: "Step 4",
-    label: "Taxes sorted",
-    title: "Self Assessment, Corporation Tax, and VAT, calmly filed",
-    description:
-      "Returns are prepared accurately, tax is minimised legally, and every deadline is mapped well ahead of time.",
-  },
-];
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-ink font-body antialiased">
@@ -133,10 +85,14 @@ export default function Home() {
       <Navbar />
 
       <main>
-        <RegionalHero />
+        {/* Sticky stack — hero pins, services scrolls up and covers it */}
+        <div className="stack">
+          <div className="stack-pin">
+            <RegionalHero />
+          </div>
 
-        <section id="services" className="section-pad bg-background">
-          <div className="mx-auto max-w-[1500px]">
+          <section id="services" className="stack-over section-pad bg-background">
+            <div className="mx-auto max-w-[1500px]">
             {/* ---------- Section header ---------- */}
             {/* Mobile: sticky eyebrow → big heading → subtitle */}
             <div className="section-header-mobile lg:hidden">
@@ -167,101 +123,13 @@ export default function Home() {
               <ServiceCards services={services} />
             </div>
           </div>
-        </section>
+          </section>
+        </div>
 
-        <section className="section-pad bg-ink text-white">
-          <div className="mx-auto max-w-[1500px]">
-            {/* Mobile header — centered stack matching other sections */}
-            <div className="section-header-mobile section-header-mobile--dark lg:hidden">
-              <p className="eyebrow bg-mint text-ink">Why choose us</p>
-              <h2 className="section-heading-mobile">
-                We handle
-                <br />
-                the numbers
-              </h2>
-              <p className="section-subtitle-mobile">
-                Books, tax, and cloud — covered
-              </p>
-            </div>
+        {/* Services → next: the 4 reasons scroll sideways across a pinned stage */}
+        <ReasonsHorizontal />
 
-            {/* Desktop header */}
-            <div className="hidden lg:block lg:text-center">
-              <p className="eyebrow mx-auto bg-mint text-ink">Why choose us</p>
-              <h2 className="mx-auto mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.9] text-white">
-                We handle the numbers
-              </h2>
-              <p className="mt-4 font-headline text-3xl font-bold uppercase text-mint">
-                Bookkeeping, taxation, and online accounting — under one roof
-              </p>
-            </div>
-
-            <div className="mt-12 grid gap-0 md:grid-cols-2 xl:grid-cols-4">
-              {reasons.map((reason) => (
-                <article className="reason-card" key={reason.title}>
-                  <h3 className="font-headline text-3xl font-bold uppercase leading-none text-mint">
-                    {reason.title}
-                  </h3>
-                  <p className="mt-6 text-base leading-relaxed text-white/86">
-                    {reason.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="process" className="section-pad bg-background">
-          <div className="mx-auto max-w-[1500px]">
-            {/* Mobile header */}
-            <div className="section-header-mobile mb-10 lg:hidden">
-              <p className="eyebrow bg-mint text-ink">Process</p>
-              <h2 className="section-heading-mobile">
-                How Bookwise gets to work
-              </h2>
-              <p className="section-subtitle-mobile">
-                From first call to filed return
-              </p>
-              <a
-                className="btn btn-solid mt-7 px-6"
-                href="#contact"
-              >
-                Talk to us <span aria-hidden="true">›</span>
-              </a>
-            </div>
-
-            {/* Desktop header */}
-            <div className="mb-10 hidden gap-5 lg:flex lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <p className="eyebrow bg-mint text-ink">Process</p>
-                <h2 className="mt-5 max-w-4xl font-headline text-section font-bold uppercase leading-[0.88] text-ink">
-                  How Bookwise gets to work
-                </h2>
-              </div>
-              <a className="btn btn-solid self-start md:self-end" href="#contact">
-                Talk to us <span aria-hidden="true">›</span>
-              </a>
-            </div>
-
-            <div className="grid gap-4">
-              {process.map((item) => (
-                <article className="process-row" key={item.step}>
-                  <div>
-                    <p className="text-sm font-semibold uppercase text-ink/60">{item.step}</p>
-                    <p className="mt-2 font-headline text-2xl font-bold uppercase text-ink">
-                      {item.label}
-                    </p>
-                  </div>
-                  <h3 className="font-headline text-3xl font-bold uppercase leading-none text-ink md:text-5xl">
-                    {item.title}
-                  </h3>
-                  <p className="text-base leading-relaxed text-ink/70 md:text-lg">
-                    {item.description}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        <BondSection />
 
         <section id="contact" className="bg-mint px-5 py-16 md:px-8 md:py-24">
           <div className="mx-auto max-w-[1500px]">
