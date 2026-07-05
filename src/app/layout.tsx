@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { RegionProvider } from "./RegionProvider";
-import Preloader from "./Preloader";
+import RegionGate from "./RegionGate";
 import SiteAnimations from "./SiteAnimations";
 
 const placard = localFont({
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#08241e",
+  themeColor: "#03002e",
   width: "device-width",
   initialScale: 1,
 };
@@ -66,9 +66,11 @@ export default function RootLayout({
       className={`${placard.variable} light h-full`}
     >
       <body className="min-h-full">
-        <Preloader />
         <SiteAnimations />
-        <RegionProvider>{children}</RegionProvider>
+        <RegionProvider>
+          <RegionGate />
+          {children}
+        </RegionProvider>
       </body>
     </html>
   );

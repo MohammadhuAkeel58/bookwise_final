@@ -182,7 +182,7 @@ function StackItem({
   return (
     <div
       className="sticky flex justify-center"
-      style={{ top: `calc(5.25rem + ${index * 1.1}rem)` }}
+      style={{ top: `calc(var(--header-h) + 0.75rem + ${index * 1.1}rem)` }}
     >
       <motion.div
         style={{ scale, transformOrigin: "top center" }}
@@ -271,8 +271,17 @@ function LandmarkCard({
         <h3 className="svc2-title">{service.title}</h3>
       </div>
 
-      {/* ---- Learn more ---- */}
-      <a href={service.href} className="svc2-learn group/btn">
+      {/* ---- Full-card link: stretched overlay so the whole card is
+              clickable; the Learn-more row below stays as the visual
+              affordance. ---- */}
+      <a
+        href={service.href}
+        className="svc2-card-link"
+        aria-label={`${service.title} — learn more`}
+      />
+
+      {/* ---- Learn more (visual only — the overlay handles the click) ---- */}
+      <span className="svc2-learn group/btn" aria-hidden="true">
         <span className="svc2-learn-label">Learn more</span>
         <span className="svc2-learn-arrow">
           <svg
@@ -287,7 +296,7 @@ function LandmarkCard({
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </span>
-      </a>
+      </span>
     </article>
   );
 }

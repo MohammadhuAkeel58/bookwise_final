@@ -1,12 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fbfaf5;
-  --cream: #f4efe7;
-  --ink: #08241e;
-  --mint: #dcfae8;
-  --primary: #b9f6cc;
-  --aqua: #a8d6dc;
+  --background: #f8fafd;
+  --cream: #eef2f8;
+  --ink: #03002e;
+  --mint: #dce8fa;
+  --primary: #c3d6f4;
+  --aqua: #a8c4dc;
+  --red: #c8102e;
+  --red-deep: #a30d26;
+  /* Height of the sticky header (region bar + navbar). Anchor scroll
+     offsets and pinned section top-padding key off this so nothing
+     tucks under the header. Mobile default; bumped up at md+. */
+  --header-h: 116px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 128px;
+  }
 }
 
 @theme inline {
@@ -16,6 +28,8 @@
   --color-mint: var(--mint);
   --color-primary: var(--primary);
   --color-aqua: var(--aqua);
+  --color-accent: var(--red);
+  --color-accent-deep: var(--red-deep);
   --font-headline: var(--font-placard);
   --font-body: Arial, Helvetica, sans-serif;
   --font-typewriter: "Courier New", Courier, monospace;
@@ -27,6 +41,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Every in-page anchor jump lands below the sticky header. */
+  scroll-padding-top: var(--header-h);
 }
 
 body {
@@ -36,6 +52,31 @@ body {
 button,
 a {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Silk sheen — dark ink surfaces catch light like the hero's cloth:
+   a soft indigo highlight sweeping from the top corner, a faint
+   counter-glow from below, and a hairline specular edge. */
+.bg-ink,
+.hero-poster-bottom,
+.service-card {
+  background-image:
+    radial-gradient(
+      130% 100% at 12% -10%,
+      rgba(84, 70, 200, 0.32) 0%,
+      rgba(38, 28, 130, 0.16) 38%,
+      transparent 62%
+    ),
+    radial-gradient(
+      110% 90% at 92% 112%,
+      rgba(46, 32, 150, 0.24) 0%,
+      transparent 58%
+    ),
+    linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 22%
+    );
 }
 
 @layer components {
@@ -88,7 +129,7 @@ a {
      stacking cards scroll past below it. */
   .section-header-mobile--sticky {
     position: sticky;
-    top: 4.5rem;
+    top: var(--header-h);
     z-index: 5;
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
@@ -118,7 +159,7 @@ a {
     content: "";
     transform: scaleX(0);
     transform-origin: right;
-    background: var(--ink);
+    background: var(--red);
     transition: transform 180ms ease;
   }
 
@@ -149,12 +190,14 @@ a {
   }
 
   .btn-solid {
-    background: var(--ink);
+    background: var(--red);
+    border-color: var(--red);
     color: white;
   }
 
   .btn-solid:hover {
-    background: #10372e;
+    background: var(--red-deep);
+    border-color: var(--red-deep);
   }
 
   .btn-outline {
@@ -251,7 +294,7 @@ a {
   }
 
   .hero-poster-bottom p:not(:first-child) {
-    border-left: 1px solid rgb(220 250 232 / 35%);
+    border-left: 1px solid rgb(220 232 250 / 35%);
     padding-left: 1.2rem;
     color: rgb(255 255 255 / 82%);
     font-size: 0.95rem;
@@ -263,7 +306,7 @@ a {
     min-height: 4.5rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgb(8 36 30 / 15%);
+    border: 1px solid rgb(3 0 46 / 15%);
     border-radius: 999px;
     background: white;
     padding: 1rem 1.3rem;
@@ -280,7 +323,7 @@ a {
     display: flex;
     flex-direction: column;
     min-height: 25rem;
-    border: 1px solid rgb(220 250 232 / 42%);
+    border: 1px solid rgb(220 232 250 / 42%);
     border-radius: 1.35rem;
     background: var(--ink);
     padding: 1.6rem;
@@ -297,12 +340,12 @@ a {
 
   .service-card:hover {
     transform: translateY(-4px);
-    background: #10372e;
+    background: #0d0850;
   }
 
   .service-card:hover .service-icon {
     border-color: var(--mint);
-    background: rgba(220, 250, 232, 0.08);
+    background: rgba(220, 232, 250, 0.08);
   }
 
   .service-number {
@@ -311,7 +354,7 @@ a {
     width: 2.7rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgb(220 250 232 / 50%);
+    border: 1px solid rgb(220 232 250 / 50%);
     border-radius: 999px;
     color: var(--mint);
     font-weight: 800;
@@ -325,8 +368,8 @@ a {
    *  Themed entirely through custom properties.
    * ================================================= */
   .svc2-card {
-    --top-solid: #0a2c22;
-    --bottom-solid: #f4efe7;
+    --top-solid: #050338;
+    --bottom-solid: #eef2f8;
     --top-fg: #ffffff;
     --top-accent: var(--mint);
     --bottom-fg: var(--ink);
@@ -338,8 +381,8 @@ a {
     min-height: 34rem;
     border-radius: 1.5rem;
     background: var(--bottom-solid);
-    border: 1px solid rgb(8 36 30 / 12%);
-    box-shadow: 0 28px 56px -34px rgb(8 36 30 / 45%);
+    border: 1px solid rgb(3 0 46 / 12%);
+    box-shadow: 0 28px 56px -34px rgb(3 0 46 / 45%);
     opacity: 0;
     translate: 0 26px;
     transition:
@@ -356,28 +399,28 @@ a {
   @media (hover: hover) {
     .svc2-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 42px 72px -34px rgb(8 36 30 / 55%);
+      box-shadow: 0 42px 72px -34px rgb(3 0 46 / 55%);
     }
   }
 
   /* ---- Themes ---- */
   .svc2-card[data-theme="dark"] {
-    --top-solid: #0a2c22;
-    --bottom-solid: #f4efe7;
+    --top-solid: #050338;
+    --bottom-solid: #eef2f8;
     --top-fg: #ffffff;
     --top-accent: var(--mint);
     --bottom-fg: var(--ink);
     --bottom-accent: var(--ink);
-    border-color: rgb(220 250 232 / 14%);
+    border-color: rgb(220 232 250 / 14%);
   }
   .svc2-card[data-theme="light"] {
     --top-solid: #ffffff;
-    --bottom-solid: #0c3328;
+    --bottom-solid: #08054a;
     --top-fg: var(--ink);
     --top-accent: var(--ink);
     --bottom-fg: #ffffff;
     --bottom-accent: var(--mint);
-    border-color: rgb(8 36 30 / 12%);
+    border-color: rgb(3 0 46 / 12%);
   }
 
   /* ---- Curved theme-colour top ---- */
@@ -389,7 +432,7 @@ a {
     height: 100%;
     color: var(--top-solid);
     pointer-events: none;
-    filter: drop-shadow(0 8px 18px rgb(8 36 30 / 14%));
+    filter: drop-shadow(0 8px 18px rgb(3 0 46 / 14%));
   }
 
   /* ---- Bottom scene: photo ---- */
@@ -466,7 +509,7 @@ a {
     height: 2px;
     width: 2.4rem;
     border-radius: 2px;
-    background: var(--top-accent);
+    background: var(--red);
   }
   .svc2-title {
     margin-top: 1.3rem;
@@ -507,8 +550,17 @@ a {
     width: 1.5rem;
     height: 1.5rem;
   }
-  .svc2-learn:hover .svc2-learn-arrow {
+  .svc2-learn:hover .svc2-learn-arrow,
+  .svc2-card:hover .svc2-learn-arrow {
     transform: translateX(4px);
+  }
+
+  /* Stretched link — the whole card is one click target */
+  .svc2-card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    cursor: pointer;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -540,7 +592,7 @@ a {
 
   .reason-card {
     min-height: 9.5rem;
-    border: 1px solid rgb(220 250 232 / 80%);
+    border: 1px solid rgb(220 232 250 / 80%);
     padding: 2rem 1.6rem;
     text-align: center;
   }
@@ -558,7 +610,7 @@ a {
   .process-row {
     display: grid;
     gap: 1.5rem;
-    border: 1px solid rgb(8 36 30 / 14%);
+    border: 1px solid rgb(3 0 46 / 14%);
     border-radius: 1.2rem;
     background: white;
     padding: clamp(1.3rem, 3vw, 2.4rem);
@@ -616,19 +668,19 @@ a {
 }
 
 .dot-grid {
-  background-image: radial-gradient(rgba(8, 36, 30, 0.15) 1.2px, transparent 1.2px);
+  background-image: radial-gradient(rgba(3, 0, 46, 0.15) 1.2px, transparent 1.2px);
   background-size: 22px 22px;
 }
 
 .dot-grid-mint {
-  background-image: radial-gradient(rgba(220, 250, 232, 0.18) 1.2px, transparent 1.2px);
+  background-image: radial-gradient(rgba(220, 232, 250, 0.18) 1.2px, transparent 1.2px);
   background-size: 22px 22px;
 }
 
 .grid-lines {
   background-image:
-    linear-gradient(to right, rgba(8, 36, 30, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(8, 36, 30, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, rgba(3, 0, 46, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(3, 0, 46, 0.07) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
@@ -649,7 +701,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border: 1px solid rgba(8, 36, 30, 0.12);
+  border: 1px solid rgba(3, 0, 46, 0.12);
   border-radius: 1.4rem;
   background: #ffffff;
   padding: 2rem;
@@ -661,7 +713,7 @@ a {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(220, 250, 232, 0.7), transparent 60%);
+  background: linear-gradient(135deg, rgba(220, 232, 250, 0.7), transparent 60%);
   opacity: 0;
   transition: opacity 400ms ease;
   pointer-events: none;
@@ -669,8 +721,8 @@ a {
 
 .cap-card:hover {
   transform: translateY(-6px);
-  border-color: var(--ink);
-  box-shadow: 0 24px 50px -28px rgba(8, 36, 30, 0.35);
+  border-color: var(--red);
+  box-shadow: 0 24px 50px -28px rgba(3, 0, 46, 0.35);
 }
 
 .cap-card:hover::before {
@@ -704,14 +756,14 @@ a {
   flex-direction: column;
   justify-content: space-between;
   min-height: 11rem;
-  border: 1px solid rgba(220, 250, 232, 0.2);
+  border: 1px solid rgba(220, 232, 250, 0.2);
   border-radius: 1.2rem;
   padding: 1.6rem;
   transition: background 300ms ease;
 }
 
 .stat-card:hover {
-  background: rgba(220, 250, 232, 0.06);
+  background: rgba(220, 232, 250, 0.06);
 }
 
 /* Service hero diagonal split */
@@ -733,10 +785,10 @@ a {
 .mock-card {
   position: absolute;
   background: white;
-  border: 1px solid rgba(8, 36, 30, 0.1);
+  border: 1px solid rgba(3, 0, 46, 0.1);
   border-radius: 1rem;
   padding: 1rem 1.2rem;
-  box-shadow: 0 20px 60px -30px rgba(8, 36, 30, 0.35);
+  box-shadow: 0 20px 60px -30px rgba(3, 0, 46, 0.35);
   animation: float 5s ease-in-out infinite;
 }
 

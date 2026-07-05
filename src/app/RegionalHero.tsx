@@ -288,7 +288,7 @@ export default function RegionalHero() {
           font-size: 0.32em;
           vertical-align: super;
           margin-left: 0.05em;
-          color: rgba(8, 36, 30, 0.55);
+          color: rgba(3, 0, 46, 0.55);
           font-weight: 700;
         }
 
@@ -301,7 +301,7 @@ export default function RegionalHero() {
           font-weight: 400;
           text-transform: none;
           letter-spacing: 0;
-          color: rgba(8, 36, 30, 0.78);
+          color: rgba(3, 0, 46, 0.78);
           font-size: 0.78em;
           line-height: 1;
           padding: 0 0.06em;

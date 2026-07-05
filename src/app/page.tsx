@@ -1,5 +1,4 @@
 import Navbar from "./Navbar";
-import RegionGate from "./RegionGate";
 import LivingHero from "./LivingHero";
 import BondSection from "./BondSection";
 import ReasonsHorizontal from "./ReasonsHorizontal";
@@ -54,10 +53,10 @@ const services = [
     ),
   },
   {
-    title: "Online Accounting",
-    href: "/services/online-accounting",
+    title: "Other Services",
+    href: "/services/other",
     description:
-      "Cloud-based accounting that gives you live visibility into your business, anywhere, on any device.",
+      "Virtual assistance, customer care, web and content support, telemarketing and paraplanning — one team for the busywork.",
     icon: (
       <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
         <path
@@ -81,7 +80,6 @@ const services = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-ink font-body antialiased">
-      <RegionGate />
       <Navbar />
 
       <main>
@@ -180,7 +178,7 @@ export default function Home() {
           <nav className="grid gap-3 text-white/80 sm:grid-cols-2">
             <a href="/services/business">Business Services</a>
             <a href="/services/taxation">Taxation Services</a>
-            <a href="/services/online-accounting">Online Accounting</a>
+            <a href="/services/other">Other Services</a>
             <a href="#services">Our services</a>
             <a href="#process">Process</a>
             <a href="#contact">Contact</a>

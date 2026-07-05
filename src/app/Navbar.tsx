@@ -20,7 +20,7 @@ const primaryLinks = [
 const serviceLinks = [
   { label: "Business", href: "/services/business", number: "01" },
   { label: "Taxation", href: "/services/taxation", number: "02" },
-  { label: "Online accounting", href: "/services/online-accounting", number: "03" },
+  { label: "Other services", href: "/services/other", number: "03" },
 ];
 
 export default function Navbar() {
@@ -28,9 +28,8 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  // Apechain-style desktop behaviors: hide-on-scroll-down / show-on-scroll-up
-  // and the Services mega-panel below the header.
-  const [hidden, setHidden] = useState(false);
+  // Apechain-style desktop Services mega-panel below the header. The bar
+  // itself stays sticky + visible throughout (no hide-on-scroll-down).
   const [panelOpen, setPanelOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // True once the menu has actually been open in this mount cycle. A fresh
@@ -70,7 +69,9 @@ export default function Navbar() {
         });
         const dy = y - lastY.current;
         if (Math.abs(dy) > 8) {
-          setHidden(dy > 0 && y > 160);
+          // Navbar stays sticky + visible throughout the page (no
+          // hide-on-scroll-down). We only close the services panel
+          // when the user scrolls.
           if (panelOpenRef.current) setPanelOpen(false);
           lastY.current = y;
         }
@@ -150,14 +151,44 @@ export default function Navbar() {
     <>
       <header
         className={`navbar-root sticky top-0 z-50 max-md:border-b max-md:backdrop-blur ${
-          hidden && !panelOpen && !open ? "navbar-root--hidden" : ""
-        } ${
           scrolled
-            ? "max-md:border-ink/15 max-md:bg-background/95 max-md:shadow-[0_10px_28px_-22px_rgba(8,36,30,0.45)]"
+            ? "max-md:border-ink/15 max-md:bg-background/95 max-md:shadow-[0_10px_28px_-22px_rgba(3,0,46,0.45)]"
             : "max-md:border-ink/10 max-md:bg-background/90"
         }`}
         onMouseLeave={() => setPanelOpen(false)}
       >
+        {/* Region bar — pinned with the header on every page so the
+            visitor can always switch market. */}
+        {region && (
+          <div className="region-bar">
+            <div className="region-bar-inner">
+              <p className="region-bar-status">
+                <span className="region-bar-dot" aria-hidden="true" />
+                <span className="region-bar-label region-bar-lead">
+                  You&apos;re viewing
+                </span>
+                <span className="region-bar-region">
+                  {region === "uk" ? "United Kingdom" : "Australia"}
+                </span>
+                <span className="region-bar-label region-bar-hide" aria-hidden="true">
+                  · {region === "uk" ? "HMRC / VAT" : "ATO / GST"} practice
+                </span>
+              </p>
+              <button
+                type="button"
+                onClick={toggleRegion}
+                className="region-bar-switch"
+              >
+                Switch to {region === "uk" ? "Australia" : "the UK"}
+                <span className="region-bar-switch-arrow" aria-hidden="true">
+                  ⇄
+                </span>
+              </button>
+            </div>
+            <span className="region-bar-sheen" aria-hidden="true" />
+          </div>
+        )}
+
         {/* Desktop: page-dim while the services panel is open (apechain's
             bg-black/10 overlay). Pointer-events stay off — close is handled
             by mouseleave / Esc / scroll. */}
@@ -176,9 +207,7 @@ export default function Navbar() {
         </span>
 
         <nav
-          className={`relative mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 md:px-8 transition-[padding] duration-300 ${
-            scrolled ? "py-2.5 md:py-3" : "py-4 md:py-5"
-          }`}
+          className="relative mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-3 md:px-8 md:py-3.5"
         >
           {/* MOBILE — original stacked logo + round hamburger (untouched).
               Plain <a> required: <Link> from next/link doesn't receive
@@ -199,7 +228,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="hamburger-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-ink text-mint shadow-[0_8px_24px_-12px_rgba(8,36,30,0.6)] transition-transform duration-200 hover:scale-105 active:scale-95 md:hidden"
+            className="hamburger-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-ink text-mint shadow-[0_8px_24px_-12px_rgba(3,0,46,0.6)] transition-transform duration-200 hover:scale-105 active:scale-95 md:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -331,6 +360,143 @@ export default function Navbar() {
         />
 
         <style jsx>{`
+          /* ============ Region bar ============
+             Slim midnight strip above the nav — silk sheen, monospace
+             small caps, hairline switch pill that fills red on hover. */
+          .region-bar {
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            background:
+              radial-gradient(
+                130% 160% at 10% -30%,
+                rgba(84, 70, 200, 0.35) 0%,
+                rgba(38, 28, 130, 0.14) 40%,
+                transparent 65%
+              ),
+              linear-gradient(90deg, #02001f 0%, #060342 55%, #02001f 100%);
+            border-bottom: 1px solid rgba(159, 192, 245, 0.14);
+          }
+          .region-bar-inner {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.45rem 1.25rem;
+            white-space: nowrap;
+          }
+          @media (min-width: 768px) {
+            .region-bar-inner { padding: 0.5rem 2rem; }
+          }
+          .region-bar-status {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            margin: 0;
+            min-width: 0;
+            overflow: hidden;
+          }
+          .region-bar-dot {
+            align-self: center;
+            flex-shrink: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: var(--red);
+            box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.6);
+            animation: region-bar-pulse 2000ms ease-out infinite;
+          }
+          @keyframes region-bar-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.5); }
+            70% { box-shadow: 0 0 0 6px rgba(200, 16, 46, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0); }
+          }
+          .region-bar-label {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(159, 192, 245, 0.75);
+          }
+          .region-bar-region {
+            font-family: var(--font-placard, inherit);
+            font-size: 0.86rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ffffff;
+          }
+          .region-bar-switch {
+            display: inline-flex;
+            flex-shrink: 0;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.32rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid rgba(159, 192, 245, 0.35);
+            background: transparent;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--mint);
+            cursor: pointer;
+            transition:
+              background 240ms ease,
+              border-color 240ms ease,
+              color 240ms ease;
+          }
+          .region-bar-switch:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: #ffffff;
+          }
+          .region-bar-switch-arrow {
+            font-size: 0.8rem;
+            line-height: 1;
+            transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+          }
+          .region-bar-switch:hover .region-bar-switch-arrow {
+            transform: rotate(180deg);
+          }
+          .region-bar-sheen {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 35%;
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(159, 192, 245, 0.9),
+              transparent
+            );
+            animation: region-bar-sheen 6s linear infinite;
+            pointer-events: none;
+          }
+          @keyframes region-bar-sheen {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(386%); }
+          }
+          @media (max-width: 600px) {
+            .region-bar-hide,
+            .region-bar-lead { display: none; }
+            .region-bar-label { font-size: 0.56rem; }
+            .region-bar-region { font-size: 0.78rem; letter-spacing: 0.06em; }
+            .region-bar-switch { font-size: 0.56rem; padding: 0.28rem 0.7rem; }
+            .region-bar-inner { gap: 0.6rem; }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .region-bar-dot,
+            .region-bar-sheen {
+              animation: none;
+            }
+          }
+
           /* ============ Scroll progress bar ============ */
           .navbar-progress {
             position: absolute;
@@ -338,7 +504,7 @@ export default function Navbar() {
             bottom: -1px;
             width: 100%;
             height: 1.5px;
-            background: var(--mint);
+            background: var(--red);
             transform: scaleX(0);
             transform-origin: left center;
             pointer-events: none;
@@ -372,7 +538,7 @@ export default function Navbar() {
             line-height: 1;
             margin-top: 0.1em;
             margin-left: 0.06em;
-            color: rgba(8, 36, 30, 0.55);
+            color: rgba(3, 0, 46, 0.55);
           }
 
           /* ============ Right cluster ============
@@ -396,15 +562,15 @@ export default function Navbar() {
             gap: 0.55rem;
             padding: 0.78rem 1.2rem;
             border-radius: 999px;
-            background: var(--mint);
-            color: var(--ink);
+            background: var(--red);
+            color: #ffffff;
             font-family: var(--font-placard);
             font-weight: 700;
             font-size: 0.95rem;
             letter-spacing: 0.02em;
             text-transform: uppercase;
             text-decoration: none;
-            box-shadow: 0 12px 30px -18px rgba(8, 36, 30, 0.35);
+            box-shadow: 0 12px 30px -18px rgba(3, 0, 46, 0.35);
             transition:
               transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
               background 220ms ease,
@@ -418,8 +584,8 @@ export default function Navbar() {
           }
           .navbar-cta:hover {
             transform: translateY(-1px);
-            background: #6ce5b3;
-            box-shadow: 0 18px 36px -16px rgba(8, 36, 30, 0.4);
+            background: var(--red-deep);
+            box-shadow: 0 18px 36px -16px rgba(3, 0, 46, 0.4);
           }
           .navbar-cta:active {
             transform: translateY(0);
@@ -432,20 +598,13 @@ export default function Navbar() {
             transform: translateX(4px);
           }
 
-          /* ============ Apechain-style header behavior (desktop) ======
-             Hide on scroll down / show on scroll up. The transform only
-             activates at md+ so mobile keeps its always-visible header. */
+          /* Header is permanently pinned: no transform, no size change.
+             Only surface styling (background, shadow) may transition. */
           .navbar-root {
             transition:
-              transform 320ms cubic-bezier(0.45, 0, 0.2, 1),
               background-color 300ms ease,
               box-shadow 300ms ease,
               border-color 300ms ease;
-          }
-          @media (min-width: 768px) {
-            .navbar-root--hidden {
-              transform: translateY(-100%);
-            }
           }
 
           /* Solid bar sliding down behind the links once scrolled */
@@ -455,17 +614,14 @@ export default function Navbar() {
             overflow: hidden;
             pointer-events: none;
           }
+          /* Permanently solid — the header never goes transparent, so
+             nothing slides, fades, or repaints while scrolling. */
           .navbar-solid {
             position: absolute;
             inset: 0;
             background: var(--background);
-            border-bottom: 1px solid rgba(8, 36, 30, 0.12);
-            box-shadow: 0 10px 28px -22px rgba(8, 36, 30, 0.45);
-            transform: translateY(-101%);
-            transition: transform 320ms cubic-bezier(0.45, 0, 0.2, 1);
-          }
-          .navbar-solid--on {
-            transform: translateY(0);
+            border-bottom: 1px solid rgba(3, 0, 46, 0.12);
+            box-shadow: 0 10px 28px -22px rgba(3, 0, 46, 0.45);
           }
 
           /* Page dim while the services panel is open */
@@ -473,7 +629,7 @@ export default function Navbar() {
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: rgba(8, 36, 30, 0.14);
+            background: rgba(3, 0, 46, 0.14);
             opacity: 0;
             transition: opacity 300ms ease;
             pointer-events: none;
@@ -539,8 +695,8 @@ export default function Navbar() {
             transition-delay: 0s;
           }
           .navbar-panel {
-            background: linear-gradient(140deg, #08241e 0%, #0c2f27 100%);
-            border-bottom: 1px solid rgba(220, 250, 232, 0.18);
+            background: linear-gradient(140deg, #03002e 0%, #150f63 100%);
+            border-bottom: 1px solid rgba(220, 232, 250, 0.18);
             transform: translateY(-101%);
             transition: transform 420ms cubic-bezier(0.76, 0, 0.24, 1);
             will-change: transform;
@@ -814,7 +970,7 @@ export default function Navbar() {
             .mob-overlay {
               position: absolute;
               inset: 0;
-              background: rgba(5, 23, 18, 0.45);
+              background: rgba(2, 10, 40, 0.45);
               opacity: 0;
               transition: opacity 500ms ease;
             }
@@ -847,11 +1003,11 @@ export default function Navbar() {
               background: var(--mint);
             }
             .mob-panel--2 {
-              background: #14503f;
+              background: #171070;
               transition-delay: 180ms;
             }
             .mob-panel--3 {
-              background: linear-gradient(140deg, #08241e 0%, #0c2f27 100%);
+              background: linear-gradient(140deg, #03002e 0%, #150f63 100%);
               transition-delay: 360ms;
             }
             /* Subtle dot texture on the menu face so empty areas have depth */
@@ -860,7 +1016,7 @@ export default function Navbar() {
               position: absolute;
               inset: 0;
               background-image: radial-gradient(
-                rgba(220, 250, 232, 0.05) 1.2px,
+                rgba(220, 232, 250, 0.05) 1.2px,
                 transparent 1.2px
               );
               background-size: 24px 24px;
@@ -932,9 +1088,9 @@ export default function Navbar() {
               align-items: center;
               gap: 0.5rem;
               padding: 0.45rem 0.55rem 0.45rem 0.75rem;
-              border: 1px solid rgba(220, 250, 232, 0.25);
+              border: 1px solid rgba(220, 232, 250, 0.25);
               border-radius: 999px;
-              background: rgba(220, 250, 232, 0.04);
+              background: rgba(220, 232, 250, 0.04);
               font-family: var(--font-placard);
               font-size: 0.75rem;
               font-weight: 700;
@@ -948,7 +1104,7 @@ export default function Navbar() {
                 transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
             }
             .mob-menu-region:hover {
-              background: rgba(220, 250, 232, 0.1);
+              background: rgba(220, 232, 250, 0.1);
               border-color: var(--mint);
             }
             .mob-menu-region:active {
@@ -965,7 +1121,7 @@ export default function Navbar() {
               width: 1.2rem;
               height: 1.2rem;
               border-radius: 999px;
-              background: rgba(220, 250, 232, 0.12);
+              background: rgba(220, 232, 250, 0.12);
               font-size: 0.7rem;
               letter-spacing: 0;
             }
@@ -984,8 +1140,8 @@ export default function Navbar() {
               width: 2.7rem;
               height: 2.7rem;
               border-radius: 999px;
-              border: 1px solid rgba(220, 250, 232, 0.25);
-              background: rgba(220, 250, 232, 0.05);
+              border: 1px solid rgba(220, 232, 250, 0.25);
+              background: rgba(220, 232, 250, 0.05);
               color: var(--mint);
               cursor: pointer;
               transition:
@@ -994,7 +1150,7 @@ export default function Navbar() {
                 border-color 200ms ease;
             }
             .mob-menu-close:hover {
-              background: rgba(220, 250, 232, 0.12);
+              background: rgba(220, 232, 250, 0.12);
               border-color: var(--mint);
             }
             .mob-menu-close:active {
@@ -1018,11 +1174,11 @@ export default function Navbar() {
             .mob-menu-link-mask {
               display: block;
               overflow: hidden;
-              border-bottom: 1px solid rgba(220, 250, 232, 0.14);
+              border-bottom: 1px solid rgba(220, 232, 250, 0.14);
               padding: 0.55rem 0;
             }
             .mob-menu-link-mask:first-child {
-              border-top: 1px solid rgba(220, 250, 232, 0.14);
+              border-top: 1px solid rgba(220, 232, 250, 0.14);
             }
             .mob-menu-link {
               display: flex;
@@ -1051,7 +1207,7 @@ export default function Navbar() {
               font-family: ui-monospace, monospace;
               font-size: 0.7rem;
               font-weight: 600;
-              color: rgba(220, 250, 232, 0.55);
+              color: rgba(220, 232, 250, 0.55);
               letter-spacing: 0.2em;
               min-width: 1.5rem;
               flex-shrink: 0;
@@ -1080,7 +1236,7 @@ export default function Navbar() {
               font-weight: 600;
               text-transform: uppercase;
               letter-spacing: 0.28em;
-              color: rgba(220, 250, 232, 0.5);
+              color: rgba(220, 232, 250, 0.5);
               margin-bottom: 0.7rem;
             }
             .mob-menu-extras-list {
@@ -1110,7 +1266,7 @@ export default function Navbar() {
             }
             .mob-menu-extra-arrow {
               font-size: 1rem;
-              color: rgba(220, 250, 232, 0.55);
+              color: rgba(220, 232, 250, 0.55);
             }
 
             /* ============ Bottom CTA + tagline ============ */
@@ -1127,7 +1283,7 @@ export default function Navbar() {
               font-family: ui-monospace, monospace;
               font-size: 0.8rem;
               letter-spacing: 0.04em;
-              color: rgba(220, 250, 232, 0.7);
+              color: rgba(220, 232, 250, 0.7);
               text-decoration: none;
               padding: 0.3rem 0;
               transition: color 200ms ease;
@@ -1160,7 +1316,7 @@ export default function Navbar() {
               font-weight: 600;
               text-transform: uppercase;
               letter-spacing: 0.25em;
-              color: rgba(220, 250, 232, 0.45);
+              color: rgba(220, 232, 250, 0.45);
             }
 
             @media (prefers-reduced-motion: reduce) {

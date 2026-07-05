@@ -121,9 +121,10 @@ export default function ReasonsHorizontal() {
         /* ============ Centered heading ============ */
         .rhz-head {
           flex-shrink: 0;
-          /* Floor at 6.5rem so the sticky mobile navbar (~76px) never
-             overlaps the heading — leaves a clear gap below the nav. */
-          padding: clamp(6.5rem, 10vw, 7.5rem) clamp(1.25rem, 5vw, 4rem) 0;
+          /* Clear the sticky header (region bar + navbar) then add a
+             breathing gap, so the eyebrow is never tucked underneath. */
+          padding: calc(var(--header-h) + clamp(1.25rem, 4vw, 2.5rem))
+            clamp(1.25rem, 5vw, 4rem) 0;
           text-align: center;
         }
         .rhz-eyebrow {
@@ -188,20 +189,20 @@ export default function ReasonsHorizontal() {
           background: var(--mint);
         }
         .rhz-card[data-skin="mint"] .rhz-card-num {
-          color: rgba(8, 36, 30, 0.55);
+          color: rgba(3, 0, 46, 0.55);
         }
         .rhz-card[data-skin="mint"] .rhz-card-title {
           color: var(--ink);
         }
         .rhz-card[data-skin="mint"] .rhz-card-desc {
-          color: rgba(8, 36, 30, 0.8);
+          color: rgba(3, 0, 46, 0.8);
         }
         .rhz-card[data-skin="dark"] {
-          background: rgba(220, 250, 232, 0.04);
-          border: 1px solid rgba(220, 250, 232, 0.18);
+          background: rgba(220, 232, 250, 0.04);
+          border: 1px solid rgba(220, 232, 250, 0.18);
         }
         .rhz-card[data-skin="dark"] .rhz-card-num {
-          color: rgba(220, 250, 232, 0.55);
+          color: rgba(220, 232, 250, 0.55);
         }
         .rhz-card[data-skin="dark"] .rhz-card-title {
           color: var(--mint);

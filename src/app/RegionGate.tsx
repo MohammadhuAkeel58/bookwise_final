@@ -1,682 +1,257 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRegion, type Region as ProviderRegion } from "./RegionProvider";
+import { useEffect } from "react";
+import { useRegion, type Region } from "./RegionProvider";
 
-type Region = "uk" | "au";
+/* ============================================================
+ *  RegionGate — first-visit region popup.
+ *
+ *  Until the visitor picks a region, a centred modal sits over
+ *  the page: choose United Kingdom or Australia and the whole
+ *  site (heroes, plans, tax services) speaks that market's
+ *  language. Switching later happens from the region bar in
+ *  the sticky header. Mounted once in the root layout.
+ * ============================================================ */
 
 const regions: {
   code: Region;
   name: string;
-  flag: string;
   tagline: string;
-  bullets: string[];
 }[] = [
   {
     code: "uk",
     name: "United Kingdom",
-    flag: "🇬🇧",
     tagline: "HMRC · Companies House · VAT",
-    bullets: [
-      "Self Assessment & Corporation Tax",
-      "Year-end accounts & VAT returns (MTD)",
-      "PAYE, P60 & P11D for directors",
-    ],
   },
   {
     code: "au",
     name: "Australia",
-    flag: "🇦🇺",
     tagline: "ATO · ASIC · GST",
-    bullets: [
-      "Income Tax Returns & BAS lodgements",
-      "GST, PAYG & Superannuation",
-      "Company tax & financial statements",
-    ],
   },
 ];
 
-type TransitionState = {
-  region: Region;
-  cx: number;
-  cy: number;
-  phase: "grow" | "reveal";
-};
-
 export default function RegionGate() {
   const { region, setRegion, hydrated } = useRegion();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [transition, setTransition] = useState<TransitionState | null>(null);
+  const open = hydrated && !region;
 
-  // Lock body scroll while the landing picker / transition is active.
-  // Restore to "" rather than the captured prev so a sibling layer that
-  // also set overflow:hidden (e.g. Preloader) doesn't leave us locked.
+  // Lock body scroll while the popup is up. Restore to "" so a
+  // sibling layer that also toggled overflow doesn't leave us locked.
   useEffect(() => {
-    if (region && !transition) return;
+    if (!open) return;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [region, transition]);
+  }, [open]);
 
-  const choose = (code: Region, e?: React.MouseEvent) => {
-    // If invoked from the modal (no event) — just switch instantly
-    if (!e) {
-      setRegion(code as ProviderRegion);
-      setModalOpen(false);
-      return;
-    }
-
-    // Otherwise — cinematic transition from landing picker
-    const cx = e.clientX;
-    const cy = e.clientY;
-    setTransition({ region: code, cx, cy, phase: "grow" });
-
-    // Phase 1: Circle grows to cover screen (550ms)
-    setTimeout(() => {
-      setRegion(code as ProviderRegion);
-      setModalOpen(false);
-      setTransition((t) => (t ? { ...t, phase: "reveal" } : null));
-
-      // Phase 2: Curtain rises to reveal main page (700ms)
-      setTimeout(() => {
-        setTransition(null);
-      }, 750);
-    }, 550);
-  };
-
-  const current = regions.find((r) => r.code === region);
-
-  return (
-    <>
-      {/* ---------- Landing picker (first visit) ---------- */}
-      {hydrated && !region && <LandingPicker onChoose={choose} />}
-
-      {/* ---------- Cinematic page transition ---------- */}
-      {transition && (
-        <TransitionVeil
-          region={transition.region}
-          cx={transition.cx}
-          cy={transition.cy}
-          phase={transition.phase}
-        />
-      )}
-
-      {/* ---------- Top banner (after choice) ---------- */}
-      {region && current && (
-        <div className="relative z-30 border-b border-ink/10 bg-mint">
-          <div className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-3 px-5 py-2 md:px-8">
-            <p className="flex items-center gap-2 text-sm text-ink">
-              <span aria-hidden="true" className="text-base">
-                {current.flag}
-              </span>
-              <span>
-                You are viewing the{" "}
-                <strong className="font-semibold uppercase">{current.name}</strong> site.
-              </span>
-            </p>
-            <button
-              onClick={() => setModalOpen(true)}
-              className="group inline-flex items-center gap-1 text-sm font-semibold uppercase tracking-wide text-ink underline-offset-4 hover:underline"
-            >
-              Switch region{" "}
-              <span
-                aria-hidden="true"
-                className="transition-transform group-hover:translate-x-0.5"
-              >
-                ›
-              </span>
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ---------- Modal (region switcher) ---------- */}
-      {modalOpen && (
-        <RegionModal
-          currentRegion={region}
-          onChoose={choose}
-          onClose={() => setModalOpen(false)}
-        />
-      )}
-    </>
-  );
-}
-
-/* =================================================================
- * Landing picker — fabulous split-screen visual gate
- * ================================================================= */
-function LandingPicker({
-  onChoose,
-}: {
-  onChoose: (r: Region, e?: React.MouseEvent) => void;
-}) {
-  const [hover, setHover] = useState<Region | null>(null);
-  const [leaving, setLeaving] = useState<Region | null>(null);
-
-  const handleChoose = (code: Region, e: React.MouseEvent) => {
-    setLeaving(code);
-    onChoose(code, e);
-  };
+  if (!open) return null;
 
   return (
     <div
-      className={`landing-root fixed inset-0 z-[999] overflow-hidden ${
-        leaving ? "landing-leaving" : ""
-      }`}
+      className="region-pop"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Choose your region"
     >
-      {/* Brand bar */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-start justify-between px-5 py-5 md:px-10 md:py-8">
-        <p className="landing-logo font-headline text-[1.7rem] font-bold uppercase leading-[0.86] tracking-[0.01em] text-ink mix-blend-difference">
-          Book
-          <br />
-          wise
+      <div className="region-pop-card">
+        <p className="region-pop-brand">
+          Bookwise<span aria-hidden="true">®</span>
         </p>
-      </div>
+        <p className="region-pop-eyebrow">Welcome</p>
+        <h2 className="region-pop-title">Where is your business based?</h2>
+        <p className="region-pop-sub">
+          We tailor everything — tax rules, filings and plans — to your
+          region.
+        </p>
 
-      {/* Centered instruction */}
-      <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center px-4">
-        <div className="landing-instruction flex flex-col items-center gap-2 rounded-full border border-ink/15 bg-background/95 px-6 py-3 text-center shadow-[0_20px_50px_-20px_rgba(8,36,30,0.5)] backdrop-blur md:px-8 md:py-4">
-          <p className="font-headline text-base font-bold uppercase leading-none tracking-wide text-ink md:text-xl">
-            Choose your region to continue
-          </p>
-        </div>
-      </div>
-
-      {/* Two halves */}
-      <div className="relative flex h-full w-full flex-col md:flex-row">
-        {regions.map((r, i) => {
-          const isHover = hover === r.code;
-          const isOther = hover && hover !== r.code;
-          const isLeaving = leaving === r.code;
-          const isLeavingOther = leaving && leaving !== r.code;
-
-          return (
+        <div className="region-pop-options">
+          {regions.map((r) => (
             <button
               key={r.code}
               type="button"
-              onMouseEnter={() => setHover(r.code)}
-              onMouseLeave={() => setHover(null)}
-              onClick={(e) => handleChoose(r.code, e)}
-              className={`landing-half group relative flex-1 overflow-hidden text-left transition-[flex-grow,flex-basis] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] focus:outline-none ${
-                r.code === "uk" ? "landing-half--uk" : "landing-half--au"
-              } ${isHover ? "md:flex-[1.35]" : ""} ${
-                isOther ? "md:flex-[0.65]" : ""
-              } ${isLeaving ? "landing-half--zoom" : ""} ${
-                isLeavingOther ? "landing-half--shrink" : ""
-              }`}
-              style={{ animationDelay: `${i * 80}ms` }}
-              aria-label={`Enter ${r.name} site`}
+              className="region-pop-option"
+              data-region={r.code}
+              onClick={() => setRegion(r.code)}
             >
-              {/* Decorative blobs */}
-              <span aria-hidden="true" className="landing-blob landing-blob--1" />
-              <span aria-hidden="true" className="landing-blob landing-blob--2" />
-
-              {/* Animated diagonal lines pattern */}
-              <span aria-hidden="true" className="landing-lines" />
-
-              {/* Giant background flag */}
-              <span
-                aria-hidden="true"
-                className="landing-bg-flag pointer-events-none select-none"
-              >
-                {r.flag}
+              <span className="region-pop-name">{r.name}</span>
+              <span className="region-pop-tagline">{r.tagline}</span>
+              <span className="region-pop-go">
+                Continue <span aria-hidden="true">→</span>
               </span>
-
-              {/* Content */}
-              <div className="landing-content relative z-10 flex h-full flex-col justify-between px-7 py-24 md:px-14 md:py-28">
-                {/* Top: country code + flag */}
-                <div className="flex items-start justify-between">
-                  <span className="landing-code font-headline text-[clamp(7rem,18vw,16rem)] font-bold uppercase leading-[0.78] tracking-tight">
-                    {r.code === "uk" ? "UK" : "AU"}
-                  </span>
-                  <span
-                    className="landing-flag-chip text-4xl md:text-5xl"
-                    aria-hidden="true"
-                  >
-                    {r.flag}
-                  </span>
-                </div>
-
-                {/* Bottom: name + cue */}
-                <div className="mt-6 flex items-end justify-between gap-4">
-                  <div>
-                    <h2 className="landing-name font-headline text-3xl font-bold uppercase leading-none md:text-5xl">
-                      {r.name}
-                    </h2>
-                  </div>
-                  <span className="landing-arrow flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border text-2xl transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20 md:text-3xl">
-                    ›
-                  </span>
-                </div>
-              </div>
             </button>
-          );
-        })}
-      </div>
-
-      {/* Scoped styles */}
-      <style jsx>{`
-        .landing-root {
-          background: var(--background);
-          opacity: 1;
-        }
-        /* NOTE: previously this faded the landing-root to opacity 0 over
-           450ms while the Veil's circle was still growing from a pin-prick.
-           During the overlap the half-faded picker let the hero behind
-           flash through. We now keep it fully opaque until the Veil has
-           covered the screen — React then unmounts it on setRegion. */
-        .landing-root.landing-leaving {
-          opacity: 1;
-        }
-
-        .landing-half {
-          position: relative;
-          isolation: isolate;
-          animation: landing-rise 800ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
-          animation-delay: inherit;
-        }
-        @keyframes landing-rise {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .landing-half--uk {
-          background: linear-gradient(135deg, #fbfaf5 0%, #f4efe7 100%);
-          color: var(--ink);
-          border-bottom: 1px solid rgba(8, 36, 30, 0.1);
-        }
-        @media (min-width: 768px) {
-          .landing-half--uk {
-            border-bottom: 0;
-            border-right: 1px solid rgba(8, 36, 30, 0.1);
-          }
-        }
-
-        .landing-half--au {
-          background: linear-gradient(135deg, #08241e 0%, #0c2f27 100%);
-          color: #ffffff;
-        }
-
-        /* Animated diagonal-line texture */
-        .landing-lines {
-          position: absolute;
-          inset: 0;
-          background-image: repeating-linear-gradient(
-            45deg,
-            transparent 0,
-            transparent 22px,
-            currentColor 22px,
-            currentColor 23px
-          );
-          opacity: 0.04;
-          transition: opacity 600ms ease, transform 1.2s ease;
-          transform: translateY(0);
-        }
-        .landing-half:hover .landing-lines {
-          opacity: 0.09;
-          transform: translateY(-12px);
-        }
-
-        /* Floating blobs */
-        .landing-blob {
-          position: absolute;
-          border-radius: 999px;
-          filter: blur(60px);
-          opacity: 0.45;
-          transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 700ms ease;
-          will-change: transform;
-        }
-        .landing-blob--1 {
-          width: 320px;
-          height: 320px;
-          top: -80px;
-          right: -90px;
-          animation: landing-float 9s ease-in-out infinite;
-        }
-        .landing-blob--2 {
-          width: 380px;
-          height: 380px;
-          bottom: -130px;
-          left: -120px;
-          animation: landing-float 11s ease-in-out infinite reverse;
-        }
-        .landing-half--uk .landing-blob--1 { background: #b9f6cc; }
-        .landing-half--uk .landing-blob--2 { background: #a8d6dc; }
-        .landing-half--au .landing-blob--1 { background: #dcfae8; opacity: 0.18; }
-        .landing-half--au .landing-blob--2 { background: #b9f6cc; opacity: 0.16; }
-
-        .landing-half:hover .landing-blob {
-          opacity: 0.6;
-        }
-        .landing-half:hover .landing-blob--1 {
-          transform: translate(-30px, 20px) scale(1.1);
-        }
-        .landing-half:hover .landing-blob--2 {
-          transform: translate(30px, -20px) scale(1.15);
-        }
-
-        @keyframes landing-float {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(20px, -25px) scale(1.05); }
-        }
-
-        /* Giant background flag (ghosted) */
-        .landing-bg-flag {
-          position: absolute;
-          right: -3rem;
-          bottom: -3rem;
-          font-size: clamp(14rem, 24vw, 26rem);
-          line-height: 1;
-          opacity: 0.06;
-          transform: rotate(-8deg) translateY(0);
-          transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1),
-            opacity 600ms ease;
-          z-index: 0;
-        }
-        .landing-half:hover .landing-bg-flag {
-          transform: rotate(-4deg) translateY(-14px) scale(1.06);
-          opacity: 0.11;
-        }
-
-        /* Country code letters */
-        .landing-code {
-          letter-spacing: -0.04em;
-          transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
-            color 300ms ease;
-          display: inline-block;
-        }
-        .landing-half:hover .landing-code {
-          transform: translateY(-6px);
-        }
-        .landing-half--uk .landing-code { color: var(--ink); }
-        .landing-half--au .landing-code { color: var(--mint); }
-
-        .landing-half--uk .landing-flag-chip {
-          filter: drop-shadow(0 6px 18px rgba(8, 36, 30, 0.15));
-        }
-
-        /* Arrow chip */
-        .landing-arrow {
-          border-color: currentColor;
-          transition: background 250ms ease, color 250ms ease,
-            transform 300ms ease;
-        }
-        .landing-half--uk .landing-arrow { color: var(--ink); }
-        .landing-half--au .landing-arrow { color: var(--mint); }
-        .landing-half:hover .landing-arrow {
-          background: currentColor;
-        }
-        .landing-half--uk:hover .landing-arrow {
-          color: var(--mint);
-        }
-        .landing-half--au:hover .landing-arrow {
-          color: var(--ink);
-        }
-
-        /* Exit animations */
-        .landing-half--zoom {
-          flex: 1 1 100% !important;
-        }
-        .landing-half--shrink {
-          flex: 0 0 0% !important;
-          opacity: 0;
-        }
-      `}</style>
-    </div>
-  );
-}
-
-/* =================================================================
- * Modal — region switcher (compact)
- * ================================================================= */
-function RegionModal({
-  currentRegion,
-  onChoose,
-  onClose,
-}: {
-  currentRegion: Region | null;
-  onChoose: (r: Region) => void;
-  onClose: () => void;
-}) {
-  // Close on Escape
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
-  // Lock scroll. Restore to "" so siblings that locked don't leave us stuck.
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
-  return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center px-5 py-10">
-      <div
-        className="absolute inset-0 bg-ink/60 backdrop-blur-sm"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-[1.5rem] border border-ink/15 bg-background shadow-2xl">
-        <div className="flex items-start justify-between border-b border-ink/10 p-6 md:p-8">
-          <div>
-            <p className="eyebrow bg-mint text-ink">Switch region</p>
-            <h2 className="mt-3 font-headline text-3xl font-bold uppercase leading-none text-ink md:text-4xl">
-              Pick your country
-            </h2>
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 bg-white text-ink transition-colors hover:bg-mint"
-          >
-            <span aria-hidden="true" className="text-lg leading-none">
-              ×
-            </span>
-          </button>
+          ))}
         </div>
 
-        <div className="grid gap-3 p-6 md:grid-cols-2 md:p-8">
-          {regions.map((r) => {
-            const active = r.code === currentRegion;
-            return (
-              <button
-                key={r.code}
-                onClick={() => onChoose(r.code)}
-                className={`group flex items-center gap-4 rounded-2xl border p-5 text-left transition-all duration-200 ${
-                  active
-                    ? "border-ink bg-mint"
-                    : "border-ink/15 bg-white hover:border-ink hover:bg-mint/40"
-                }`}
-              >
-                <span className="text-4xl" aria-hidden="true">
-                  {r.flag}
-                </span>
-                <span className="flex-1">
-                  <span className="block font-headline text-2xl font-bold uppercase leading-none text-ink">
-                    {r.name}
-                  </span>
-                  <span className="mt-1 block text-xs font-semibold uppercase tracking-wider text-ink/60">
-                    {r.tagline}
-                  </span>
-                </span>
-                {active && (
-                  <span className="rounded-full bg-ink px-2 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-mint">
-                    Current
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* =================================================================
- * TransitionVeil — cinematic iris+curtain reveal
- *
- *  Phase "grow":
- *   A coloured disk (region-appropriate) expands from the click
- *   point until it fully covers the viewport. Picker is still
- *   visible behind for the first few hundred ms, then the region
- *   is committed and the picker unmounts.
- *
- *  Phase "reveal":
- *   The veil splits horizontally and slides UP off the screen,
- *   uncovering the main page like a stage curtain rising.
- * ================================================================= */
-function TransitionVeil({
-  region,
-  cx,
-  cy,
-  phase,
-}: {
-  region: Region;
-  cx: number;
-  cy: number;
-  phase: "grow" | "reveal";
-}) {
-  // Region-tinted palette
-  const palette =
-    region === "uk"
-      ? { bg: "#f4efe7", accent: "#08241e", text: "#08241e", flag: "🇬🇧" }
-      : { bg: "#08241e", accent: "#dcfae8", text: "#dcfae8", flag: "🇦🇺" };
-
-  // viewport diagonal as max radius — guarantees full coverage
-  const maxRadius =
-    typeof window !== "undefined"
-      ? Math.hypot(window.innerWidth, window.innerHeight) * 1.05
-      : 2000;
-
-  return (
-    <div
-      aria-hidden="true"
-      className={`veil veil--${phase} pointer-events-none fixed inset-0 z-[1000]`}
-      style={
-        {
-          "--cx": `${cx}px`,
-          "--cy": `${cy}px`,
-          "--r": `${maxRadius}px`,
-          background: palette.bg,
-        } as React.CSSProperties
-      }
-    >
-      {/* Region badge — centred */}
-      <div
-        className={`veil-badge veil-badge--${phase}`}
-        style={{ color: palette.text }}
-      >
-        <span className="veil-flag">{palette.flag}</span>
-        <span className="veil-label">
-          {region === "uk" ? "United Kingdom" : "Australia"}
-        </span>
+        <p className="region-pop-note">
+          You can switch anytime from the bar at the top.
+        </p>
       </div>
 
       <style jsx>{`
-        /* ============ BASE VEIL ============
-         *  Single full-cover element that morphs through both phases
-         *  - Grow: clip-path circle expanding from click point
-         *  - Reveal: container slides upward like a stage curtain
-         * ============================================================ */
-        .veil {
-          will-change: clip-path, transform;
-        }
-
-        /* Phase: GROW — iris opens from click */
-        .veil--grow {
-          clip-path: circle(0px at var(--cx) var(--cy));
-          animation: veil-iris 550ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
-        }
-        @keyframes veil-iris {
-          0% {
-            clip-path: circle(0px at var(--cx) var(--cy));
-          }
-          100% {
-            clip-path: circle(var(--r) at var(--cx) var(--cy));
-          }
-        }
-
-        /* Phase: REVEAL — curtain rises
-         *  clip-path is fixed at full-coverage so there is NO snap
-         *  when transitioning from grow → reveal. Only transform moves.
-         */
-        .veil--reveal {
-          clip-path: circle(var(--r) at var(--cx) var(--cy));
-          animation: veil-rise 750ms cubic-bezier(0.76, 0, 0.24, 1) forwards;
-        }
-        @keyframes veil-rise {
-          0% {
-            transform: translateY(0);
-          }
-          100% {
-            transform: translateY(-105%);
-          }
-        }
-
-        /* ============ Region badge ============ */
-        .veil-badge {
-          position: absolute;
+        .region-pop {
+          position: fixed;
           inset: 0;
+          z-index: 100;
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 0.6rem;
-          font-family: var(--font-placard);
+          padding: 1.25rem;
+          background: rgba(2, 0, 31, 0.78);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          animation: region-pop-fade 400ms ease backwards;
+        }
+        @keyframes region-pop-fade {
+          from { opacity: 0; }
+        }
+
+        .region-pop-card {
+          width: 100%;
+          max-width: 30rem;
+          border-radius: 1.35rem;
+          background: var(--background, #f8fafd);
+          padding: 2.2rem 2rem 1.8rem;
+          text-align: center;
+          box-shadow: 0 60px 120px -40px rgba(2, 0, 31, 0.8);
+          animation: region-pop-rise 550ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+        }
+        @keyframes region-pop-rise {
+          from { opacity: 0; transform: translateY(26px) scale(0.98); }
+        }
+
+        .region-pop-brand {
+          margin: 0;
+          font-family: var(--font-placard, inherit);
+          font-size: 1.35rem;
           font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.02em;
-          opacity: 0;
-        }
-        .veil-badge--grow {
-          animation: badge-in 550ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        .veil-badge--reveal {
-          animation: badge-out 280ms ease forwards;
-          opacity: 1;
-        }
-        @keyframes badge-in {
-          0%, 35% {
-            opacity: 0;
-            transform: scale(0.85);
-            filter: blur(8px);
-          }
-          70%, 100% {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-          }
-        }
-        @keyframes badge-out {
-          0% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          100% {
-            opacity: 0;
-            transform: scale(1.05);
-          }
-        }
-        .veil-flag {
-          font-size: clamp(3rem, 8vw, 5.5rem);
+          letter-spacing: 0.01em;
           line-height: 1;
+          text-transform: uppercase;
+          color: var(--ink, #03002e);
         }
-        .veil-label {
-          font-size: clamp(1.4rem, 3.4vw, 2.6rem);
+        .region-pop-brand span {
+          font-size: 0.5em;
+          vertical-align: super;
+        }
+
+        .region-pop-eyebrow {
+          margin: 1.3rem 0 0;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 0.66rem;
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: var(--red, #c8102e);
+        }
+
+        .region-pop-title {
+          margin: 0.5rem 0 0;
+          font-family: var(--font-placard, inherit);
+          font-size: clamp(1.8rem, 5.5vw, 2.4rem);
+          font-weight: 700;
+          line-height: 0.95;
+          text-transform: uppercase;
+          color: var(--ink, #03002e);
+        }
+
+        .region-pop-sub {
+          margin: 0.9rem auto 0;
+          max-width: 24rem;
+          font-size: 0.9rem;
+          line-height: 1.55;
+          color: rgba(3, 0, 46, 0.62);
+        }
+
+        .region-pop-options {
+          display: grid;
+          gap: 0.7rem;
+          margin-top: 1.5rem;
+        }
+        @media (min-width: 480px) {
+          .region-pop-options { grid-template-columns: 1fr 1fr; }
+        }
+
+        .region-pop-option {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.4rem;
+          border-radius: 1rem;
+          padding: 1.15rem 1.15rem 1rem;
+          text-align: left;
+          cursor: pointer;
+          transition:
+            transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 240ms ease,
+            border-color 240ms ease;
+        }
+        .region-pop-option[data-region="uk"] {
+          border: 1px solid rgba(3, 0, 46, 0.16);
+          background: #ffffff;
+          color: var(--ink, #03002e);
+        }
+        .region-pop-option[data-region="au"] {
+          border: 1px solid rgba(3, 0, 46, 0.9);
+          background: var(--ink, #03002e);
+          color: #ffffff;
+          background-image:
+            radial-gradient(
+              130% 100% at 12% -10%,
+              rgba(84, 70, 200, 0.32) 0%,
+              rgba(38, 28, 130, 0.16) 38%,
+              transparent 62%
+            );
+        }
+        .region-pop-option:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 22px 44px -24px rgba(2, 0, 31, 0.55);
+        }
+        .region-pop-option[data-region="uk"]:hover {
+          border-color: var(--red, #c8102e);
+        }
+
+        .region-pop-name {
+          font-family: var(--font-placard, inherit);
+          font-size: 1.35rem;
+          font-weight: 700;
+          line-height: 0.95;
+          text-transform: uppercase;
+        }
+        .region-pop-tagline {
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 0.6rem;
           letter-spacing: 0.12em;
+          text-transform: uppercase;
+          opacity: 0.6;
+        }
+        .region-pop-go {
+          margin-top: 0.5rem;
+          font-size: 0.78rem;
+          font-weight: 700;
+          color: var(--red, #c8102e);
+        }
+        .region-pop-option[data-region="au"] .region-pop-go {
+          color: #f0899a;
+        }
+        .region-pop-go span {
+          display: inline-block;
+          transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .region-pop-option:hover .region-pop-go span {
+          transform: translateX(4px);
+        }
+
+        .region-pop-note {
+          margin: 1.3rem 0 0;
+          font-size: 0.72rem;
+          color: rgba(3, 0, 46, 0.45);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .region-pop,
+          .region-pop-card {
+            animation: none;
+          }
         }
       `}</style>
     </div>

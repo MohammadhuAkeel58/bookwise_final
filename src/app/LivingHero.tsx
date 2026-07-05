@@ -308,8 +308,8 @@ export default function LivingHero() {
       uMouseStr: { value: 0 },
       uIntro: { value: 0 },
       uFlag: { value: tex },
-      uInk: { value: new THREE.Color(0x0c3b30) },
-      uMint: { value: new THREE.Color(0x7cf0c0) },
+      uInk: { value: new THREE.Color(0x012169) },
+      uMint: { value: new THREE.Color(0x9fc0f5) },
     };
 
     // 2:1 flag plane, densely subdivided for smooth cloth
@@ -499,9 +499,9 @@ export default function LivingHero() {
           overflow: hidden;
           background: radial-gradient(
             120% 90% at 50% 35%,
-            #0a2820 0%,
-            #061a16 55%,
-            #03100c 100%
+            #021d5c 0%,
+            #030f38 55%,
+            #02071c 100%
           );
           isolation: isolate;
         }
@@ -517,8 +517,8 @@ export default function LivingHero() {
           z-index: 0;
           background: radial-gradient(
             ellipse at center,
-            rgba(124, 240, 192, 0.16) 0%,
-            rgba(31, 122, 99, 0.08) 38%,
+            rgba(159, 192, 245, 0.16) 0%,
+            rgba(52, 92, 168, 0.08) 38%,
             transparent 70%
           );
           filter: blur(30px);
@@ -548,7 +548,7 @@ export default function LivingHero() {
           background: conic-gradient(
             from 210deg at 60% 0%,
             transparent 0deg,
-            rgba(124, 240, 192, 0.07) 18deg,
+            rgba(159, 192, 245, 0.07) 18deg,
             transparent 40deg
           );
           filter: blur(22px);
@@ -567,7 +567,7 @@ export default function LivingHero() {
           background: radial-gradient(
             120% 80% at 50% 50%,
             transparent 38%,
-            rgba(3, 16, 12, 0.72) 100%
+            rgba(1, 8, 34, 0.72) 100%
           );
           pointer-events: none;
         }
@@ -606,15 +606,15 @@ export default function LivingHero() {
           font-size: 0.72rem;
           letter-spacing: 0.3em;
           text-transform: uppercase;
-          color: rgba(220, 250, 232, 0.6);
+          color: rgba(220, 232, 250, 0.6);
           opacity: 0;
           animation: lhero-fade 900ms ease 600ms forwards;
-          text-shadow: 0 2px 18px rgba(3, 16, 12, 0.8);
+          text-shadow: 0 2px 18px rgba(1, 8, 34, 0.8);
         }
         .lhero-eyebrow-dot {
           width: 7px; height: 7px; border-radius: 999px;
-          background: var(--mint, #7cf0c0);
-          box-shadow: 0 0 0 4px rgba(124, 240, 192, 0.18);
+          background: var(--red, #c8102e);
+          box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.22);
           animation: lhero-pulse 1600ms ease-in-out infinite;
         }
         @keyframes lhero-pulse {
@@ -631,7 +631,7 @@ export default function LivingHero() {
           letter-spacing: -0.012em;
           text-transform: uppercase;
           color: #ffffff;
-          text-shadow: 0 4px 40px rgba(3, 16, 12, 0.85);
+          text-shadow: 0 4px 40px rgba(1, 8, 34, 0.85);
         }
         .lhero-line {
           display: block;
@@ -650,23 +650,23 @@ export default function LivingHero() {
         .lhero-w { color: #ffffff; }
         .lhero-reg {
           font-size: 0.32em; vertical-align: super; margin-left: 0.05em;
-          color: rgba(220, 250, 232, 0.55); font-weight: 700;
+          color: rgba(220, 232, 250, 0.55); font-weight: 700;
         }
         .lhero-c {
           font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
           font-style: italic; font-weight: 400; text-transform: none;
-          letter-spacing: 0; color: rgba(220, 250, 232, 0.82);
+          letter-spacing: 0; color: rgba(220, 232, 250, 0.82);
           font-size: 0.78em; padding: 0 0.06em;
         }
         .lhero-w--region {
           pointer-events: auto; background: none; border: 0; padding: 0;
           font: inherit; letter-spacing: inherit; text-transform: inherit;
-          color: var(--mint, #7cf0c0); cursor: pointer; position: relative;
+          color: var(--mint, #9fc0f5); cursor: pointer; position: relative;
           transition: color 220ms ease;
         }
         .lhero-w--region::after {
           content: ""; position: absolute; left: 0; right: 0; bottom: 0.06em;
-          height: 0.06em; background: var(--mint, #7cf0c0); opacity: 0;
+          height: 0.06em; background: var(--mint, #9fc0f5); opacity: 0;
           transition: opacity 220ms ease;
         }
         .lhero-w--region:hover { color: #ffffff; }
@@ -676,17 +676,17 @@ export default function LivingHero() {
           pointer-events: auto;
           display: inline-flex; align-items: center; gap: 0.8rem;
           margin-top: 2.6rem; padding: 1rem 1.9rem; border-radius: 999px;
-          background: var(--mint, #7cf0c0); color: var(--ink, #08241e);
+          background: var(--red, #c8102e); color: #ffffff;
           font-family: var(--font-placard); font-weight: 700; font-size: 1.05rem;
           letter-spacing: 0.04em; text-transform: uppercase; text-decoration: none;
-          box-shadow: 0 18px 50px -20px rgba(124, 240, 192, 0.6);
+          box-shadow: 0 18px 50px -20px rgba(200, 16, 46, 0.6);
           opacity: 0; animation: lhero-fade 900ms ease 1200ms forwards;
           transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 240ms ease, background 240ms ease;
         }
         .lhero-cta:hover {
-          transform: translateY(-2px); background: #93f5cd;
-          box-shadow: 0 26px 60px -18px rgba(124, 240, 192, 0.7);
+          transform: translateY(-2px); background: var(--red-deep, #a30d26);
+          box-shadow: 0 26px 60px -18px rgba(200, 16, 46, 0.7);
         }
         .lhero-cta-arrow { display: inline-block; transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1); }
         .lhero-cta:hover .lhero-cta-arrow { transform: translateX(5px); }
@@ -700,11 +700,11 @@ export default function LivingHero() {
         .lhero-scroll-label {
           font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
           font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
-          color: rgba(220, 250, 232, 0.5);
+          color: rgba(220, 232, 250, 0.5);
         }
         .lhero-scroll-line {
           width: 1px; height: 42px;
-          background: linear-gradient(to bottom, var(--mint, #7cf0c0), transparent);
+          background: linear-gradient(to bottom, var(--mint, #9fc0f5), transparent);
           transform-origin: top; animation: lhero-scroll 2s ease-in-out infinite;
         }
         @keyframes lhero-scroll {
