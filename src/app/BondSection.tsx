@@ -97,7 +97,7 @@ export default function BondSection() {
   }, []);
 
   return (
-    <section id="process" className="bond" aria-label="Why Bookwise">
+    <section id="process" className="bond" aria-label="Why Commonwealth Accounting Partners">
       <div ref={trackRef} className="bond-track">
         <div className="bond-sticky">
           {/* Ink lobes — inline transforms so SSR paints them off-screen */}

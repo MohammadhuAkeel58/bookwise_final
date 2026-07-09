@@ -170,9 +170,6 @@ export default function Navbar() {
                 <span className="region-bar-region">
                   {region === "uk" ? "United Kingdom" : "Australia"}
                 </span>
-                <span className="region-bar-label region-bar-hide" aria-hidden="true">
-                  · {region === "uk" ? "HMRC / VAT" : "ATO / GST"} practice
-                </span>
               </p>
               <button
                 type="button"
@@ -217,12 +214,20 @@ export default function Navbar() {
             className="logo relative z-[60] inline-flex items-center text-ink md:hidden"
             href="/"
             onClick={close}
-            aria-label="Bookwise — home"
+            aria-label="Commonwealth Accounting Partners — home"
           >
-            <span className="logo-text font-headline text-[1.7rem] font-bold uppercase leading-[0.86] tracking-[0.01em]">
-              Book
-              <br />
-              wise
+            <img
+              src="/commonwealth-logo.svg"
+              alt=""
+              className="h-10 w-auto shrink-0"
+            />
+            <span className="ml-2 flex flex-col justify-center">
+              <span className="logo-text font-headline text-[1.25rem] font-bold uppercase leading-[0.9] tracking-[0.01em]">
+                Commonwealth
+              </span>
+              <span className="text-[0.55rem] font-semibold uppercase tracking-[0.22em] text-ink/60">
+                Accounting Partners
+              </span>
             </span>
           </a>
 
@@ -241,10 +246,16 @@ export default function Navbar() {
             className="navbar-logo hidden md:inline-flex"
             href="/"
             onClick={close}
-            aria-label="Bookwise — home"
+            aria-label="Commonwealth Accounting Partners — home"
           >
-            <span className="logo-text">
-              Bookwise<sup className="navbar-logo-r" aria-hidden="true">®</sup>
+            <img
+              src="/commonwealth-logo.svg"
+              alt=""
+              className="navbar-logo-mark"
+            />
+            <span className="navbar-logo-stack">
+              <span className="logo-text">Commonwealth</span>
+              <span className="navbar-logo-sub">Accounting Partners</span>
             </span>
           </a>
 
@@ -518,26 +529,39 @@ export default function Navbar() {
             position: relative;
             z-index: 60;
             align-items: center;
+            gap: 0.65rem;
             text-decoration: none;
             color: var(--ink);
+          }
+          :global(.navbar-logo .navbar-logo-mark) {
+            height: clamp(2.5rem, 4vw, 3.1rem);
+            width: auto;
+            flex-shrink: 0;
+            display: block;
+          }
+          :global(.navbar-logo .navbar-logo-stack) {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.18rem;
           }
           :global(.navbar-logo .logo-text) {
             font-family: var(--font-placard);
             font-weight: 700;
-            font-size: clamp(1.7rem, 4vw, 2.6rem);
-            line-height: 1;
+            font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+            line-height: 0.95;
             letter-spacing: -0.005em;
             text-transform: uppercase;
             color: var(--ink);
             display: inline-flex;
             align-items: flex-start;
           }
-          .navbar-logo-r {
-            font-size: 0.32em;
-            font-weight: 700;
+          :global(.navbar-logo .navbar-logo-sub) {
+            font-size: 0.58rem;
+            font-weight: 600;
             line-height: 1;
-            margin-top: 0.1em;
-            margin-left: 0.06em;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
             color: rgba(3, 0, 46, 0.55);
           }
 
@@ -840,55 +864,45 @@ export default function Navbar() {
             <span className="mob-panel mob-panel--3" aria-hidden="true" />
 
             <div className="mob-menu-content">
-              {/* Top row — logo + region badge + close button */}
+              {/* Top row — logo chip + wordmark, close button only.
+                  The region switcher lives in its own card below. */}
               <div className="mob-menu-top mob-fade">
                 <p className="mob-menu-logo">
-                  Book
-                  <br />
-                  wise
+                  <img
+                    src="/commonwealth-logo.svg"
+                    alt=""
+                    className="mob-menu-logo-mark"
+                  />
+                  <span className="mob-menu-logo-stack">
+                    <span className="mob-menu-logo-word">Commonwealth</span>
+                    <span className="mob-menu-logo-sub">
+                      Accounting Partners
+                    </span>
+                  </span>
                 </p>
 
-                <div className="mob-menu-top-right">
-                  {region && (
-                    <button
-                      type="button"
-                      onClick={toggleRegion}
-                      className="mob-menu-region"
-                      aria-label={`Switch region — currently ${region === "uk" ? "United Kingdom" : "Australia"}`}
-                    >
-                      <span className="mob-menu-region-flag">
-                        {region === "uk" ? "🇬🇧" : "🇦🇺"}
-                      </span>
-                      <span>{region === "uk" ? "UK" : "AU"}</span>
-                      <span className="mob-menu-region-swap" aria-hidden="true">
-                        ⇄
-                      </span>
-                    </button>
-                  )}
-
-                  <button
-                    type="button"
-                    onClick={close}
-                    aria-label="Close menu"
-                    className="mob-menu-close"
+                <button
+                  type="button"
+                  onClick={close}
+                  aria-label="Close menu"
+                  className="mob-menu-close"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M6 6l12 12M18 6L6 18" />
-                    </svg>
-                  </button>
-                </div>
+                    <path d="M6 6l12 12M18 6L6 18" />
+                  </svg>
+                </button>
               </div>
 
-              {/* Main nav links — eyebrow number over a huge heading,
-                  each rising out of its own overflow mask with a tilt */}
+              {/* Main nav links — calmer scale, gold index numbers,
+                  arrow pinned right, hairline dividers */}
               <nav className="mob-menu-nav">
                 {primaryLinks.map((link, i) => (
                   <span key={link.href} className="mob-menu-link-mask">
@@ -898,17 +912,13 @@ export default function Navbar() {
                       className="mob-menu-link"
                       style={{ "--i": i } as React.CSSProperties}
                     >
-                      <span className="mob-menu-link-num" aria-hidden="true">
-                        {link.number}
-                      </span>
                       <span className="mob-menu-link-label">{link.label}</span>
                     </a>
                   </span>
                 ))}
               </nav>
 
-              {/* Secondary services list — fills the mid space, mirrors
-                  ignite's small "extras" links under the big headings */}
+              {/* Secondary services — outlined pill chips */}
               <div className="mob-menu-extras mob-fade">
                 <p className="mob-menu-extras-label">Our services</p>
                 <ul className="mob-menu-extras-list">
@@ -919,32 +929,46 @@ export default function Navbar() {
                         onClick={close}
                         className="mob-menu-extra-link"
                       >
-                        <span>{s.label}</span>
-                        <span className="mob-menu-extra-arrow" aria-hidden="true">
-                          ↗
-                        </span>
+                        {s.label}
                       </a>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Bottom CTA + tagline */}
+              {/* Navy footer band — region switcher + CTA + email */}
               <div className="mob-menu-bottom mob-fade">
-                <a href="/#contact" onClick={close} className="mob-menu-cta">
-                  <span>Talk to us</span>
-                  <span aria-hidden="true">›</span>
-                </a>
+                <div className="mob-menu-bottom-row">
+                  {region && (
+                    <button
+                      type="button"
+                      onClick={toggleRegion}
+                      className="mob-menu-region"
+                      aria-label={`Switch region — currently ${region === "uk" ? "United Kingdom" : "Australia"}`}
+                    >
+                      <span className="mob-menu-region-flag">
+                        {region === "uk" ? "🇬🇧" : "🇦🇺"}
+                      </span>
+                      <span>
+                        {region === "uk" ? "United Kingdom" : "Australia"}
+                      </span>
+                      <span className="mob-menu-region-switch">
+                        Switch <span aria-hidden="true">⇄</span>
+                      </span>
+                    </button>
+                  )}
+                  <a href="/#contact" onClick={close} className="mob-menu-cta">
+                    <span>Talk to us</span>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </div>
                 <a
-                  href="mailto:hello@bookwise.com"
+                  href="mailto:hello@commonwealthaccountingpartners.com"
                   className="mob-menu-mail"
                   onClick={close}
                 >
-                  hello@bookwise.com
+                  hello@commonwealthaccountingpartners.com
                 </a>
-                <p className="mob-menu-tag">
-                  Accounting for the modern entrepreneur
-                </p>
               </div>
             </div>
           </div>
@@ -1000,23 +1024,23 @@ export default function Navbar() {
               will-change: transform;
             }
             .mob-panel--1 {
-              background: var(--mint);
+              background: var(--red);
             }
             .mob-panel--2 {
-              background: #171070;
+              background: var(--ink);
               transition-delay: 180ms;
             }
             .mob-panel--3 {
-              background: linear-gradient(140deg, #03002e 0%, #150f63 100%);
+              background: #f6f4ee;
               transition-delay: 360ms;
             }
-            /* Subtle dot texture on the menu face so empty areas have depth */
+            /* Whisper-subtle dot texture so empty areas have depth */
             .mob-panel--3::after {
               content: "";
               position: absolute;
               inset: 0;
               background-image: radial-gradient(
-                rgba(220, 232, 250, 0.05) 1.2px,
+                rgba(3, 0, 46, 0.045) 1.2px,
                 transparent 1.2px
               );
               background-size: 24px 24px;
@@ -1072,64 +1096,41 @@ export default function Navbar() {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              padding-top: 0.6rem;
+              padding: 0.6rem 0 1.2rem;
             }
             .mob-menu-logo {
-              font-family: var(--font-placard);
-              font-size: 1.7rem;
-              font-weight: 700;
-              line-height: 0.86;
-              letter-spacing: 0.01em;
-              text-transform: uppercase;
-              color: white;
-            }
-            .mob-menu-region {
               display: inline-flex;
-              align-items: center;
-              gap: 0.5rem;
-              padding: 0.45rem 0.55rem 0.45rem 0.75rem;
-              border: 1px solid rgba(220, 232, 250, 0.25);
-              border-radius: 999px;
-              background: rgba(220, 232, 250, 0.04);
-              font-family: var(--font-placard);
-              font-size: 0.75rem;
-              font-weight: 700;
-              text-transform: uppercase;
-              letter-spacing: 0.15em;
-              color: var(--mint);
-              cursor: pointer;
-              transition:
-                background 220ms ease,
-                border-color 220ms ease,
-                transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-            }
-            .mob-menu-region:hover {
-              background: rgba(220, 232, 250, 0.1);
-              border-color: var(--mint);
-            }
-            .mob-menu-region:active {
-              transform: scale(0.95);
-            }
-            .mob-menu-region-flag {
-              font-size: 1rem;
-              line-height: 1;
-            }
-            .mob-menu-region-swap {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 1.2rem;
-              height: 1.2rem;
-              border-radius: 999px;
-              background: rgba(220, 232, 250, 0.12);
-              font-size: 0.7rem;
-              letter-spacing: 0;
-            }
-
-            .mob-menu-top-right {
-              display: flex;
               align-items: center;
               gap: 0.7rem;
+              color: var(--ink);
+            }
+            /* Full-colour emblem — it's designed for light surfaces */
+            .mob-menu-logo-mark {
+              height: 2.7rem;
+              width: auto;
+              flex-shrink: 0;
+              display: block;
+            }
+            .mob-menu-logo-stack {
+              display: flex;
+              flex-direction: column;
+              gap: 0.28rem;
+            }
+            .mob-menu-logo-word {
+              font-family: var(--font-placard);
+              font-size: 1rem;
+              font-weight: 700;
+              line-height: 1;
+              letter-spacing: 0.16em;
+              text-transform: uppercase;
+            }
+            .mob-menu-logo-sub {
+              font-size: 0.5rem;
+              font-weight: 600;
+              line-height: 1;
+              letter-spacing: 0.3em;
+              text-transform: uppercase;
+              color: #b99328;
             }
 
             /* ============ X close button ============ */
@@ -1140,9 +1141,9 @@ export default function Navbar() {
               width: 2.7rem;
               height: 2.7rem;
               border-radius: 999px;
-              border: 1px solid rgba(220, 232, 250, 0.25);
-              background: rgba(220, 232, 250, 0.05);
-              color: var(--mint);
+              border: 1px solid var(--ink);
+              background: var(--ink);
+              color: #f6f4ee;
               cursor: pointer;
               transition:
                 transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -1150,8 +1151,8 @@ export default function Navbar() {
                 border-color 200ms ease;
             }
             .mob-menu-close:hover {
-              background: rgba(220, 232, 250, 0.12);
-              border-color: var(--mint);
+              background: var(--red);
+              border-color: var(--red);
             }
             .mob-menu-close:active {
               transform: scale(0.92);
@@ -1161,34 +1162,31 @@ export default function Navbar() {
               height: 1.1rem;
             }
 
-            /* ============ Big nav links ============
-               Ignite layout: top-aligned list, thin number column to the
-               left of each huge heading. */
+            /* ============ Main nav links ============
+               Editorial rows: red index numbers, navy labels,
+               hairline dividers between rows. */
             .mob-menu-nav {
               display: flex;
               flex-direction: column;
-              margin-top: 2.4rem;
+              margin-top: 0.2rem;
             }
-            /* Each link rises out of its own clip; hairline dividers
-               between rows give the list structure */
             .mob-menu-link-mask {
               display: block;
               overflow: hidden;
-              border-bottom: 1px solid rgba(220, 232, 250, 0.14);
-              padding: 0.55rem 0;
+              border-top: 1px solid rgba(3, 0, 46, 0.12);
             }
-            .mob-menu-link-mask:first-child {
-              border-top: 1px solid rgba(220, 232, 250, 0.14);
+            .mob-menu-link-mask:last-child {
+              border-bottom: 1px solid rgba(3, 0, 46, 0.12);
             }
             .mob-menu-link {
               display: flex;
-              flex-direction: row;
-              align-items: flex-start;
+              align-items: baseline;
+              justify-content: center;
               gap: 0.9rem;
-              padding: 0.2rem 0;
+              padding: 1.2rem 0;
               text-decoration: none;
               opacity: 0;
-              transform: translateY(140%) rotate(10deg);
+              transform: translateY(140%) rotate(6deg);
               transform-origin: left bottom;
               transition:
                 opacity 360ms ease,
@@ -1203,120 +1201,142 @@ export default function Navbar() {
             .mob-menu--closing .mob-menu-link {
               transition: none;
             }
-            .mob-menu-link-num {
-              font-family: ui-monospace, monospace;
-              font-size: 0.7rem;
-              font-weight: 600;
-              color: rgba(220, 232, 250, 0.55);
-              letter-spacing: 0.2em;
-              min-width: 1.5rem;
-              flex-shrink: 0;
-              padding-top: 0.35em;
-            }
             .mob-menu-link-label {
               font-family: var(--font-placard);
-              font-size: clamp(3.4rem, 15vw, 5.2rem);
+              font-size: clamp(3rem, 13vw, 3.9rem);
               font-weight: 700;
-              line-height: 0.9;
-              letter-spacing: 0.005em;
+              line-height: 0.92;
+              letter-spacing: 0.01em;
               text-transform: uppercase;
-              color: white;
+              color: var(--ink);
               transition: color 200ms ease;
             }
             .mob-menu-link:active .mob-menu-link-label {
-              color: var(--mint);
+              color: var(--red);
             }
 
-            /* ============ Secondary services list ============ */
+            /* ============ Secondary services — pill chips ============ */
             .mob-menu-extras {
-              margin-top: 2rem;
+              margin-top: 1.6rem;
             }
             .mob-menu-extras-label {
-              font-size: 0.68rem;
+              text-align: center;
+              font-size: 0.85rem;
               font-weight: 600;
               text-transform: uppercase;
-              letter-spacing: 0.28em;
-              color: rgba(220, 232, 250, 0.5);
-              margin-bottom: 0.7rem;
+              letter-spacing: 0.32em;
+              color: #b99328;
+              margin-bottom: 1rem;
             }
             .mob-menu-extras-list {
               list-style: none;
               margin: 0;
               padding: 0;
               display: flex;
-              flex-direction: column;
+              flex-wrap: wrap;
+              justify-content: center;
+              gap: 0.55rem;
             }
             .mob-menu-extra-link {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              gap: 1rem;
-              padding: 0.55rem 0;
+              display: inline-block;
+              padding: 0.75rem 1.5rem;
+              border: 1px solid rgba(3, 0, 46, 0.22);
+              border-radius: 999px;
               text-decoration: none;
-              font-family: var(--font-placard);
-              font-size: 1.35rem;
-              font-weight: 700;
-              letter-spacing: 0.04em;
-              text-transform: uppercase;
-              color: rgba(255, 255, 255, 0.88);
-              transition: color 200ms ease;
+              font-size: 1.05rem;
+              font-weight: 500;
+              letter-spacing: 0.02em;
+              color: var(--ink);
+              transition:
+                border-color 200ms ease,
+                background 200ms ease,
+                color 200ms ease;
             }
             .mob-menu-extra-link:active {
-              color: var(--mint);
-            }
-            .mob-menu-extra-arrow {
-              font-size: 1rem;
-              color: rgba(220, 232, 250, 0.55);
+              background: var(--ink);
+              border-color: var(--ink);
+              color: #f6f4ee;
             }
 
-            /* ============ Bottom CTA + tagline ============ */
+            /* ============ Navy footer band ============
+               Bleeds past the content padding so it anchors the
+               bottom edge like a letterhead footer. */
             .mob-menu-bottom {
               display: flex;
               flex-direction: column;
               align-items: stretch;
-              gap: 0.7rem;
+              gap: 0.75rem;
               margin-top: auto;
-              padding-top: 1.6rem;
+              margin-left: -1.6rem;
+              margin-right: -1.6rem;
+              margin-bottom: -1.6rem;
+              padding: 1.3rem 1.6rem calc(1.4rem + env(safe-area-inset-bottom));
+              background: var(--ink);
             }
-            .mob-menu-mail {
-              text-align: center;
-              font-family: ui-monospace, monospace;
+            .mob-menu-bottom-row {
+              display: flex;
+              flex-direction: column;
+              align-items: stretch;
+              gap: 0.95rem;
+            }
+            .mob-menu-region {
+              display: flex;
+              align-items: center;
+              gap: 0.45rem;
+              padding: 0 0 0.95rem;
+              border: none;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+              background: none;
               font-size: 0.8rem;
-              letter-spacing: 0.04em;
-              color: rgba(220, 232, 250, 0.7);
-              text-decoration: none;
-              padding: 0.3rem 0;
-              transition: color 200ms ease;
+              font-weight: 500;
+              color: rgba(255, 255, 255, 0.85);
+              cursor: pointer;
             }
-            .mob-menu-mail:active {
-              color: var(--mint);
+            .mob-menu-region-flag {
+              font-size: 0.95rem;
+              line-height: 1;
+            }
+            .mob-menu-region-switch {
+              display: inline-flex;
+              align-items: center;
+              gap: 0.3rem;
+              margin-left: auto;
+              font-size: 0.68rem;
+              font-weight: 600;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              color: #b99328;
             }
             .mob-menu-cta {
               display: inline-flex;
               align-items: center;
               justify-content: center;
-              gap: 0.7rem;
-              padding: 1rem 1.4rem;
+              gap: 0.55rem;
+              padding: 0.72rem 1.35rem;
               border-radius: 999px;
-              background: var(--mint);
-              color: var(--ink);
+              background: var(--red);
+              color: white;
               font-family: var(--font-placard);
-              font-size: 1.1rem;
+              font-size: 0.92rem;
               font-weight: 700;
               text-transform: uppercase;
-              letter-spacing: 0.04em;
+              letter-spacing: 0.12em;
+              text-decoration: none;
               transition: transform 200ms ease;
             }
             .mob-menu-cta:active {
               transform: scale(0.97);
             }
-            .mob-menu-tag {
+            .mob-menu-mail {
               text-align: center;
               font-size: 0.7rem;
-              font-weight: 600;
-              text-transform: uppercase;
-              letter-spacing: 0.25em;
-              color: rgba(220, 232, 250, 0.45);
+              letter-spacing: 0.03em;
+              color: rgba(255, 255, 255, 0.4);
+              text-decoration: none;
+              transition: color 200ms ease;
+            }
+            .mob-menu-mail:active {
+              color: #b99328;
             }
 
             @media (prefers-reduced-motion: reduce) {

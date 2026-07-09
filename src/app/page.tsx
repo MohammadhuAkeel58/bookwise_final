@@ -166,13 +166,21 @@ export default function Home() {
       <footer className="bg-ink px-5 py-12 text-white md:px-8">
         <div className="mx-auto grid max-w-[1500px] gap-10 md:grid-cols-[1fr_1.2fr_1fr]">
           <div>
-            <p className="font-headline text-4xl font-bold uppercase leading-[0.8]">
-              Book
-              <br />
-              wise
-            </p>
+            <div className="flex items-center gap-3">
+              <img
+                src="/commonwealth-logo.svg"
+                alt=""
+                className="h-14 w-auto shrink-0"
+              />
+              <p className="font-headline text-3xl font-bold uppercase leading-[0.85]">
+                Commonwealth
+                <span className="mt-1.5 block text-[0.65rem] font-semibold tracking-[0.28em] text-white/60">
+                  Accounting Partners
+                </span>
+              </p>
+            </div>
             <p className="mt-5 max-w-xs text-white/70">
-              Accountants for ambitious businesses that would rather be building.
+              Accurate records. Stronger business. Global partners.
             </p>
           </div>
           <nav className="grid gap-3 text-white/80 sm:grid-cols-2">
@@ -184,7 +192,7 @@ export default function Home() {
             <a href="#contact">Contact</a>
           </nav>
           <div className="text-sm text-white/60 md:text-right">
-            <p>© 2026 Bookwise. All rights reserved.</p>
+            <p>© 2026 Commonwealth Accounting Partners. All rights reserved.</p>
             <p className="mt-3">Privacy · Terms · Compliance</p>
           </div>
         </div>

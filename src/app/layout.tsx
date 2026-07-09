@@ -23,25 +23,28 @@ const placard = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bookwise.com"),
+  metadataBase: new URL("https://commonwealthaccountingpartners.com"),
   title: {
-    default: "Bookwise — Accounting for modern entrepreneurs",
-    template: "%s · Bookwise",
+    default:
+      "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
+    template: "%s · Commonwealth Accounting Partners",
   },
   description:
-    "Bookkeeping, taxation and online accounting for founders, studios and creators across the UK and Australia. Calmly handled, plainly explained.",
+    "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia. Accurate records. Stronger business. Global partners.",
   openGraph: {
-    title: "Bookwise — Accounting for modern entrepreneurs",
+    title:
+      "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
     description:
-      "Bookkeeping, taxation and online accounting for founders, studios and creators across the UK and Australia.",
+      "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia.",
     type: "website",
-    siteName: "Bookwise",
+    siteName: "Commonwealth Accounting Partners",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bookwise — Accounting for modern entrepreneurs",
+    title:
+      "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
     description:
-      "Bookkeeping, taxation and online accounting for founders, studios and creators across the UK and Australia.",
+      "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia.",
   },
   robots: {
     index: true,

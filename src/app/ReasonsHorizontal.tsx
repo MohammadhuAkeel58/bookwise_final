@@ -71,7 +71,7 @@ export default function ReasonsHorizontal() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="rhz" aria-label="Why choose Bookwise">
+    <section ref={sectionRef} className="rhz" aria-label="Why choose Commonwealth Accounting Partners">
       <div className="rhz-pin">
         <div className="rhz-head">
           <p className="rhz-eyebrow">Why choose us</p>

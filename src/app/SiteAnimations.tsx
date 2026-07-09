@@ -54,7 +54,7 @@ export default function SiteAnimations() {
         }
       };
 
-      window.addEventListener("bookwise:preloader-done", playHero, {
+      window.addEventListener("cwap:preloader-done", playHero, {
         once: true,
       });
       const heroFallback = window.setTimeout(playHero, 3500);
@@ -213,7 +213,7 @@ export default function SiteAnimations() {
 
       // Cleanup attached via gsap.context — but also clear the fallback
       return () => {
-        window.removeEventListener("bookwise:preloader-done", playHero);
+        window.removeEventListener("cwap:preloader-done", playHero);
         window.clearTimeout(heroFallback);
       };
     });

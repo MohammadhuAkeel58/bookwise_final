@@ -363,7 +363,7 @@ export default function LivingHero() {
     const reveal = () => {
       introTarget = 1;
     };
-    window.addEventListener("bookwise:preloader-done", reveal, { once: true });
+    window.addEventListener("cwap:preloader-done", reveal, { once: true });
     const introFallback = window.setTimeout(reveal, 3600);
 
     // visibility gate
@@ -410,7 +410,7 @@ export default function LivingHero() {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onPointer);
       mount.removeEventListener("pointerleave", onLeave);
-      window.removeEventListener("bookwise:preloader-done", reveal);
+      window.removeEventListener("cwap:preloader-done", reveal);
       window.clearTimeout(introFallback);
       ro.disconnect();
       io.disconnect();
@@ -444,33 +444,26 @@ export default function LivingHero() {
 
         <h1 className="lhero-headline" key={region ?? "none"}>
           <span className="lhero-line">
-            <span className="lhero-w">
-              Bookwise<sup className="lhero-reg">®</sup>
-            </span>
+            <span className="lhero-w">Commonwealth</span>
             <span className="lhero-c"> is a </span>
             <span className="lhero-w">Modern</span>
+            {showRegionWord && (
+              <>
+                {" "}
+                <button
+                  type="button"
+                  onClick={swapRegion}
+                  className="lhero-w lhero-w--region"
+                  aria-label={`Region: ${regionWord}. Tap to switch.`}
+                >
+                  {regionWord}
+                </button>
+              </>
+            )}
           </span>
 
-          {showRegionWord ? (
-            <span className="lhero-line">
-              <button
-                type="button"
-                onClick={swapRegion}
-                className="lhero-w lhero-w--region"
-                aria-label={`Region: ${regionWord}. Tap to switch.`}
-              >
-                {regionWord}
-              </button>
-              <span className="lhero-c"> Accounting</span>
-            </span>
-          ) : (
-            <span className="lhero-line">
-              <span className="lhero-w">Accounting</span>
-            </span>
-          )}
-
           <span className="lhero-line">
-            <span className="lhero-w">Practice</span>
+            <span className="lhero-w">Accounting Practice</span>
             <span className="lhero-c"> for </span>
             <span className="lhero-w">Entrepreneurs</span>
           </span>
@@ -589,12 +582,12 @@ export default function LivingHero() {
           max-width: 1280px;
           width: 100%;
           margin: 0 auto;
-          padding: 7rem 1.6rem 0;
+          padding: 2.5rem 1.4rem 4.5rem;
           text-align: center;
           pointer-events: none;
         }
         @media (min-width: 768px) {
-          .lhero-content { padding: 8rem 2.4rem 0; }
+          .lhero-content { padding: 3rem 2.4rem 5rem; }
         }
 
         .lhero-eyebrow {

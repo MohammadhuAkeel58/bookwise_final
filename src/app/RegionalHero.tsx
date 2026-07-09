@@ -76,8 +76,8 @@ const LOGOS: FloatingLogo[] = [
  *    [single underline link]
  *
  *  Region drives one word inside the headline:
- *    Bookwise® is a Modern BRITISH Accounting Practice for Entrepreneurs
- *    Bookwise® is a Modern AUSTRALIAN Accounting Practice for Entrepreneurs
+ *    Commonwealth is a Modern BRITISH Accounting Practice for Entrepreneurs
+ *    Commonwealth is a Modern AUSTRALIAN Accounting Practice for Entrepreneurs
  * ========================================================= */
 
 export default function RegionalHero() {
@@ -153,9 +153,7 @@ export default function RegionalHero() {
         <h1 className="hero-headline" key={region ?? "none"}>
           <span className="hero-line">
             <span className="hero-line-inner">
-              <span className="hero-w">
-                Bookwise<sup className="hero-reg">®</sup>
-              </span>
+              <span className="hero-w">Commonwealth</span>
               <span className="hero-c"> is a </span>
               <span className="hero-w">Modern</span>
             </span>

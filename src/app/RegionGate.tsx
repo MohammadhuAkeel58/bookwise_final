@@ -55,7 +55,12 @@ export default function RegionGate() {
     >
       <div className="region-pop-card">
         <p className="region-pop-brand">
-          Bookwise<span aria-hidden="true">®</span>
+          <img
+            src="/commonwealth-logo.svg"
+            alt=""
+            className="region-pop-brand-mark"
+          />
+          Commonwealth Accounting Partners
         </p>
         <p className="region-pop-eyebrow">Welcome</p>
         <h2 className="region-pop-title">Where is your business based?</h2>
@@ -121,17 +126,22 @@ export default function RegionGate() {
 
         .region-pop-brand {
           margin: 0;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
           font-family: var(--font-placard, inherit);
-          font-size: 1.35rem;
+          font-size: 1.15rem;
           font-weight: 700;
           letter-spacing: 0.01em;
           line-height: 1;
           text-transform: uppercase;
           color: var(--ink, #03002e);
         }
-        .region-pop-brand span {
-          font-size: 0.5em;
-          vertical-align: super;
+        .region-pop-brand-mark {
+          height: 2.2rem;
+          width: auto;
+          flex-shrink: 0;
+          display: block;
         }
 
         .region-pop-eyebrow {

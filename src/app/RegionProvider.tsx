@@ -16,7 +16,7 @@ type Ctx = {
   hydrated: boolean;
 };
 
-const STORAGE_KEY = "bookwise-region";
+const STORAGE_KEY = "cwap-region";
 
 const RegionContext = createContext<Ctx | null>(null);
 
