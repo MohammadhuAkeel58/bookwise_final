@@ -140,7 +140,10 @@ export default function Home() {
               <p className="section-subtitle-mobile">
                 We&apos;ll watch the numbers
               </p>
-              <a className="btn btn-solid mt-7 px-7 py-4 text-base" href="#">
+              <a
+                className="btn btn-solid mt-7 px-7 py-4 text-base"
+                href="mailto:hello@commonwealthaccountingpartners.com"
+              >
                 Talk to us <span aria-hidden="true">›</span>
               </a>
             </div>
@@ -155,7 +158,10 @@ export default function Home() {
                   Build your empire. We will watch the numbers.
                 </h2>
               </div>
-              <a className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg" href="#">
+              <a
+                className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg"
+                href="mailto:hello@commonwealthaccountingpartners.com"
+              >
                 Talk to us <span aria-hidden="true">›</span>
               </a>
             </div>
