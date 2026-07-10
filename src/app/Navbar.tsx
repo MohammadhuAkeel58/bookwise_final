@@ -1218,6 +1218,10 @@ export default function Navbar() {
             /* ============ Secondary services — pill chips ============ */
             .mob-menu-extras {
               margin-top: 1.6rem;
+              /* Guaranteed gap before the navy footer band even when
+                 the content fills the viewport and margin-top:auto on
+                 .mob-menu-bottom collapses to zero. */
+              padding-bottom: 1.8rem;
             }
             .mob-menu-extras-label {
               text-align: center;
