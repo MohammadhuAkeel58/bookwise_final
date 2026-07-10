@@ -460,8 +460,7 @@ export default function LivingHero() {
                 </button>
               </>
             )}
-          </span>
-
+          </span>{" "}
           <span className="lhero-line">
             <span className="lhero-w">Accounting Practice</span>
             <span className="lhero-c"> for </span>

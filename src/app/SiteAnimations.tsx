@@ -15,49 +15,61 @@ export default function SiteAnimations() {
       /* ============================================================
        *  HERO — fires after preloader (or 3.5s fallback)
        * ============================================================ */
+      // These `.hero-*` targets belong to RegionalHero (the service-page
+      // hero). The home page uses LivingHero (`.lhero-*`, self-animated via
+      // styled-jsx), so guard every call — otherwise GSAP logs "target not
+      // found" on pages where this hero isn't present.
       const heroLines = gsap.utils.toArray<HTMLElement>(".hero-line-inner");
       const heroLink = gsap.utils.toArray<HTMLElement>(".hero-link");
       const heroBgLogos = gsap.utils.toArray<HTMLElement>(".hero-bg-logo");
+      const hasEditorialHero =
+        heroLines.length > 0 || heroLink.length > 0 || heroBgLogos.length > 0;
 
-      gsap.set(heroLink, { autoAlpha: 0, y: 24 });
-      gsap.set(heroLines, { yPercent: 110 });
-      gsap.set(heroBgLogos, { autoAlpha: 0 });
+      let detachHero: (() => void) | undefined;
 
-      let played = false;
-      const playHero = () => {
-        if (played) return;
-        played = true;
-        const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+      if (hasEditorialHero) {
+        if (heroLink.length) gsap.set(heroLink, { autoAlpha: 0, y: 24 });
+        if (heroLines.length) gsap.set(heroLines, { yPercent: 110 });
+        if (heroBgLogos.length) gsap.set(heroBgLogos, { autoAlpha: 0 });
 
-        if (heroBgLogos.length) {
-          tl.to(heroBgLogos, {
-            autoAlpha: 0.34,
-            duration: 1.2,
-            stagger: { each: 0.05, from: "random" },
-            ease: "power2.out",
-          });
-        }
-        if (heroLines.length) {
-          tl.to(
-            heroLines,
-            {
-              yPercent: 0,
-              duration: 1.1,
-              stagger: 0.08,
-              ease: "expo.out",
-            },
-            "-=0.9"
-          );
-        }
-        if (heroLink.length) {
-          tl.to(heroLink, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.55");
-        }
-      };
+        let played = false;
+        const play = () => {
+          if (played) return;
+          played = true;
+          const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
-      window.addEventListener("cwap:preloader-done", playHero, {
-        once: true,
-      });
-      const heroFallback = window.setTimeout(playHero, 3500);
+          if (heroBgLogos.length) {
+            tl.to(heroBgLogos, {
+              autoAlpha: 0.34,
+              duration: 1.2,
+              stagger: { each: 0.05, from: "random" },
+              ease: "power2.out",
+            });
+          }
+          if (heroLines.length) {
+            tl.to(
+              heroLines,
+              {
+                yPercent: 0,
+                duration: 1.1,
+                stagger: 0.08,
+                ease: "expo.out",
+              },
+              "-=0.9"
+            );
+          }
+          if (heroLink.length) {
+            tl.to(heroLink, { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.55");
+          }
+        };
+
+        window.addEventListener("cwap:preloader-done", play, { once: true });
+        const heroFallback = window.setTimeout(play, 3500);
+        detachHero = () => {
+          window.removeEventListener("cwap:preloader-done", play);
+          window.clearTimeout(heroFallback);
+        };
+      }
 
       /* ============================================================
        *  Section headings — clip-path mask reveal on scroll
@@ -211,10 +223,10 @@ export default function SiteAnimations() {
         });
       }
 
-      // Cleanup attached via gsap.context — but also clear the fallback
+      // Cleanup attached via gsap.context — but also detach the editorial
+      // hero's listener/fallback if it was wired up.
       return () => {
-        window.removeEventListener("cwap:preloader-done", playHero);
-        window.clearTimeout(heroFallback);
+        detachHero?.();
       };
     });
 

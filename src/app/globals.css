@@ -49,6 +49,39 @@ body {
   background: var(--background);
 }
 
+/* ============================================================
+ *  Anti-FOUC reveal gate
+ *  Every component's styling lives in styled-jsx <style jsx>
+ *  blocks, which this Next build injects on the client AFTER
+ *  hydration — they are NOT in the render-blocking stylesheet.
+ *  So the raw SSR markup paints first with only globals+Tailwind
+ *  (unstyled hero text flash) until the JS loads. We hide the
+ *  page until hydration removes `cwap-loading`, then fade it in.
+ *  A CSS failsafe reveals it even if that JS never runs, and a
+ *  <noscript> override covers JS-disabled visitors.
+ * ============================================================ */
+html.cwap-loading body {
+  opacity: 0;
+  /* Failsafe only: HydrationGate reveals as soon as JS hydrates, so
+     this timer just guards against JS failing entirely. Kept long so
+     it never fires before the (large) JS bundle loads on slow links —
+     otherwise unstyled markup would flash through prematurely. */
+  animation: cwap-reveal 0.45s ease 8s forwards;
+}
+body {
+  transition: opacity 0.5s ease;
+}
+@keyframes cwap-reveal {
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;

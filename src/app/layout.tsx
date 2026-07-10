@@ -4,6 +4,7 @@ import "./globals.css";
 import { RegionProvider } from "./RegionProvider";
 import RegionGate from "./RegionGate";
 import SiteAnimations from "./SiteAnimations";
+import HydrationGate from "./HydrationGate";
 
 const placard = localFont({
   src: [
@@ -66,9 +67,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${placard.variable} light h-full`}
+      className={`${placard.variable} light h-full cwap-loading`}
     >
       <body className="min-h-full">
+        {/* JS-disabled visitors never get the styled-jsx styles, but
+            they also never hit the flash — reveal the page immediately. */}
+        <noscript>
+          <style>{`html.cwap-loading body{opacity:1 !important;animation:none !important;}`}</style>
+        </noscript>
+        <HydrationGate />
         <SiteAnimations />
         <RegionProvider>
           <RegionGate />
