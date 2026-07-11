@@ -26,7 +26,7 @@ const placard = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://commonwealthaccountingpartners.com"),
+  metadataBase: new URL("https://comaccpar.com"),
   title: {
     default:
       "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",

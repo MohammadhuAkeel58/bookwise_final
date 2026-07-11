@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 // Canonical production URL. Must match metadataBase in layout.tsx.
-const BASE_URL = "https://commonwealthaccountingpartners.com";
+const BASE_URL = "https://comaccpar.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {

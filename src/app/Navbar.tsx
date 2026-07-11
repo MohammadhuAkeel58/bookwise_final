@@ -975,11 +975,11 @@ export default function Navbar() {
                   </a>
                 </div>
                 <a
-                  href="mailto:hello@commonwealthaccountingpartners.com"
+                  href="mailto:hello@comaccpar.com"
                   className="mob-menu-mail"
                   onClick={close}
                 >
-                  hello@commonwealthaccountingpartners.com
+                  hello@comaccpar.com
                 </a>
               </div>
             </div>

@@ -142,7 +142,7 @@ export default function Home() {
               </p>
               <a
                 className="btn btn-solid mt-7 px-7 py-4 text-base"
-                href="mailto:hello@commonwealthaccountingpartners.com"
+                href="mailto:hello@comaccpar.com"
               >
                 Talk to us <span aria-hidden="true">›</span>
               </a>
@@ -160,7 +160,7 @@ export default function Home() {
               </div>
               <a
                 className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg"
-                href="mailto:hello@commonwealthaccountingpartners.com"
+                href="mailto:hello@comaccpar.com"
               >
                 Talk to us <span aria-hidden="true">›</span>
               </a>

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 // Canonical production URL. Must match metadataBase in layout.tsx.
 // If your live custom domain differs, update it in both places.
-const BASE_URL = "https://commonwealthaccountingpartners.com";
+const BASE_URL = "https://comaccpar.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();

@@ -6,7 +6,7 @@
 // TODO for the owner: add `telephone` and a `PostalAddress` once you have a
 // public business address/phone — Google's local features reward them.
 
-const BASE_URL = "https://commonwealthaccountingpartners.com";
+const BASE_URL = "https://comaccpar.com";
 
 const schema = {
   "@context": "https://schema.org",
@@ -18,7 +18,7 @@ const schema = {
   description:
     "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia. Accurate records. Stronger business. Global partners.",
   slogan: "Accurate records. Stronger business. Global partners.",
-  email: "hello@commonwealthaccountingpartners.com",
+  email: "hello@comaccpar.com",
   areaServed: [
     { "@type": "Country", name: "United Kingdom" },
     { "@type": "Country", name: "Australia" },
