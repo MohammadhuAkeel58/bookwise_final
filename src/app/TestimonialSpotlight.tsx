@@ -178,9 +178,6 @@ export default function TestimonialSpotlight() {
               className={`tspot-dot ${i === active ? "is-active" : ""}`}
               onClick={() => setActive(i)}
             >
-              <span className="tspot-dot-num">
-                {String(i + 1).padStart(2, "0")}
-              </span>
               <span className="tspot-dot-mark" aria-hidden="true" />
             </button>
           ))}
@@ -373,64 +370,31 @@ export default function TestimonialSpotlight() {
           margin-top: clamp(2rem, 5vw, 3rem);
         }
         .tspot-dot {
-          position: relative;
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-width: 2.5rem;
-          padding: 0.4rem 0.2rem;
+          padding: 0.55rem 0.4rem;
           border: 0;
           background: none;
           cursor: pointer;
           border-radius: 6px;
         }
-        .tspot-dot-num {
-          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-          font-size: 0.72rem;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          color: rgba(220, 232, 250, 0.4);
-          transition: color 240ms ease;
-        }
-        .tspot-dot.is-active .tspot-dot-num,
-        .tspot-dot:hover .tspot-dot-num,
-        .tspot-dot:focus-visible .tspot-dot-num {
-          color: #f6f4ee;
-        }
         .tspot-dot-mark {
-          position: absolute;
-          left: 50%;
-          bottom: -0.1rem;
-          width: 0.4rem;
-          height: 0.4rem;
+          width: 0.5rem;
+          height: 0.5rem;
           border-radius: 999px;
-          transform: translateX(-50%) scale(0.7);
           background: rgba(220, 232, 250, 0.28);
           transition:
             background 240ms ease,
             transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
         }
+        .tspot-dot:hover .tspot-dot-mark,
+        .tspot-dot:focus-visible .tspot-dot-mark {
+          background: rgba(220, 232, 250, 0.55);
+        }
         .tspot-dot.is-active .tspot-dot-mark {
           background: var(--red);
-          transform: translateX(-50%) scale(1);
-        }
-
-        /* Numbers hidden on the narrowest screens — dots only */
-        @media (max-width: 520px) {
-          .tspot-dot {
-            min-width: 0;
-            padding: 0.55rem 0.35rem;
-          }
-          .tspot-dot-num {
-            display: none;
-          }
-          .tspot-dot-mark {
-            position: static;
-            transform: scale(0.8);
-          }
-          .tspot-dot.is-active .tspot-dot-mark {
-            transform: scale(1);
-          }
+          transform: scale(1.15);
         }
 
         @media (prefers-reduced-motion: reduce) {
