@@ -6,6 +6,7 @@ import RegionGate from "./RegionGate";
 import SiteAnimations from "./SiteAnimations";
 import HydrationGate from "./HydrationGate";
 import SmoothNav from "./SmoothNav";
+import StructuredData from "./StructuredData";
 
 const placard = localFont({
   src: [
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
   },
   description:
     "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia. Accurate records. Stronger business. Global partners.",
+  alternates: { canonical: "/" },
   openGraph: {
     title:
       "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
@@ -40,6 +42,7 @@ export const metadata: Metadata = {
       "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia.",
     type: "website",
     siteName: "Commonwealth Accounting Partners",
+    url: "/",
   },
   twitter: {
     card: "summary_large_image",
@@ -76,6 +79,7 @@ export default function RootLayout({
         <noscript>
           <style>{`html.cwap-loading body{opacity:1 !important;animation:none !important;}`}</style>
         </noscript>
+        <StructuredData />
         <HydrationGate />
         <SmoothNav />
         <SiteAnimations />

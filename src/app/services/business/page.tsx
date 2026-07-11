@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "../../Navbar";
 import PlansSection from "./PlansSection";
+
+export const metadata: Metadata = {
+  title: "Business Services — Bookkeeping, Reconciliations & Accounts",
+  description:
+    "Bookkeeping, bank reconciliations, payables and year-end accounts for UK and Australian founders. Clean books, monthly rhythm, and management reporting that keeps decisions sharp.",
+  alternates: { canonical: "/services/business" },
+  openGraph: {
+    title: "Business Services — Commonwealth Accounting Partners",
+    description:
+      "Bookkeeping, reconciliations, payables and year-end accounts for UK and Australian businesses.",
+    url: "/services/business",
+    type: "website",
+  },
+};
 
 export default function BusinessServicesPage() {
   return (

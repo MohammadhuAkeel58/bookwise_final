@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "../../Navbar";
 import TaxSupportSection from "./TaxSupportSection";
+
+export const metadata: Metadata = {
+  title: "Taxation Services — VAT, Corporation Tax & Self Assessment",
+  description:
+    "VAT, Corporation Tax, Self Assessment and year-end filings handled accurately and ahead of every deadline — for UK (HMRC) and Australian (ATO) businesses.",
+  alternates: { canonical: "/services/taxation" },
+  openGraph: {
+    title: "Taxation Services — Commonwealth Accounting Partners",
+    description:
+      "VAT, Corporation Tax, Self Assessment and year-end filings — accurate and ahead of every deadline.",
+    url: "/services/taxation",
+    type: "website",
+  },
+};
 
 export default function TaxationServicesPage() {
   return (
