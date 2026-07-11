@@ -16,17 +16,14 @@ import { useRegion, type Region } from "./RegionProvider";
 const regions: {
   code: Region;
   name: string;
-  tagline: string;
 }[] = [
   {
     code: "uk",
     name: "United Kingdom",
-    tagline: "HMRC · Companies House · VAT",
   },
   {
     code: "au",
     name: "Australia",
-    tagline: "ATO · ASIC · GST",
   },
 ];
 
@@ -79,7 +76,6 @@ export default function RegionGate() {
               onClick={() => setRegion(r.code)}
             >
               <span className="region-pop-name">{r.name}</span>
-              <span className="region-pop-tagline">{r.tagline}</span>
               <span className="region-pop-go">
                 Continue <span aria-hidden="true">→</span>
               </span>
@@ -227,15 +223,8 @@ export default function RegionGate() {
           line-height: 0.95;
           text-transform: uppercase;
         }
-        .region-pop-tagline {
-          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-          font-size: 0.6rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          opacity: 0.6;
-        }
         .region-pop-go {
-          margin-top: 0.5rem;
+          margin-top: 0.75rem;
           font-size: 0.78rem;
           font-weight: 700;
           color: var(--red, #c8102e);
