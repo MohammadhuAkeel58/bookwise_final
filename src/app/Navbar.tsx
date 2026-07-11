@@ -145,15 +145,26 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Close the mobile menu when the viewport reaches the desktop breakpoint
+  // (tablet rotation / window resize) so the curtain can't stay stuck over
+  // the desktop navbar. 1024 must match the lg: utilities below.
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const close = () => setOpen(false);
 
   return (
     <>
       <header
-        className={`navbar-root sticky top-0 z-50 max-md:border-b max-md:backdrop-blur ${
+        className={`navbar-root sticky top-0 z-50 max-lg:border-b max-lg:backdrop-blur ${
           scrolled
-            ? "max-md:border-ink/15 max-md:bg-background/95 max-md:shadow-[0_10px_28px_-22px_rgba(3,0,46,0.45)]"
-            : "max-md:border-ink/10 max-md:bg-background/90"
+            ? "max-lg:border-ink/15 max-lg:bg-background/95 max-lg:shadow-[0_10px_28px_-22px_rgba(3,0,46,0.45)]"
+            : "max-lg:border-ink/10 max-lg:bg-background/90"
         }`}
         onMouseLeave={() => setPanelOpen(false)}
       >
@@ -190,28 +201,28 @@ export default function Navbar() {
             bg-black/10 overlay). Pointer-events stay off — close is handled
             by mouseleave / Esc / scroll. */}
         <span
-          className={`navbar-dim hidden md:block ${panelOpen ? "navbar-dim--on" : ""}`}
+          className={`navbar-dim hidden lg:block ${panelOpen ? "navbar-dim--on" : ""}`}
           aria-hidden="true"
         />
 
         {/* Desktop: solid bar that slides down behind the links once
             scrolled (apechain's ::before translateY(-100%) → 0). Clipped
             so it can only slide in from above. */}
-        <span className="navbar-solid-clip hidden md:block" aria-hidden="true">
+        <span className="navbar-solid-clip hidden lg:block" aria-hidden="true">
           <span
             className={`navbar-solid ${scrolled || panelOpen ? "navbar-solid--on" : ""}`}
           />
         </span>
 
         <nav
-          className="relative mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-3 md:px-8 md:py-3.5"
+          className="relative mx-auto flex max-w-[1500px] items-center justify-between gap-6 px-5 py-3 lg:px-8 lg:py-3.5"
         >
           {/* MOBILE — original stacked logo + round hamburger (untouched).
               Plain <a> required: <Link> from next/link doesn't receive
               styled-jsx's auto-generated jsx-XXX class, so any styled-jsx
               CSS rule targeting these classes would silently miss. */}
           <a
-            className="logo relative z-[60] inline-flex items-center text-ink md:hidden"
+            className="logo relative z-[60] inline-flex items-center text-ink lg:hidden"
             href="/"
             onClick={close}
             aria-label="Commonwealth Accounting Partners — home"
@@ -233,7 +244,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="hamburger-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-ink text-mint shadow-[0_8px_24px_-12px_rgba(3,0,46,0.6)] transition-transform duration-200 hover:scale-105 active:scale-95 md:hidden"
+            className="hamburger-btn relative z-[70] flex h-12 w-12 items-center justify-center rounded-full border border-ink/15 bg-ink text-mint shadow-[0_8px_24px_-12px_rgba(3,0,46,0.6)] transition-transform duration-200 hover:scale-105 active:scale-95 lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -243,7 +254,7 @@ export default function Navbar() {
 
           {/* DESKTOP only — big wordmark + pill CTA + MENU text */}
           <a
-            className="navbar-logo hidden md:inline-flex"
+            className="navbar-logo hidden lg:inline-flex"
             href="/"
             onClick={close}
             aria-label="Commonwealth Accounting Partners — home"
@@ -261,7 +272,7 @@ export default function Navbar() {
 
           {/* Centered inline links — apechain treatment: idle 60% opacity,
               rise to 100% on hover/focus. Services expands the mega-panel. */}
-          <div className="navbar-center hidden md:flex">
+          <div className="navbar-center hidden lg:flex">
             <button
               type="button"
               className={`navbar-link navbar-link--services ${
@@ -298,7 +309,7 @@ export default function Navbar() {
             </a>
           </div>
 
-          <div className="navbar-right hidden md:inline-flex">
+          <div className="navbar-right hidden lg:inline-flex">
             <a
               className="navbar-cta"
               href="/#contact"
@@ -318,7 +329,7 @@ export default function Navbar() {
             mint on hover. */}
         <div
           id="navbar-services-panel"
-          className={`navbar-panel-wrap hidden md:block ${
+          className={`navbar-panel-wrap hidden lg:block ${
             panelOpen ? "navbar-panel-wrap--open" : ""
           }`}
         >
@@ -523,7 +534,7 @@ export default function Navbar() {
 
           /* ============ Logo ============
              NB: do NOT set display here. Tailwind owns it via the
-             hidden / md:inline-flex utilities on the element.
+             hidden / lg:inline-flex utilities on the element.
              Overriding display here defeats the responsive hide. */
           .navbar-logo {
             position: relative;
@@ -566,7 +577,7 @@ export default function Navbar() {
           }
 
           /* ============ Right cluster ============
-             Same note: Tailwind owns display via hidden / md:inline-flex. */
+             Same note: Tailwind owns display via hidden / lg:inline-flex. */
           .navbar-right {
             position: relative;
             z-index: 60;
