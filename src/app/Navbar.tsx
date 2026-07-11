@@ -11,9 +11,10 @@ import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { useRegion } from "./RegionProvider";
 
 const primaryLinks = [
-  { label: "Services", href: "/#services", number: "01" },
-  { label: "Process", href: "/#process", number: "02" },
-  { label: "Contact", href: "/#contact", number: "03" },
+  { label: "Home", href: "/", number: "01" },
+  { label: "Services", href: "/#services", number: "02" },
+  { label: "Process", href: "/#process", number: "03" },
+  { label: "Contact", href: "/#contact", number: "04" },
 ];
 
 // Desktop mega-panel items (Services dropdown)
