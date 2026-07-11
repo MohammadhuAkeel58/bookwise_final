@@ -5,6 +5,7 @@ import { RegionProvider } from "./RegionProvider";
 import RegionGate from "./RegionGate";
 import SiteAnimations from "./SiteAnimations";
 import HydrationGate from "./HydrationGate";
+import SmoothNav from "./SmoothNav";
 
 const placard = localFont({
   src: [
@@ -76,6 +77,7 @@ export default function RootLayout({
           <style>{`html.cwap-loading body{opacity:1 !important;animation:none !important;}`}</style>
         </noscript>
         <HydrationGate />
+        <SmoothNav />
         <SiteAnimations />
         <RegionProvider>
           <RegionGate />
