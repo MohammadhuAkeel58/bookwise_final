@@ -3,6 +3,7 @@ import LivingHero from "./LivingHero";
 import BondSection from "./BondSection";
 import ReasonsHorizontal from "./ReasonsHorizontal";
 import ServiceCards from "./ServiceCards";
+import TestimonialSpotlight from "./TestimonialSpotlight";
 
 const services = [
   {
@@ -128,6 +129,8 @@ export default function Home() {
         <ReasonsHorizontal />
 
         <BondSection />
+
+        <TestimonialSpotlight />
 
         <section id="contact" className="bg-mint px-5 py-16 md:px-8 md:py-24">
           <div className="mx-auto max-w-[1500px]">
