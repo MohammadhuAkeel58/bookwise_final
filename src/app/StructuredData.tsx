@@ -3,8 +3,8 @@
 // is, the markets served, and the services offered. Rendered once in the root
 // layout so it appears on every page.
 //
-// TODO for the owner: add `telephone` and a `PostalAddress` once you have a
-// public business address/phone — Google's local features reward them.
+// TODO for the owner: add a `PostalAddress` once you have a public business
+// address — Google's local features reward it.
 
 const BASE_URL = "https://comaccpar.com";
 
@@ -19,6 +19,7 @@ const schema = {
     "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia. Accurate records. Stronger business. Global partners.",
   slogan: "Accurate records. Stronger business. Global partners.",
   email: "hello@comaccpar.com",
+  telephone: "+61437487578",
   areaServed: [
     { "@type": "Country", name: "United Kingdom" },
     { "@type": "Country", name: "Australia" },

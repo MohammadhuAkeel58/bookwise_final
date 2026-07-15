@@ -145,7 +145,7 @@ export default function Home() {
               </p>
               <a
                 className="btn btn-solid mt-7 px-7 py-4 text-base"
-                href="mailto:hello@comaccpar.com"
+                href="/contact"
               >
                 Talk to us <span aria-hidden="true">›</span>
               </a>
@@ -163,7 +163,7 @@ export default function Home() {
               </div>
               <a
                 className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg"
-                href="mailto:hello@comaccpar.com"
+                href="/contact"
               >
                 Talk to us <span aria-hidden="true">›</span>
               </a>
@@ -198,7 +198,7 @@ export default function Home() {
             <a href="/services/other">Other Services</a>
             <a href="#services">Our services</a>
             <a href="#process">Process</a>
-            <a href="#contact">Contact</a>
+            <a href="/contact">Contact</a>
           </nav>
           <div className="text-sm text-white/60 md:text-right">
             <p>© 2026 Commonwealth Accounting Partners. All rights reserved.</p>

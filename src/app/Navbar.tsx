@@ -14,7 +14,7 @@ const primaryLinks = [
   { label: "Home", href: "/", number: "01" },
   { label: "Services", href: "/#services", number: "02" },
   { label: "Process", href: "/#process", number: "03" },
-  { label: "Contact", href: "/#contact", number: "04" },
+  { label: "Contact", href: "/contact", number: "04" },
 ];
 
 // Desktop mega-panel items (Services dropdown)
@@ -302,7 +302,7 @@ export default function Navbar() {
             </a>
             <a
               className="navbar-link"
-              href="/#contact"
+              href="/contact"
               onMouseEnter={() => setPanelOpen(false)}
               onClick={close}
             >
@@ -313,7 +313,7 @@ export default function Navbar() {
           <div className="navbar-right hidden lg:inline-flex">
             <a
               className="navbar-cta"
-              href="/#contact"
+              href="/contact"
               onMouseEnter={() => setPanelOpen(false)}
               onClick={close}
             >
@@ -969,7 +969,7 @@ export default function Navbar() {
                       </span>
                     </button>
                   )}
-                  <a href="/#contact" onClick={close} className="mob-menu-cta">
+                  <a href="/contact" onClick={close} className="mob-menu-cta">
                     <span>Talk to us</span>
                     <span aria-hidden="true">→</span>
                   </a>

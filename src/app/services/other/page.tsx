@@ -38,7 +38,7 @@ export default function OtherServicesPage() {
           </div>
           <Link
             className="btn btn-solid shrink-0 justify-center px-8 py-5 text-lg"
-            href="/#contact"
+            href="/contact"
           >
             Talk to us <span aria-hidden="true">›</span>
           </Link>

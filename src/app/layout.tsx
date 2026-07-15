@@ -7,6 +7,7 @@ import SiteAnimations from "./SiteAnimations";
 import HydrationGate from "./HydrationGate";
 import SmoothNav from "./SmoothNav";
 import StructuredData from "./StructuredData";
+import WhatsAppButton from "./WhatsAppButton";
 
 const placard = localFont({
   src: [
@@ -90,6 +91,7 @@ export default function RootLayout({
           <RegionGate />
           {children}
         </RegionProvider>
+        <WhatsAppButton />
       </body>
     </html>
   );

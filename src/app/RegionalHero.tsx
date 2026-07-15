@@ -193,7 +193,7 @@ export default function RegionalHero() {
         </h1>
 
         {/* Single underline-arrow CTA */}
-        <a className="hero-link" href="#contact">
+        <a className="hero-link" href="/contact">
           <span className="hero-link-text">Start with a call</span>
           <span className="hero-link-arrow" aria-hidden="true">
             →

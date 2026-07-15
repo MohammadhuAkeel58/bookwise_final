@@ -273,7 +273,7 @@ export default function PlansSection() {
                   className={`btn w-full justify-center px-6 py-4 text-base ${
                     plan.featured ? "btn-solid" : "btn-outline"
                   }`}
-                  href="/#contact"
+                  href="/contact"
                 >
                   Talk to us <span aria-hidden="true">›</span>
                 </Link>

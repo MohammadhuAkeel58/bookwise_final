@@ -37,7 +37,7 @@ export default function OtherServicesSection() {
             paraplanning.
           </p>
           <div className="mt-9">
-            <Link className="btn btn-solid px-7 py-4 text-base" href="/#contact">
+            <Link className="btn btn-solid px-7 py-4 text-base" href="/contact">
               Talk to us <span aria-hidden="true">›</span>
             </Link>
           </div>
