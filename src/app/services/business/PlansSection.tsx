@@ -123,7 +123,7 @@ const CONTENT: Record<"au" | "uk", RegionContent> = {
         items: [
           "Customised payslips",
           "PAYE, NIC & P11D administration",
-          "HMRC filing — Real Time Information (RTI)",
+          "HMRC filing (Real Time Information)",
           "Year-end P60s & P45s, prepared & distributed",
           "Tronc (gratuity & tips) management",
           "Summaries & analyses of staff costs",
@@ -154,7 +154,7 @@ const CONTENT: Record<"au" | "uk", RegionContent> = {
         leadIn: "Everything in Growth, plus:",
         featured: false,
         items: [
-          "Weekly payrun management — PAYE, proforma & quotation",
+          "Weekly payrun management: PAYE, proforma & quotation",
           "Cash flow forecast for weekly payruns",
           "Reminders for receivable collections",
           "Cash flow forecast & monitoring",
@@ -283,7 +283,7 @@ export default function PlansSection() {
         </div>
 
         <p className="mt-8 text-center text-sm text-ink/55">
-          Not sure which fits? Start with a call — we&apos;ll map your books to
+          Not sure which fits? Start with a call and we&apos;ll map your books to
           the right plan in fifteen minutes.
         </p>
       </div>

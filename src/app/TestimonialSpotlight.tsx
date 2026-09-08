@@ -43,7 +43,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "Payroll and BAS used to eat my Sundays. Now it just happens — quietly, correctly, every time.",
+      "Payroll and BAS used to eat my Sundays. Now it just happens, quietly and correctly, every time.",
     name: "Priya Nathan",
     initials: "PN",
     company: "Nathan & Wren Dental",

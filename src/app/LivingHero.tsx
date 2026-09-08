@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useRegion } from "./RegionProvider";
 import { drawFlag, type RegionCode } from "./flagDraw";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 /* ============================================================
  *  LivingHero — a real cloth flag, simulated in WebGL.
@@ -364,9 +365,7 @@ export default function LivingHero() {
 
         <a href="/contact" className="lhero-cta">
           <span className="lhero-cta-label">Start with a call</span>
-          <span className="lhero-cta-arrow" aria-hidden="true">
-            →
-          </span>
+          <ArrowIcon className="lhero-cta-arrow" />
         </a>
       </div>
 
@@ -574,7 +573,7 @@ export default function LivingHero() {
           transform: translateY(-2px); background: var(--red-deep, #a30d26);
           box-shadow: 0 26px 60px -18px rgba(200, 16, 46, 0.7);
         }
-        .lhero-cta-arrow { display: inline-block; transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1); }
+        .lhero-cta-arrow { flex: none; width: 1.75em; height: auto; transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1); }
         .lhero-cta:hover .lhero-cta-arrow { transform: translateX(5px); }
 
         .lhero-scroll {

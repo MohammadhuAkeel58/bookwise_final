@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRegion, type Region } from "./RegionProvider";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 /* ============================================================
  *  RegionGate — first-visit region popup.
@@ -62,7 +63,7 @@ export default function RegionGate() {
         <p className="region-pop-eyebrow">Welcome</p>
         <h2 className="region-pop-title">Where is your business based?</h2>
         <p className="region-pop-sub">
-          We tailor everything — tax rules, filings and plans — to your
+          We tailor everything, from tax rules to filings and plans, to your
           region.
         </p>
 
@@ -77,7 +78,7 @@ export default function RegionGate() {
             >
               <span className="region-pop-name">{r.name}</span>
               <span className="region-pop-go">
-                Continue <span aria-hidden="true">→</span>
+                Continue <ArrowIcon className="region-pop-go-arrow" />
               </span>
             </button>
           ))}
@@ -224,6 +225,9 @@ export default function RegionGate() {
           text-transform: uppercase;
         }
         .region-pop-go {
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
           margin-top: 0.75rem;
           font-size: 0.78rem;
           font-weight: 700;
@@ -232,11 +236,13 @@ export default function RegionGate() {
         .region-pop-option[data-region="au"] .region-pop-go {
           color: #f0899a;
         }
-        .region-pop-go span {
-          display: inline-block;
+        .region-pop-go svg {
+          flex: none;
+          width: 1.9em;
+          height: auto;
           transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .region-pop-option:hover .region-pop-go span {
+        .region-pop-option:hover .region-pop-go svg {
           transform: translateX(4px);
         }
 

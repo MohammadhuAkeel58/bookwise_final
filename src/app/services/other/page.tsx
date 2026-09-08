@@ -4,14 +4,14 @@ import Navbar from "../../Navbar";
 import OtherServicesSection from "./OtherServicesSection";
 
 export const metadata: Metadata = {
-  title: "Other Services — Virtual Assistance, Support & Paraplanning",
+  title: "Other Services · Virtual Assistance, Support & Paraplanning",
   description:
-    "Virtual assistance, customer care, web and content support, telemarketing and paraplanning — one team handling the busywork around your numbers, across the UK and Australia.",
+    "Virtual assistance, customer care, web and content support, telemarketing and paraplanning. One team handling the busywork around your numbers, across the UK and Australia.",
   alternates: { canonical: "/services/other" },
   openGraph: {
-    title: "Other Services — Commonwealth Accounting Partners",
+    title: "Other Services · Commonwealth Accounting Partners",
     description:
-      "Virtual assistance, customer care, content support, telemarketing and paraplanning — one team for the busywork.",
+      "Virtual assistance, customer care, content support, telemarketing and paraplanning. One team for the busywork.",
     url: "/services/other",
     type: "website",
   },

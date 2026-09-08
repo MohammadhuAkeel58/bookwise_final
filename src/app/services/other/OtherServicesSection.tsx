@@ -33,7 +33,7 @@ export default function OtherServicesSection() {
           </h1>
           <p className="mt-6 max-w-md text-base leading-relaxed text-ink/70 md:text-lg">
             The same team that keeps your books clean can carry the busywork
-            around them — from inbox and customers to content, calls and
+            around them, from inbox and customers to content, calls and
             paraplanning.
           </p>
           <div className="mt-9">

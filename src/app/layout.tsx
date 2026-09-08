@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://comaccpar.com"),
   title: {
     default:
-      "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
+      "Commonwealth Accounting Partners · Bookkeeping, Accounting, Compliance & Advisory",
     template: "%s · Commonwealth Accounting Partners",
   },
   description:
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   openGraph: {
     title:
-      "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
+      "Commonwealth Accounting Partners · Bookkeeping, Accounting, Compliance & Advisory",
     description:
       "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia.",
     type: "website",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Commonwealth Accounting Partners — Bookkeeping, Accounting, Compliance & Advisory",
+      "Commonwealth Accounting Partners · Bookkeeping, Accounting, Compliance & Advisory",
     description:
       "Bookkeeping, accounting, compliance and advisory for founders, studios and creators across the UK and Australia.",
   },

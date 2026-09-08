@@ -9,6 +9,7 @@ import {
   type MotionValue,
 } from "motion/react";
 import { useRegion } from "./RegionProvider";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 /* ============================================================
  *  Region-aware service cards — landmark cards.
@@ -277,24 +278,14 @@ function LandmarkCard({
       <a
         href={service.href}
         className="svc2-card-link"
-        aria-label={`${service.title} — learn more`}
+        aria-label={`${service.title}, learn more`}
       />
 
       {/* ---- Learn more (visual only — the overlay handles the click) ---- */}
       <span className="svc2-learn group/btn" aria-hidden="true">
         <span className="svc2-learn-label">Learn more</span>
         <span className="svc2-learn-arrow">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
+          <ArrowIcon />
         </span>
       </span>
     </article>

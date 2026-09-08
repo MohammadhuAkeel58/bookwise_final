@@ -4,12 +4,12 @@ import ContactFlagBackdrop from "../ContactFlagBackdrop";
 import ContactForm from "../ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Talk to Your Accountants",
+  title: "Contact · Talk to Your Accountants",
   description:
-    "Get in touch with Commonwealth Accounting Partners for bookkeeping, tax and advisory across the UK and Australia. Tell us what you need — we reply within one working day.",
+    "Get in touch with Commonwealth Accounting Partners for bookkeeping, tax and advisory across the UK and Australia. Tell us what you need and we will reply within one working day.",
   alternates: { canonical: "/contact" },
   openGraph: {
-    title: "Contact — Commonwealth Accounting Partners",
+    title: "Contact · Commonwealth Accounting Partners",
     description:
       "Bookkeeping, tax and advisory for UK and Australian businesses. We reply within one working day.",
     url: "/contact",
@@ -53,7 +53,7 @@ export default function ContactPage() {
               </h1>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-mint/70">
                 Tell us where your business is based and what you need.
-                Bookkeeping, tax, or a second opinion — we&apos;ll come back
+                Bookkeeping, tax, or a second opinion, we&apos;ll come back
                 within one working day.
               </p>
 

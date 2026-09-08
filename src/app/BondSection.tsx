@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const PARA =
-  "We keep the books clean, the taxes planned and the founders calm — clear numbers, plain English, across the UK and Australia.";
+  "We keep the books clean, the taxes planned and the founders calm. Clear numbers, plain English, across the UK and Australia.";
 
 /** Split the paragraph into word groups of char spans so each character
  *  can scrub from dim to full opacity as the user scrolls. */

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import css from "styled-jsx/css";
 import { useRegion } from "./RegionProvider";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 /* ============================================================
  *  ContactForm — submits to FormSubmit (formsubmit.co).
@@ -57,7 +58,7 @@ export default function ContactForm() {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          _subject: `New enquiry from ${form.name || "the website"} — comaccpar.com`,
+          _subject: `New enquiry from ${form.name || "the website"} (comaccpar.com)`,
           _template: "table",
           _captcha: "false",
           _honey: form._honey,
@@ -86,7 +87,7 @@ export default function ContactForm() {
         </span>
         <h3 className="cform-done-title">Message sent</h3>
         <p className="cform-done-text">
-          Thanks — we&apos;ve got it. Expect a reply within one working day.
+          Thanks, we&apos;ve got it. Expect a reply within one working day.
         </p>
         <style jsx>{doneStyles}</style>
       </div>
@@ -180,7 +181,7 @@ export default function ContactForm() {
         disabled={status === "sending"}
       >
         <span>{status === "sending" ? "Sending…" : "Send message"}</span>
-        <span aria-hidden="true">→</span>
+        <ArrowIcon className="cform-submit-arrow" />
       </button>
       <p className="cform-note">
         We&apos;ll never share your details. Reply within one working day.
@@ -277,6 +278,15 @@ const formStyles = css`
   .cform :global(input::placeholder),
   .cform :global(textarea::placeholder) {
     color: rgba(3, 0, 46, 0.45);
+  }
+  .cform-submit-arrow {
+    flex: none;
+    width: 1.75em;
+    height: auto;
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cform-submit:hover .cform-submit-arrow {
+    transform: translateX(4px);
   }
   .cform-submit {
     display: inline-flex;

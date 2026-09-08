@@ -13,7 +13,7 @@ const reasons = [
     number: "02",
     title: "Tax planned ahead",
     description:
-      "Self Assessment, Corporation Tax, and VAT mapped out before deadlines — no scrambles, no surprise bills.",
+      "Self Assessment, Corporation Tax, and VAT mapped out before deadlines. No scrambles, no surprise bills.",
   },
   {
     number: "03",
@@ -77,7 +77,7 @@ export default function ReasonsHorizontal() {
           <p className="rhz-eyebrow">Why choose us</p>
           <h2 className="rhz-heading">We handle the numbers</h2>
           <p className="rhz-sub">
-            Bookkeeping, taxation, and online accounting — under one roof
+            Bookkeeping, taxation, and online accounting, all under one roof
           </p>
         </div>
 

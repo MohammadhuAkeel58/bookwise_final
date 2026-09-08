@@ -580,8 +580,8 @@ a {
     transition: transform 200ms ease;
   }
   .svc2-learn-arrow svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.95rem;
+    height: auto;
   }
   .svc2-learn:hover .svc2-learn-arrow,
   .svc2-card:hover .svc2-learn-arrow {

@@ -9,6 +9,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MenuToggleIcon } from "@/components/ui/menu-toggle-icon";
 import { useRegion } from "./RegionProvider";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 const primaryLinks = [
   { label: "Home", href: "/", number: "01" },
@@ -226,7 +227,7 @@ export default function Navbar() {
             className="logo relative z-[60] inline-flex items-center text-ink lg:hidden"
             href="/"
             onClick={close}
-            aria-label="Commonwealth Accounting Partners — home"
+            aria-label="Commonwealth Accounting Partners home"
           >
             <img
               src="/commonwealth-logo.svg"
@@ -258,7 +259,7 @@ export default function Navbar() {
             className="navbar-logo hidden lg:inline-flex"
             href="/"
             onClick={close}
-            aria-label="Commonwealth Accounting Partners — home"
+            aria-label="Commonwealth Accounting Partners home"
           >
             <img
               src="/commonwealth-logo.svg"
@@ -318,9 +319,7 @@ export default function Navbar() {
               onClick={close}
             >
               <span>Talk to us</span>
-              <span className="navbar-cta-arrow" aria-hidden="true">
-                →
-              </span>
+              <ArrowIcon className="navbar-cta-arrow" />
             </a>
           </div>
         </nav>
@@ -627,7 +626,9 @@ export default function Navbar() {
             transform: translateY(0);
           }
           .navbar-cta-arrow {
-            display: inline-block;
+            flex: none;
+            width: 1.75em;
+            height: auto;
             transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
           }
           .navbar-cta:hover .navbar-cta-arrow {
@@ -956,7 +957,7 @@ export default function Navbar() {
                       type="button"
                       onClick={toggleRegion}
                       className="mob-menu-region"
-                      aria-label={`Switch region — currently ${region === "uk" ? "United Kingdom" : "Australia"}`}
+                      aria-label={`Switch region, currently ${region === "uk" ? "United Kingdom" : "Australia"}`}
                     >
                       <span className="mob-menu-region-flag">
                         {region === "uk" ? "🇬🇧" : "🇦🇺"}
@@ -971,7 +972,7 @@ export default function Navbar() {
                   )}
                   <a href="/contact" onClick={close} className="mob-menu-cta">
                     <span>Talk to us</span>
-                    <span aria-hidden="true">→</span>
+                    <ArrowIcon className="mob-menu-cta-arrow" />
                   </a>
                 </div>
                 <a
@@ -1322,6 +1323,15 @@ export default function Navbar() {
               letter-spacing: 0.08em;
               text-transform: uppercase;
               color: #b99328;
+            }
+            .mob-menu-cta-arrow {
+              flex: none;
+              width: 1.75em;
+              height: auto;
+              transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+            }
+            .mob-menu-cta:hover .mob-menu-cta-arrow {
+              transform: translateX(4px);
             }
             .mob-menu-cta {
               display: inline-flex;

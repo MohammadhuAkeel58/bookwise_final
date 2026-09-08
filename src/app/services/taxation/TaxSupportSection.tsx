@@ -25,7 +25,7 @@ const CONTENT: Record<"au" | "uk", RegionContent> = {
   au: {
     eyebrow: "Tax services · Australia",
     headline: ["GST, ATO and", "everything between"],
-    body: "Registration, returns, activity statements and audits — handled by people who deal with the ATO every day, so you never face it alone.",
+    body: "Registration, returns, activity statements and audits, handled by people who deal with the ATO every day, so you never face it alone.",
     listTitle: "What we take off your plate",
     items: [
       "Advice on registering for GST",
@@ -39,7 +39,7 @@ const CONTENT: Record<"au" | "uk", RegionContent> = {
   uk: {
     eyebrow: "Tax services · United Kingdom",
     headline: ["VAT, HMRC and", "everything between"],
-    body: "Registration, returns, MTD submissions and enquiries — handled by people who deal with HMRC every day, so you never face it alone.",
+    body: "Registration, returns, MTD submissions and enquiries, handled by people who deal with HMRC every day, so you never face it alone.",
     listTitle: "What we take off your plate",
     items: [
       "Advice on registering for VAT",

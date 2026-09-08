@@ -32,7 +32,7 @@ const services = [
     title: "Taxation Services",
     href: "/services/taxation",
     description:
-      "Self Assessment, Corporation Tax, VAT, and year-end filings — accurate, on time, and planned ahead of every deadline.",
+      "Self Assessment, Corporation Tax, VAT, and year-end filings, accurate, on time, and planned ahead of every deadline.",
     icon: (
       <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
         <path
@@ -57,7 +57,7 @@ const services = [
     title: "Other Services",
     href: "/services/other",
     description:
-      "Virtual assistance, customer care, web and content support, telemarketing and paraplanning — one team for the busywork.",
+      "Virtual assistance, customer care, web and content support, telemarketing and paraplanning. One team for the busywork.",
     icon: (
       <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
         <path
@@ -113,7 +113,7 @@ export default function Home() {
                 </h2>
               </div>
               <p className="max-w-xl text-lg leading-relaxed text-ink/75">
-                Business support, taxation, and online accounting — three pillars that keep your finances tidy, compliant, and a step ahead of every deadline.
+                Business support, taxation, and online accounting. Three pillars that keep your finances tidy, compliant, and a step ahead of every deadline.
               </p>
             </div>
 

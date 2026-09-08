@@ -1,6 +1,7 @@
 "use client";
 
 import { useRegion } from "./RegionProvider";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 import {
   siXero,
   siQuickbooks,
@@ -195,9 +196,7 @@ export default function RegionalHero() {
         {/* Single underline-arrow CTA */}
         <a className="hero-link" href="/contact">
           <span className="hero-link-text">Start with a call</span>
-          <span className="hero-link-arrow" aria-hidden="true">
-            →
-          </span>
+          <ArrowIcon className="hero-link-arrow" />
         </a>
       </div>
 
@@ -340,7 +339,9 @@ export default function RegionalHero() {
           transform: scaleX(0);
         }
         .hero-link-arrow {
-          display: inline-block;
+          flex: none;
+          width: 1.6em;
+          height: auto;
           transition: transform 320ms cubic-bezier(0.76, 0, 0.24, 1);
         }
         .hero-link:hover .hero-link-arrow {
