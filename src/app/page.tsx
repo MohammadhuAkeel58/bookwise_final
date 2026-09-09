@@ -4,6 +4,13 @@ import BondSection from "./BondSection";
 import ReasonsHorizontal from "./ReasonsHorizontal";
 import ServiceCards from "./ServiceCards";
 import TestimonialSpotlight from "./TestimonialSpotlight";
+import {
+  SceneArt,
+  LedgerFigure,
+  FilingFigure,
+  HeadsetFigure,
+  ChatFigure,
+} from "@/components/ui/scene-art";
 
 const services = [
   {
@@ -12,20 +19,9 @@ const services = [
     description:
       "Bookkeeping, reconciliations, payables, and receivables handled so your numbers stay clean and decisions stay sharp.",
     icon: (
-      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path
-          d="M8 13h24a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V15a2 2 0 0 1 2-2Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        />
-        <path
-          d="M15 13v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <path d="M6 22h28" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
+      <SceneArt size="6.75rem">
+        <LedgerFigure />
+      </SceneArt>
     ),
   },
   {
@@ -34,23 +30,9 @@ const services = [
     description:
       "Self Assessment, Corporation Tax, VAT, and year-end filings, accurate, on time, and planned ahead of every deadline.",
     icon: (
-      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path
-          d="M12 6h12l8 8v18a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-        <path d="M24 6v8h8" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path
-          d="M16 24l8-8"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <circle cx="17" cy="21" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-        <circle cx="23" cy="27" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
+      <SceneArt size="6.75rem" delay={-2.5}>
+        <FilingFigure />
+      </SceneArt>
     ),
   },
   {
@@ -59,24 +41,13 @@ const services = [
     description:
       "Virtual assistance, customer care, web and content support, telemarketing and paraplanning. One team for the busywork.",
     icon: (
-      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
-        <path
-          d="M12 24a6 6 0 0 1 1.5-11.8A8 8 0 0 1 29 14a5.5 5.5 0 0 1 .5 11H13a5 5 0 0 1-1-1Z"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 30l2-3 3 2 3-4 3 3"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      <SceneArt size="6.75rem" delay={-5}>
+        <HeadsetFigure />
+      </SceneArt>
     ),
   },
 ];
+
 
 export default function Home() {
   return (
@@ -161,6 +132,11 @@ export default function Home() {
                   Build your empire. We will watch the numbers.
                 </h2>
               </div>
+              <span className="cta-art-host shrink-0">
+                <SceneArt size="7rem">
+                  <ChatFigure />
+                </SceneArt>
+              </span>
               <a
                 className="btn btn-solid shrink-0 justify-center px-8 py-4 text-lg"
                 href="/contact"

@@ -1,6 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  SceneArt,
+  CleanBooksFigure,
+  CalendarFigure,
+  CloudFigure,
+  PeopleFigure,
+} from "@/components/ui/scene-art";
 
 const reasons = [
   {
@@ -8,24 +15,44 @@ const reasons = [
     title: "Books that stay clean",
     description:
       "Bookkeeping, reconciliations, and payables handled monthly so your numbers are always decision-ready.",
+    figure: (
+      <SceneArt size="5.75rem">
+        <CleanBooksFigure />
+      </SceneArt>
+    ),
   },
   {
     number: "02",
     title: "Tax planned ahead",
     description:
       "Self Assessment, Corporation Tax, and VAT mapped out before deadlines. No scrambles, no surprise bills.",
+    figure: (
+      <SceneArt size="5.75rem" delay={-1.9}>
+        <CalendarFigure />
+      </SceneArt>
+    ),
   },
   {
     number: "03",
     title: "Live in the cloud",
     description:
       "Online accounting gives you real-time visibility into cash, profit, and obligations from any device.",
+    figure: (
+      <SceneArt size="5.75rem" delay={-3.8}>
+        <CloudFigure />
+      </SceneArt>
+    ),
   },
   {
     number: "04",
     title: "People first",
     description:
       "Plain-English support from a team that picks up the phone when decisions get messy.",
+    figure: (
+      <SceneArt size="5.75rem" delay={-5.6}>
+        <PeopleFigure />
+      </SceneArt>
+    ),
   },
 ];
 
@@ -89,9 +116,12 @@ export default function ReasonsHorizontal() {
                 key={r.title}
                 data-skin={i % 2 === 0 ? "mint" : "dark"}
               >
-                <span className="rhz-card-num" aria-hidden="true">
-                  {r.number}
-                </span>
+                <div className="rhz-card-head">
+                  <span className="rhz-card-num" aria-hidden="true">
+                    {r.number}
+                  </span>
+                  {r.figure}
+                </div>
                 <h3 className="rhz-card-title">{r.title}</h3>
                 <p className="rhz-card-desc">{r.description}</p>
               </article>
@@ -212,6 +242,7 @@ export default function ReasonsHorizontal() {
         }
 
         .rhz-card-num {
+          padding-top: 0.35rem;
           font-family: ui-monospace, monospace;
           font-size: 0.85rem;
           font-weight: 600;

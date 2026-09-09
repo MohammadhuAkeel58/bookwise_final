@@ -915,3 +915,119 @@ a {
     transition: none;
   }
 }
+
+/* ============================================================
+ *  Scene art — the faceted 3D figures in src/components/ui/scene-art.tsx
+ *
+ *  Each figure paints itself from five custom properties, so the
+ *  same drawing sits correctly on a pale panel and on an ink one.
+ *  Pale is the default; ink surfaces override below.
+ * ============================================================ */
+:root {
+  --art-hi: #c3d6f4;
+  --art-mid: #7fa0cd;
+  --art-lo: #03002e;
+  --art-line: #03002e;
+  --art-pop: #c8102e;
+}
+
+.scene-art {
+  display: block;
+  width: var(--art-size, 5.5rem);
+  height: var(--art-size, 5.5rem);
+  perspective: 560px;
+  pointer-events: none;
+}
+.scene-art-tilt,
+.scene-art-float {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.scene-art-tilt {
+  transition: transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.scene-art-float {
+  animation: scene-art-drift 7.5s ease-in-out infinite;
+  animation-delay: var(--art-delay, 0s);
+}
+.scene-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+@keyframes scene-art-drift {
+  0%,
+  100% {
+    transform: translate3d(0, -3%, 0) rotate(-1.4deg);
+  }
+  50% {
+    transform: translate3d(0, 3%, 0) rotate(1.4deg);
+  }
+}
+
+/* The card the figure belongs to owns the tilt, so the whole panel
+   reacts as one object rather than the drawing alone. */
+@media (hover: hover) {
+  .svc2-card:hover .scene-art-tilt,
+  .rhz-card:hover .scene-art-tilt,
+  .cta-art-host:hover .scene-art-tilt {
+    transform: rotateX(13deg) rotateY(-15deg) scale(1.07);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-art-float {
+    animation: none;
+  }
+  .scene-art-tilt {
+    transition: none;
+  }
+}
+
+/* ---- Ink surfaces: lift the shadow face off the background ---- */
+.svc2-card[data-theme="dark"] .svc2-badge,
+.rhz-card[data-skin="dark"] {
+  --art-hi: #dce8fa;
+  --art-mid: #8fb0d8;
+  /* The shadow face has to sit clear of the ink behind it, and the
+     hairlines still land on the pale faces, so they stay dark. */
+  --art-lo: #46679c;
+  --art-line: #16265a;
+  --art-pop: #ff6076;
+}
+
+/* ---- Mint panels: deepen the lit face so it parts from the card ---- */
+.rhz-card[data-skin="mint"] {
+  --art-hi: #b3cbef;
+}
+
+/* ---- Service card badge: the figure replaces the ring ---- */
+.svc2-badge[data-figure="true"] {
+  height: auto;
+  width: auto;
+  border: 0;
+  border-radius: 0;
+  margin-left: -0.35rem;
+}
+
+/* ---- Reasons rail: the figure sits opposite the index number ---- */
+.rhz-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ---- Home contact band ---- */
+.cta-art-host {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .cta-art-host {
+    display: block;
+  }
+}

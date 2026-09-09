@@ -254,18 +254,11 @@ function LandmarkCard({
 
       {/* ---- Header + title ---- */}
       <div className="svc2-top">
-        <span className="svc2-badge">
-          <svg
-            aria-hidden="true"
-            viewBox={meta.badge.vb}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={meta.badge.sw}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          >
-            {meta.badge.node}
-          </svg>
+        {/* The service's own 3D figure. The region still reads through
+            the country name, the theme colours and the landmark below,
+            so the badge is free to carry the service instead. */}
+        <span className="svc2-badge" data-figure="true">
+          {service.icon}
         </span>
         <p className="svc2-country-name">{meta.name}</p>
         <span aria-hidden="true" className="svc2-underline" />
