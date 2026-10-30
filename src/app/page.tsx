@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import LivingHero from "./LivingHero";
+import VideoHero from "./VideoHero";
 import BondSection from "./BondSection";
 import ReasonsHorizontal from "./ReasonsHorizontal";
 import ServiceCards from "./ServiceCards";
@@ -58,7 +58,7 @@ export default function Home() {
         {/* Sticky stack — hero pins, services scrolls up and covers it */}
         <div className="stack">
           <div className="stack-pin">
-            <LivingHero />
+            <VideoHero />
           </div>
 
           <section id="services" className="stack-over section-pad bg-background">
